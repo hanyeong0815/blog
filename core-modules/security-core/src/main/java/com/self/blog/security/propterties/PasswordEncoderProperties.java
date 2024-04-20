@@ -1,6 +1,6 @@
-package com.self.music.passwordEncoder.propterties;
+package com.self.blog.security.propterties;
 
-import com.self.music.passwordEncoder.type.EncoderType;
+import com.self.blog.security.type.EncoderType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;

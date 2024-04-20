@@ -1,6 +1,6 @@
-package com.self.music.common.properties.cors;
+package com.self.blog.common.properties.cors;
 
-import com.self.music.common.properties.cors.allowed.CorsAllowedProperties;
+import com.self.blog.common.properties.cors.allowed.CorsAllowedProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;

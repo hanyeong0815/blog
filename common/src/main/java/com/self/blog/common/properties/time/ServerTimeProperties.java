@@ -1,4 +1,4 @@
-package com.self.music.common.properties.time;
+package com.self.blog.common.properties.time;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;

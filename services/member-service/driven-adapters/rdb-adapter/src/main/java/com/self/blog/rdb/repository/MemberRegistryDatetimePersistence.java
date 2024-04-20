@@ -1,9 +1,9 @@
 package com.self.blog.rdb.repository;
 
-import com.self.blog.application.repository.AccountRegistryDateTimeRepository;
-import com.self.blog.domain.AccountRegistryDatetime;
-import com.self.blog.rdb.entity.AccountRegistryDatetimeEntity;
-import com.self.blog.rdb.mapper.AccountRegistryDatetimeEntityMapper;
+import com.self.blog.application.repository.MemberRegistryDateTimeRepository;
+import com.self.blog.domain.MemberRegistryDatetime;
+import com.self.blog.rdb.entity.MemberRegistryDatetimeEntity;
+import com.self.blog.rdb.mapper.MemberRegistryDatetimeEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -12,23 +12,23 @@ import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
-public class AccountRegistryDatetimePersistence implements AccountRegistryDateTimeRepository {
-    private final AccountRegistryDatetimeJpaRepository repository;
-    private final AccountRegistryDatetimeEntityMapper mapper;
+public class MemberRegistryDatetimePersistence implements MemberRegistryDateTimeRepository {
+    private final MemberRegistryDatetimeJpaRepository repository;
+    private final MemberRegistryDatetimeEntityMapper mapper;
 
     @Override
-    public AccountRegistryDatetime save(AccountRegistryDatetime accountRegistryDatetime) {
-        AccountRegistryDatetimeEntity accountRegistryDatetimeEntity = mapper.toEntity(accountRegistryDatetime);
-        return mapper.toDomain(repository.save(accountRegistryDatetimeEntity));
+    public MemberRegistryDatetime save(MemberRegistryDatetime memberRegistryDatetime) {
+        MemberRegistryDatetimeEntity memberRegistryDatetimeEntity = mapper.toEntity(memberRegistryDatetime);
+        return mapper.toDomain(repository.save(memberRegistryDatetimeEntity));
     }
 
     @Override
-    public Optional<AccountRegistryDatetime> findById(Long id) {
+    public Optional<MemberRegistryDatetime> findById(Long id) {
         return repository.findById(id).map(mapper::toDomain);
     }
 
     @Override
-    public Optional<AccountRegistryDatetime> findByMemberId(UUID memberId) {
+    public Optional<MemberRegistryDatetime> findByMemberId(UUID memberId) {
         return repository.findByMemberId(memberId).map(mapper::toDomain);
     }
 }

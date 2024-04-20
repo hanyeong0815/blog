@@ -1,6 +1,6 @@
-package com.self.music.common.utils.exception;
+package com.self.blog.common.utils.exception;
 
-import com.self.music.common.support.exception.ErrorCode;
+import com.self.blog.common.support.exception.ErrorCode;
 
 import java.text.MessageFormat;
 import java.util.Objects;

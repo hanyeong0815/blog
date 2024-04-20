@@ -1,4 +1,4 @@
-package com.self.music.common.utils.time;
+package com.self.blog.common.utils.time;
 
 import org.apache.commons.net.ntp.NTPUDPClient;
 import org.apache.commons.net.ntp.TimeInfo;

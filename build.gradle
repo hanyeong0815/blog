@@ -1,37 +1,226 @@
 plugins {
     id 'java'
+    id 'java-library'
     id 'org.springframework.boot' version '3.2.5'
     id 'io.spring.dependency-management' version '1.1.4'
 }
 
-group = 'com.self'
-version = '0.0.1-SNAPSHOT'
+var commonProject = project(commonModule)
 
-java {
-    sourceCompatibility = '21'
-}
+allprojects{
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
+    group = 'com.self'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    compileJava {
+        options.compilerArgs += [
+                '--enable-preview',
+                '-Amapstruct.defaultComponentModel=spring'
+        ]
+
+    }
+
+// Enable Java Preview (2)
+    compileTestJava {
+        options.compilerArgs += [
+                '--enable-preview',
+//                '-Amapstruct.defaultComponentModel=spring'
+        ]
+    }
+
+// Enable Java Preview (3)
+    test {
+        useJUnitPlatform()
+        jvmArgs([
+                '--enable-preview',
+//                '-Amapstruct.defaultComponentModel=spring'
+                '-Dspring.profiles.active=local'
+        ])
+    }
+
+    tasks.named('test') {
+        useJUnitPlatform()
     }
 }
 
-repositories {
-    mavenCentral()
+subprojects {
+    dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+        implementation 'org.apache.logging.log4j:log4j-api:2.20.0'
+        implementation 'org.apache.logging.log4j:log4j-core:2.20.0'
+
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+    }
 }
 
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    runtimeOnly 'org.postgresql:postgresql'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+// common ------------------------------------------------------------------------------------------------
+
+project(commonModule){
+    dependencies {
+        // NTP
+        implementation 'commons-net:commons-net:3.9.0'
+    }
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
+// core ------------------------------------------------------------------------------------------------
+
+project(jpaCore) {
+    dependencies {
+        implementation commonProject
+        api 'org.springframework.boot:spring-boot-starter-data-jpa'
+    }
+}
+
+project(gsonCore) {
+    dependencies {
+        implementation commonProject
+
+        // GSON
+        api 'com.google.code.gson:gson:2.10.1'
+    }
+}
+
+project(globalExceptionHandlerCore) {
+    dependencies {
+        implementation commonProject
+    }
+}
+
+project(securityCore) {
+    dependencies {
+        implementation commonProject
+        implementation project(gsonCore)
+
+        api 'org.jetbrains:annotations:24.0.1'
+        api 'org.springframework.boot:spring-boot-starter-security'
+        implementation 'org.springframework.boot:spring-boot'
+    }
+}
+
+project(redisCore) {
+    dependencies {
+        implementation commonProject
+        api 'org.springframework.boot:spring-boot-starter-data-redis'
+    }
+}
+
+// member-service ------------------------------------------------------------------------------------------------
+project(memberService) {
+    dependencies {
+        implementation commonProject
+        implementation project(globalExceptionHandlerCore)
+        api project(memberApplication)
+        api project(memberRdbAdapter)
+        api project(memberRedisAdapter)
+        api project(memberWebAdapter)
+
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+    }
+
+    bootJar {
+        enabled = true
+    }
+}
+
+project(memberDomain) {
+    dependencies {
+        implementation commonProject
+
+        implementation project(gsonCore)
+    }
+}
+
+project(memberApplication) {
+    dependencies {
+        implementation commonProject
+        implementation project(gsonCore)
+        api project(memberDomain)
+        api project(memberReadModels)
+        api project(securityCore)
+
+        implementation 'org.jetbrains:annotations:24.0.1'
+
+        // AOP
+        implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+        // jwt
+        implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+        implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+        implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+        // Map Struct
+        implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+        annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+        annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    }
+}
+
+project(memberRdbAdapter) {
+    dependencies {
+        implementation commonProject
+        api project(securityCore)
+        api project(jpaCore)
+        api project(memberApplication)
+
+        implementation 'org.flywaydb:flyway-core:9.16.0'
+
+        runtimeOnly 'org.postgresql:postgresql'
+
+        // Map Struct
+        implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+        annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+        annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    }
+}
+
+project(memberRedisAdapter) {
+    dependencies {
+        implementation commonProject
+        api project(redisCore)
+        api project(memberApplication)
+
+        // Map Struct
+        implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+        annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+        annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    }
+}
+
+project(memberWebAdapter) {
+    dependencies {
+        implementation commonProject
+        implementation project(gsonCore)
+        implementation project(memberApplication)
+
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+        // Map Struct
+        implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+        annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+        annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    }
 }

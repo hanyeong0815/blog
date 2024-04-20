@@ -1,9 +1,11 @@
 CREATE TABLE IF NOT EXISTS member.member_static_salt (
-    id                  uuid          PRIMARY KEY         DEFAULT uuid_generate_v4(),
+    id                  uuid          DEFAULT uuid_generate_v4(),
     member_id           uuid,
     username            VARCHAR(255),
     static_salt         VARCHAR(255),
-    created_at          timestamp(6)         NOT NULL            DEFAULT CURRENT_TIMESTAMP(6)
+    created_at          timestamp(6)         NOT NULL            DEFAULT CURRENT_TIMESTAMP(6),
+
+    constraint pk_member_static_salt_id primary key(id)
 );
 
 CREATE INDEX idx_member_static_salt_member_id ON member.member_static_salt(member_id);

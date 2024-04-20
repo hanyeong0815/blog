@@ -1,4 +1,4 @@
-package com.self.music.passwordEncoder.encoder;
+package com.self.blog.security.encoder;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 

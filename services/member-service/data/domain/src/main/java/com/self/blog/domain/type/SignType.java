@@ -1,4 +1,4 @@
-package com.self.music.member.domain.type;
+package com.self.blog.domain.type;
 
 public enum SignType {
     SIGN_UP,

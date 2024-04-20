@@ -1,4 +1,4 @@
-package com.self.music.member.application.authentication.utils;
+package com.self.blog.application.authentication.utils;
 
 import org.springframework.security.core.GrantedAuthority;
 

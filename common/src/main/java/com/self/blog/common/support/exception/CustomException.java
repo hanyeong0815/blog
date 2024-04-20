@@ -1,4 +1,4 @@
-package com.self.music.common.support.exception;
+package com.self.blog.common.support.exception;
 
 import org.springframework.http.HttpStatus;
 

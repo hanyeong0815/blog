@@ -1,11 +1,10 @@
 package com.self.blog.application.usecase.data;
 
-import java.time.Instant;
+import lombok.Builder;
 
-public record JwtToken(
+@Builder
+public record JwtTokenPair(
         String accessToken,
-        String refreshToken,
-        Instant accessTokenExpiredAt,
-        Instant refreshTokenExpiredAt
+        String refreshToken
 ) {
 }
