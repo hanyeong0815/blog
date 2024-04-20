@@ -1,4 +1,4 @@
-package com.self.music.passwordEncoder.generator;
+package com.self.blog.security.generator;
 
 import lombok.Builder;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;

@@ -1,4 +1,4 @@
-package com.self.music.passwordEncoder.type;
+package com.self.blog.security.type;
 
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm;
 

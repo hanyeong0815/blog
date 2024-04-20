@@ -1,10 +1,10 @@
-package com.self.music.passwordEncoder;
+package com.self.blog.security;
 
-import com.self.music.passwordEncoder.encoder.PrefixedBcryptEncoder;
-import com.self.music.passwordEncoder.generator.Pbkdf2Generator;
-import com.self.music.passwordEncoder.generator.Pbkdf2Generator.Pbkdf2ConfigParams;
-import com.self.music.passwordEncoder.generator.ScryptGenerator;
-import com.self.music.passwordEncoder.generator.ScryptGenerator.SCryptConfigParams;
+import com.self.blog.security.encoder.PrefixedBcryptEncoder;
+import com.self.blog.security.generator.Pbkdf2Generator;
+import com.self.blog.security.generator.Pbkdf2Generator.Pbkdf2ConfigParams;
+import com.self.blog.security.generator.ScryptGenerator;
+import com.self.blog.security.generator.ScryptGenerator.SCryptConfigParams;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;

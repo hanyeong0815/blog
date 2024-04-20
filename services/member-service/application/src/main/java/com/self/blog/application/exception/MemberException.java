@@ -1,7 +1,7 @@
-package com.self.music.member.application.exception;
+package com.self.blog.application.exception;
 
-import com.self.music.common.support.exception.CustomException;
-import com.self.music.common.support.exception.ErrorCode;
+import com.self.blog.common.support.exception.CustomException;
+import com.self.blog.common.support.exception.ErrorCode;
 
 public class MemberException extends CustomException {
     public MemberException() {

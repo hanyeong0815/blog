@@ -1,4 +1,4 @@
-package com.self.music.common.properties.cors.allowed;
+package com.self.blog.common.properties.cors.allowed;
 
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 

@@ -11,7 +11,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 import static com.self.blog.rdb.support.MemberSchemaConstants.SCHEMA;
-import static com.self.blog.rdb.support.MemberSchemaConstants.TB_ACCOUNT_REGISTRY_DATETIME;
+import static com.self.blog.rdb.support.MemberSchemaConstants.TB_MEMBER_REGISTRY_DATETIME;
 
 @Entity
 @Builder
@@ -19,9 +19,10 @@ import static com.self.blog.rdb.support.MemberSchemaConstants.TB_ACCOUNT_REGISTR
 @AllArgsConstructor
 @Table(
         schema = SCHEMA,
-        name = TB_ACCOUNT_REGISTRY_DATETIME
+        catalog = SCHEMA,
+        name = TB_MEMBER_REGISTRY_DATETIME
 )
-public class AccountRegistryDatetimeEntity extends BaseEntity {
+public class MemberRegistryDatetimeEntity extends BaseEntity {
     public UUID memberId;
     public Instant createdAt;
 }

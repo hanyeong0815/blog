@@ -10,7 +10,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
-public class AccountRegistryDatetime {
+public class MemberRegistryDatetime {
     public Long id;
     public UUID memberId;
     public Instant createdAt;

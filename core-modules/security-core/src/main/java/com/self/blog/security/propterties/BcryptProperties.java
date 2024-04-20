@@ -1,4 +1,4 @@
-package com.self.music.passwordEncoder.propterties;
+package com.self.blog.security.propterties;
 
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 

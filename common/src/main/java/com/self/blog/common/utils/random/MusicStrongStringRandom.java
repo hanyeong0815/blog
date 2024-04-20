@@ -1,4 +1,4 @@
-package com.self.music.common.utils.random;
+package com.self.blog.common.utils.random;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
