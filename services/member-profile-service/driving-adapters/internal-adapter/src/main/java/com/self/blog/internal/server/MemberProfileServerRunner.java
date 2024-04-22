@@ -1,7 +1,5 @@
 package com.self.blog.internal.server;
 
-import com.self.blog.application.usecase.MemberProfileSaveUseCase;
-import com.self.blog.internal.mapper.MemberProfileDtoMapper;
 import com.self.blog.internal.service.MemberProfileSaveProxyService;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
