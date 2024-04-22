@@ -4,12 +4,13 @@ import com.self.blog.application.authentication.CustomAuthenticationManager;
 import com.self.blog.application.authentication.UserAuthenticationFilter;
 import com.self.blog.application.authentication.jwt.JwtFilter;
 import com.self.blog.application.authentication.jwt.JwtTokenProvider;
+import com.self.blog.application.authentication.utils.filter.ExceptionHandlerFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -21,15 +22,17 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 
 @Configuration
-@EnableMethodSecurity
+@EnableWebSecurity
 public class SecurityConfig {
     private final UserAuthenticationFilter authenticationFilter;
     private final JwtFilter jwtFilter;
+    private final ExceptionHandlerFilter exceptionHandlerFilter;
 
-    SecurityConfig(CustomAuthenticationManager userAuthenticationProvider, JwtTokenProvider jwtTokenProvider) {
+    SecurityConfig(CustomAuthenticationManager userAuthenticationProvider, JwtTokenProvider jwtTokenProvider, ExceptionHandlerFilter exceptionHandlerFilter) {
         jwtFilter = new JwtFilter(jwtTokenProvider);
         AuthenticationManager providerManager = new ProviderManager(userAuthenticationProvider);
         authenticationFilter = new UserAuthenticationFilter(providerManager);
+        this.exceptionHandlerFilter = exceptionHandlerFilter;
     }
 
     @Bean
@@ -39,7 +42,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterAt(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                .addFilterAt(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterAt(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(exceptionHandlerFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

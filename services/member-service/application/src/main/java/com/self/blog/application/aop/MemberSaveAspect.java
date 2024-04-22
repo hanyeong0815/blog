@@ -1,14 +1,18 @@
 package com.self.blog.application.aop;
 
 import com.self.blog.application.exception.MemberErrorCode;
+import com.self.blog.application.exception.MemberException;
 import com.self.blog.application.repository.*;
+import com.self.blog.common.support.exception.CustomException;
 import com.self.blog.common.utils.random.StrongStringRandom;
 import com.self.blog.common.utils.time.ServerTime;
 import com.self.blog.domain.*;
 import com.self.blog.domain.type.SignType;
 import com.self.blog.security.encoder.Sha256SaltedEncoderSupplier;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
@@ -32,7 +36,7 @@ public class MemberSaveAspect {
     private final StrongStringRandom strongStringRandom;
 
     private final ServerTime serverTime;
-    
+
     @Before("@annotation(MemberSave) && args(member)")
     public void hasMember(Member member) {
         boolean hasMember = memberRepository.existsByUsername(member.username);

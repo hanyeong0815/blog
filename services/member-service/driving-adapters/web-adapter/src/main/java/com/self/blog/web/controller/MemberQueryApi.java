@@ -16,7 +16,6 @@ public class MemberQueryApi {
 
     @GetMapping("login")
     public MemberLoginResponseDto login(Authentication authentication) {
-        System.out.println("로그인 진입");
         return memberLoginProxyService.login(authentication);
     }
 }

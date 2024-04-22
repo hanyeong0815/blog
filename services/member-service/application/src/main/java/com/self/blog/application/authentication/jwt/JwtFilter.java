@@ -1,5 +1,6 @@
 package com.self.blog.application.authentication.jwt;
 
+import com.self.blog.application.exception.MemberException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;

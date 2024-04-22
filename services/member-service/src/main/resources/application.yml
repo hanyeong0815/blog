@@ -9,9 +9,9 @@ spring:
       - app/jwt/jwt.yml
 
   datasource:
-    url: ${POSTGRES_URL:jdbc:postgresql://localhost:5432/blog}
-    username: ${POSTGRES_DB_USERNAME:root}
-    password: ${POSTGRES_DB_PASSWORD:root}
+    url: ${MEMBER_URL:jdbc:postgresql://localhost:5432/member}
+    username: ${POSTGRES_USER:root}
+    password: ${POSTGRES_PASSWORD:root}
     driver-class-name: org.postgresql.Driver
 
     hikari:

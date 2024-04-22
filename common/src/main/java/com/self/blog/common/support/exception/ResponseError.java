@@ -23,7 +23,7 @@ public record ResponseError(
         if (code == null) code = "API_ERROR";
         if (status == null) status = 500;
         if (name == null) name = "ApiError";
-        if (message == null || "".equals(message)) message = "API 사용 중 서버에서 오류가 발생했습니다.";
+        if (message == null || message.isEmpty()) message = "API 사용 중 서버에서 오류가 발생했습니다.";
         if (timestamp == null) timestamp = LocalDateTime.now();
     }
 

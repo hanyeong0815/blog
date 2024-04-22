@@ -7,9 +7,13 @@ import com.self.blog.application.usecase.MemberSignupUseCase;
 import com.self.blog.application.usecase.data.JwtTokenPair;
 import com.self.blog.domain.Member;
 import com.self.blog.domain.type.MemberStatus;
+import com.self.blog.profile.lib.MemberProfileInterfaceGrpc;
+import com.self.blog.profile.lib.MemberProfileInterfaceGrpc.MemberProfileInterfaceBlockingStub;
+import com.self.blog.profile.lib.MemberProfileSaveRequest;
 import com.self.blog.web.dto.MemberLoginDto.MemberLoginResponseDto;
 import com.self.blog.web.dto.MemberSignupDto.MemberSignupRequestDto;
 import com.self.blog.web.mapper.MemberDtoMapper;
+import io.grpc.ManagedChannelBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -20,15 +24,26 @@ import java.util.Collection;
 
 @Service
 @RequiredArgsConstructor
-public final class MemberSignupProxyService {
+public class MemberSignupProxyService {
     private final MemberSignupUseCase memberSignupUseCase;
     private final MemberLoginUseCase memberLoginUseCase;
+
+    private final MemberProfileInterfaceBlockingStub memberProfileInterfaceBlockingStub = MemberProfileInterfaceGrpc
+            .newBlockingStub(
+                    ManagedChannelBuilder
+                            .forAddress("localhost", 8091)
+                            .usePlaintext().build()
+    );
 
     private final MemberDtoMapper memberDtoMapper;
 
     public MemberLoginResponseDto signup(MemberSignupRequestDto dto) {
         Member member = memberDtoMapper.from(dto, MemberStatus.ACTIVE);
         Member savedMember = memberSignupUseCase.save(member);
+
+        MemberProfileSaveRequest memberProfileSaveRequest = memberDtoMapper.from(savedMember, dto);
+        memberProfileInterfaceBlockingStub.save(memberProfileSaveRequest);
+
         Collection<? extends GrantedAuthority> roles = savedMember.roles.stream()
                 .map(SimpleGrantedAuthority::new)
                 .toList();

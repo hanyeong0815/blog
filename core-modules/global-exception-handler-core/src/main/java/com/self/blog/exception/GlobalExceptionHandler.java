@@ -13,7 +13,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
+import static com.self.blog.common.support.ServerConstants.BASE_PACKAGE;
+
+@RestControllerAdvice(basePackages = BASE_PACKAGE)
 @RequiredArgsConstructor
 public final class GlobalExceptionHandler {
     private final ServerTime serverTime;

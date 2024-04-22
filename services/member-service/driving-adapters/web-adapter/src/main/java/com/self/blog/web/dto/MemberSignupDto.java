@@ -1,5 +1,6 @@
 package com.self.blog.web.dto;
 
+import com.self.blog.domain.type.GenderType;
 import com.self.blog.domain.type.MemberStatus;
 import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
@@ -20,6 +21,10 @@ public record MemberSignupDto() {
             @NotBlank
             @Pattern(regexp = PASSWORD, message = PASSWORD_MESSAGE)
             String password,
+            String email,
+            GenderType genderType,
+            String name,
+            String nickname,
             List<String> roles
     ) {}
 
