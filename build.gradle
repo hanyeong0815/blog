@@ -196,6 +196,14 @@ project(memberDomain) {
     }
 }
 
+project(memberReadModels) {
+    dependencies {
+        implementation commonProject
+        implementation project(gsonCore)
+        api project(memberDomain)
+    }
+}
+
 project(memberApplication) {
     dependencies {
         implementation commonProject
@@ -297,6 +305,14 @@ project(memberProfileDomain) {
         implementation commonProject
 
         implementation project(gsonCore)
+    }
+}
+
+project(memberProfileReadModels) {
+    dependencies {
+        implementation commonProject
+        implementation project(gsonCore)
+        api project(memberProfileDomain)
     }
 }
 

@@ -4,6 +4,8 @@ import com.self.blog.application.repository.MemberProfileRepository;
 import com.self.blog.domain.MemberProfile;
 import com.self.blog.rdb.entity.MemberProfileEntity;
 import com.self.blog.rdb.mapper.MemberProfileEntityMapper;
+import com.self.blog.read_model.MemberProfileReadModels.MemberProfileDetailView;
+import com.self.blog.read_model.MemberProfileReadModels.MemberProfileNickname;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -32,5 +34,15 @@ public class MemberProfilePersistence implements MemberProfileRepository {
     @Override
     public Optional<MemberProfile> findByMemberId(UUID memberId) {
         return repository.findByMemberId(memberId).map(mapper::toDomain);
+    }
+
+    @Override
+    public Optional<MemberProfileNickname> findNicknameByUsername(String username) {
+        return repository.findNicknameByUsername(username).map(mapper::from);
+    }
+
+    @Override
+    public Optional<MemberProfileDetailView> findDetailViewByUsername(String username) {
+        return repository.findDetailViewByUsername(username).map(mapper::from);
     }
 }
