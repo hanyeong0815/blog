@@ -27,11 +27,10 @@ public class ProfileLogPersistence implements ProfileLogRepository {
 
     @Override
     public List<ProfileLogDetailViewReadModel> findAll(Pageable pageable) {
-        List<ProfileLogDetailViewReadModel> profileLogs = repository.findAllBy(pageable)
+
+        return repository.findAllBy(pageable)
                 .map(mapper::from)
                 .getContent();
-
-        return profileLogs;
     }
 
     @Override
