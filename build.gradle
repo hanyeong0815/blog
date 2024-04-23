@@ -75,6 +75,9 @@ subprojects {
 
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
+
+        // Pageable
+        implementation 'org.springframework.data:spring-data-commons'
     }
 }
 
@@ -163,6 +166,13 @@ project(memberProfileGrpcInterfaceCore) {
         enabled = true
         archiveFileName = "member-profile-interface.jar"
         destinationDirectory = new File("$rootDir/grpc")
+    }
+}
+
+project(mongoCore) {
+    dependencies {
+        implementation commonProject
+        api 'org.springframework.boot:spring-boot-starter-data-mongodb'
     }
 }
 
@@ -285,6 +295,7 @@ project(memberProfileService) {
         implementation project(globalExceptionHandlerCore)
         api project(memberProfileApplication)
         api project(memberProfileRdbAdapter)
+        api project(memberProfileNosqlAdapter)
         api project(memberProfileWebAdapter)
         api project(memberProfileInternalAdapter)
 
@@ -324,6 +335,9 @@ project(memberProfileApplication) {
         api project(memberProfileReadModels)
 
         implementation 'org.jetbrains:annotations:24.0.1'
+
+        // AOP
+        implementation 'org.springframework.boot:spring-boot-starter-aop'
     }
 }
 
@@ -336,6 +350,19 @@ project(memberProfileRdbAdapter) {
         implementation 'org.flywaydb:flyway-core:9.16.0'
 
         runtimeOnly 'org.postgresql:postgresql'
+
+        // Map Struct
+        implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+        annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+        annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    }
+}
+
+project(memberProfileNosqlAdapter) {
+    dependencies {
+        implementation commonProject
+        api project(mongoCore)
+        api project(memberProfileApplication)
 
         // Map Struct
         implementation 'org.mapstruct:mapstruct:1.5.3.Final'

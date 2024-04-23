@@ -27,6 +27,15 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     open-in-view: false
 
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      username: root
+      password: root
+      database: profile-log
+      authentication-database: admin
+
   flyway:
     enabled: true
     baseline-on-migrate: true

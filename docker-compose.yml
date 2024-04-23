@@ -3,34 +3,34 @@ version: "3"
 # 이 항목 밑에 실행하려는 컨테이너 들을 정의
 services:
 #   서비스 명
-#  music_board_mongo:
-#    image: mongo:5.0 # Official Image
-#    container_name: music_board_mongodb
-#    environment:
-#      # Information to Connect (Reserved Environments)
-#      - MONGO_INITDB_ROOT_USERNAME=root
-#      - MONGO_INITDB_ROOT_PASSWORD=root
-#      - MONGO_INITDB_DATABASE=board
-#    ports:
-#      - 27017:27017 # accessing port : inside port
-#    restart: on-failure
-#    volumes:
-#      # "local(or volume container):inside directory"
-#      - sticky_volume_board_mongo:/data/db
-#
-#  # MongoDB Client - web based
-#  music_board_mongo_express:
-#    # NOTE 1.0.0-alpha exists.
-#    image: mongo-express:0.54
-#    restart: always
-#    ports:
-#      - "27018:8081"
-#    environment:
-#      # ME_CONFIG_MONGODB_SERVER: ${Mongo DB container name} (required)
-#      ME_CONFIG_MONGODB_SERVER: music_board_mongodb
-#      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-#      ME_CONFIG_MONGODB_ADMINPASSWORD: root
-#      # mongodb://root:root@localhost:27037/shop?ssl=false
+  profile_log_mongo_blog:
+    image: mongo:5.0 # Official Image
+    container_name: profile_log_mongo_blog
+    environment:
+      # Information to Connect (Reserved Environments)
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_INITDB_DATABASE=profile-log
+    ports:
+      - 27017:27017 # accessing port : inside port
+    restart: on-failure
+    volumes:
+      # "local(or volume container):inside directory"
+      - sticky_volume_profile_log_mongo:/data/db
+
+  # MongoDB Client - web based
+  profile_log_mongo_blog_express:
+    # NOTE 1.0.0-alpha exists.
+    image: mongo-express:0.54
+    restart: always
+    ports:
+      - "27018:8081"
+    environment:
+      # ME_CONFIG_MONGODB_SERVER: ${Mongo DB container name} (required)
+      ME_CONFIG_MONGODB_SERVER: profile_log_mongo_blog
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root
+      # mongodb://root:root@localhost:27037/shop?ssl=false
 
   member_postgres14_blog:
     image: postgres:14
@@ -88,4 +88,4 @@ volumes:
   member_sticky_volume:
   profile_sticky_volume:
   sticky_volume_common_redis:
-#  sticky_volume_board_mongo:
+  sticky_volume_profile_log_mongo:

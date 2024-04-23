@@ -13,4 +13,5 @@ public interface MemberProfileRepository {
     Optional<MemberProfile> findByMemberId(UUID memberId);
     Optional<MemberProfileNickname> findNicknameByUsername(String username);
     Optional<MemberProfileDetailView> findDetailViewByUsername(String username);
+    UUID findMemberIdByUsername(String username);
 }

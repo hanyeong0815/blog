@@ -1,5 +1,6 @@
 package com.self.blog.rdb.repository;
 
+import com.self.blog.application.exception.MemberProfileErrorCode;
 import com.self.blog.application.repository.MemberProfileRepository;
 import com.self.blog.domain.MemberProfile;
 import com.self.blog.rdb.entity.MemberProfileEntity;
@@ -44,5 +45,13 @@ public class MemberProfilePersistence implements MemberProfileRepository {
     @Override
     public Optional<MemberProfileDetailView> findDetailViewByUsername(String username) {
         return repository.findDetailViewByUsername(username).map(mapper::from);
+    }
+
+    @Override
+    public UUID findMemberIdByUsername(String username) {
+        return repository.findMemberIdByUsername(username)
+                .orElseThrow(
+                        MemberProfileErrorCode.DEFAULT::defaultException
+                ).memberId();
     }
 }
