@@ -1,6 +1,7 @@
 package com.self.blog.application.service;
 
 import com.self.blog.application.aop.ProfileFindAspect;
+import com.self.blog.application.aop.ProfileSaveAspect;
 import com.self.blog.application.exception.MemberProfileErrorCode;
 import com.self.blog.application.repository.MemberProfileRepository;
 import com.self.blog.application.usecase.MemberProfileFindDetailViewUseCase;
@@ -22,6 +23,7 @@ public class MemberProfileService
 {
     private final MemberProfileRepository memberProfileRepository;
 
+    @ProfileSaveAspect
     @Override
     public MemberProfile save(MemberProfile memberProfile) {
 

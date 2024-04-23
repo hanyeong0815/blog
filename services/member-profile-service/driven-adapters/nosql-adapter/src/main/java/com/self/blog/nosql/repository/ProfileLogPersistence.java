@@ -31,8 +31,6 @@ public class ProfileLogPersistence implements ProfileLogRepository {
                 .map(mapper::from)
                 .getContent();
 
-        System.out.println(profileLogs);
-
         return profileLogs;
     }
 

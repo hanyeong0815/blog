@@ -3,6 +3,7 @@ package com.self.blog.application.aop;
 import com.self.blog.application.repository.MemberProfileRepository;
 import com.self.blog.application.repository.ProfileLogRepository;
 import com.self.blog.common.utils.time.ServerTime;
+import com.self.blog.domain.MemberProfile;
 import com.self.blog.domain.ProfileLog;
 import com.self.blog.domain.type.ProfileLogType;
 import com.self.blog.read_model.MemberProfileReadModels.MemberProfileDetailView;
@@ -36,5 +37,18 @@ public class ProfileLogAspect {
 
         ProfileLog savedProfileLog = profileLogRepository.save(profileLog);
         System.out.println(savedProfileLog);
+    }
+
+    @AfterReturning(value = "@annotation(ProfileSaveAspect)", returning = "savedMemberProfile")
+    public void saveProfileLogSave(MemberProfile savedMemberProfile) {
+        ProfileLog profileLog = ProfileLog.builder()
+                .memberId(savedMemberProfile.memberId)
+                .username(savedMemberProfile.username)
+                .logType(ProfileLogType.CREATE)
+                .remark(ProfileLogType.CREATE.remark)
+                .createdAt(serverTime.nowInstant())
+                .build();
+
+        profileLogRepository.save(profileLog);
     }
 }
