@@ -1,11 +1,11 @@
-package com.self.blog.application.aop;
+package com.self.blog.member.application.aop;
 
-import com.self.blog.application.exception.MemberErrorCode;
-import com.self.blog.application.repository.*;
+import com.self.blog.member.application.exception.MemberErrorCode;
 import com.self.blog.common.utils.random.StrongStringRandom;
 import com.self.blog.common.utils.time.ServerTime;
-import com.self.blog.domain.*;
-import com.self.blog.domain.type.SignType;
+import com.self.blog.member.application.repository.*;
+import com.self.blog.member.domain.*;
+import com.self.blog.member.domain.type.SignType;
 import com.self.blog.security.encoder.Sha256SaltedEncoderSupplier;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -33,7 +33,7 @@ public class MemberSaveAspect {
 
     private final ServerTime serverTime;
 
-    @Before("@annotation(MemberSave) && args(member)")
+    @Before("@annotation(com.self.blog.member.application.aop.MemberSave) && args(member)")
     public void hasMember(Member member) {
         boolean hasMember = memberRepository.existsByUsername(member.username);
         validate(
@@ -42,7 +42,7 @@ public class MemberSaveAspect {
         );
     }
 
-    @AfterReturning(value = "@annotation(MemberSave)", returning = "member")
+    @AfterReturning(value = "@annotation(com.self.blog.member.application.aop.MemberSave)", returning = "member")
     public void saveSignLog(Member member) {
         Instant now = serverTime.nowInstant();
 
@@ -57,7 +57,7 @@ public class MemberSaveAspect {
         signLogRepository.save(signLog);
     }
 
-    @AfterReturning(value = "@annotation(MemberSave)", returning = "savedMember")
+    @AfterReturning(value = "@annotation(com.self.blog.member.application.aop.MemberSave)", returning = "savedMember")
     public void savedAccountRegistryDatetime(Member savedMember) {
         Instant now = serverTime.nowInstant();
 
@@ -69,7 +69,7 @@ public class MemberSaveAspect {
         memberRegistryDateTimeRepository.save(memberRegistryDatetime);
     }
 
-    @AfterReturning(value = "@annotation(MemberSave)", returning = "savedMember")
+    @AfterReturning(value = "@annotation(com.self.blog.member.application.aop.MemberSave)", returning = "savedMember")
     public void savePasswordLastUpdate(Member savedMember) {
         Instant now = serverTime.nowInstant();
 
@@ -83,7 +83,7 @@ public class MemberSaveAspect {
     }
 
     @AfterReturning(
-            value = "@annotation(MemberSave) && args(member)",
+            value = "@annotation(com.self.blog.member.application.aop.MemberSave) && args(member)",
             returning = "savedMember",
             argNames = "member,savedMember"
     )

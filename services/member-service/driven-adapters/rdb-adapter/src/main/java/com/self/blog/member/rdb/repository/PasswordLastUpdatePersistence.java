@@ -1,9 +1,10 @@
-package com.self.blog.rdb.repository;
+package com.self.blog.member.rdb.repository;
 
-import com.self.blog.application.repository.PasswordLastUpdateRepository;
-import com.self.blog.domain.PasswordLastUpdate;
-import com.self.blog.rdb.entity.PasswordLastUpdateEntity;
-import com.self.blog.rdb.mapper.PasswordLastUpdateEntityMapper;
+import com.self.blog.member.application.repository.PasswordLastUpdateRepository;
+import com.self.blog.member.domain.PasswordLastUpdate;
+import com.self.blog.member.rdb.entity.PasswordLastUpdateEntity;
+import com.self.blog.member.rdb.mapper.PasswordLastUpdateEntityMapper;
+import com.self.blog.member.rdb.repository.PasswordLastUpdateJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

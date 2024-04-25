@@ -1,8 +1,8 @@
-package com.self.blog.application.repository;
+package com.self.blog.member.application.repository;
 
-import com.self.blog.domain.Member;
-import com.self.blog.domain.type.MemberStatus;
-import com.self.blog.readmodel.MemberReadModels.MemberIdReadModel;
+import com.self.blog.member.domain.Member;
+import com.self.blog.member.domain.type.MemberStatus;
+import com.self.blog.member.readmodel.MemberReadModels.MemberIdReadModel;
 
 import java.util.Optional;
 

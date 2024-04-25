@@ -1,9 +1,10 @@
-package com.self.blog.rdb.repository;
+package com.self.blog.member.rdb.repository;
 
-import com.self.blog.application.repository.MemberStaticSaltRepository;
-import com.self.blog.domain.MemberStaticSalt;
-import com.self.blog.rdb.entity.MemberStaticSaltEntity;
-import com.self.blog.rdb.mapper.MemberStaticSaltEntityMapper;
+import com.self.blog.member.application.repository.MemberStaticSaltRepository;
+import com.self.blog.member.domain.MemberStaticSalt;
+import com.self.blog.member.rdb.entity.MemberStaticSaltEntity;
+import com.self.blog.member.rdb.mapper.MemberStaticSaltEntityMapper;
+import com.self.blog.member.rdb.repository.MemberStaticSaltJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

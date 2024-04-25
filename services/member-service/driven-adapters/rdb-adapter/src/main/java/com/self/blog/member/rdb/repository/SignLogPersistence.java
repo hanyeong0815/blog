@@ -1,9 +1,9 @@
-package com.self.blog.rdb.repository;
+package com.self.blog.member.rdb.repository;
 
-import com.self.blog.application.repository.SignLogRepository;
-import com.self.blog.domain.SignLog;
-import com.self.blog.rdb.entity.SignLogEntity;
-import com.self.blog.rdb.mapper.SignLogEntityMapper;
+import com.self.blog.member.application.repository.SignLogRepository;
+import com.self.blog.member.domain.SignLog;
+import com.self.blog.member.rdb.entity.SignLogEntity;
+import com.self.blog.member.rdb.mapper.SignLogEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

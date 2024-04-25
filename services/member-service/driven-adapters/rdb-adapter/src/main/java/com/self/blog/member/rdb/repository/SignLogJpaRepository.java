@@ -1,6 +1,6 @@
-package com.self.blog.rdb.repository;
+package com.self.blog.member.rdb.repository;
 
-import com.self.blog.rdb.entity.SignLogEntity;
+import com.self.blog.member.rdb.entity.SignLogEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

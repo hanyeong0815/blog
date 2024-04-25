@@ -1,4 +1,4 @@
-package com.self.blog.application.usecase;
+package com.self.blog.member.application.usecase;
 
 import com.self.blog.domain.Member;
 

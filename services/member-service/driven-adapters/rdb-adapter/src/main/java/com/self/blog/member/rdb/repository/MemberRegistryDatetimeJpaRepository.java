@@ -1,6 +1,6 @@
-package com.self.blog.rdb.repository;
+package com.self.blog.member.rdb.repository;
 
-import com.self.blog.rdb.entity.MemberRegistryDatetimeEntity;
+import com.self.blog.member.rdb.entity.MemberRegistryDatetimeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
