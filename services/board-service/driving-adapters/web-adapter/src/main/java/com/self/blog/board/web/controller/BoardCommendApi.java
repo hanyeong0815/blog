@@ -1,7 +1,7 @@
 package com.self.blog.board.web.controller;
 
+import com.self.blog.board.application.usecase.data.BoardAndViewCount.BoardAndViewCountResponse;
 import com.self.blog.board.web.dto.BoardSaveDto.BoardSaveRequestDto;
-import com.self.blog.board.web.dto.BoardSaveDto.BoardSaveResponseDto;
 import com.self.blog.board.web.service.BoardSaveProxyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +16,7 @@ public class BoardCommendApi {
     private final BoardSaveProxyService boardSaveProxyService;
 
     @PostMapping("")
-    public BoardSaveResponseDto boardSave(@RequestBody BoardSaveRequestDto req) {
+    public BoardAndViewCountResponse boardSave(@RequestBody BoardSaveRequestDto req) {
         return boardSaveProxyService.boardSave(req);
     }
 }

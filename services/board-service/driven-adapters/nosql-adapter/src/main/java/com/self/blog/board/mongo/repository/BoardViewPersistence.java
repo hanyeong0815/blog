@@ -1,5 +1,6 @@
 package com.self.blog.board.mongo.repository;
 
+import com.self.blog.board.application.exception.BoardErrorCode;
 import com.self.blog.board.application.repository.BoardViewRepository;
 import com.self.blog.board.domain.BoardView;
 import com.self.blog.board.mongo.entity.BoardViewEntity;
@@ -27,5 +28,14 @@ public class BoardViewPersistence implements BoardViewRepository {
     public Optional<BoardView> findById(String boardId) {
         return repository.findById(boardId)
                 .map(mapper::toDomain);
+    }
+
+    @Override
+    public void viewCountUp(String boardId) {
+        BoardViewEntity boardViewEntity = repository.findById(boardId)
+                .orElseThrow(BoardErrorCode.DEFAULT::defaultException);
+
+        boardViewEntity.viewCount += 1;
+        repository.save(boardViewEntity);
     }
 }

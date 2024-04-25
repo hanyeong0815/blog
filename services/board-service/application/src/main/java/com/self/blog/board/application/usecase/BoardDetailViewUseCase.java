@@ -1,8 +1,7 @@
 package com.self.blog.board.application.usecase;
 
 import com.self.blog.board.application.usecase.data.BoardAndViewCount.BoardAndViewCountResponse;
-import com.self.blog.board.domain.Board;
 
-public interface BoardSaveUseCase {
-    BoardAndViewCountResponse boardSave(Board board);
+public interface BoardDetailViewUseCase {
+    BoardAndViewCountResponse boardDetailView(String boardId, String username, String ViewIp);
 }

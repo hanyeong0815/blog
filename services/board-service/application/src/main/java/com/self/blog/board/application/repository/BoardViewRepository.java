@@ -7,4 +7,5 @@ import java.util.Optional;
 public interface BoardViewRepository {
     BoardView save(BoardView boardView);
     Optional<BoardView> findById(String boardId);
+    void viewCountUp(String boardId);
 }

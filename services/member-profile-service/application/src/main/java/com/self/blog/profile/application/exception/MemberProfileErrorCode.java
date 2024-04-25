@@ -23,12 +23,12 @@ public enum MemberProfileErrorCode implements ErrorCode {
     }
 
     @Override
-    public RuntimeException defaultException() {
+    public MemberProfileException defaultException() {
         return new MemberProfileException(this);
     }
 
     @Override
-    public RuntimeException defaultException(Throwable cause) {
+    public MemberProfileException defaultException(Throwable cause) {
         return new MemberProfileException(this, cause);
     }
 }
