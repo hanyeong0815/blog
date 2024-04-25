@@ -4,7 +4,7 @@ import com.self.blog.member.application.aop.MemberSave;
 import com.self.blog.member.application.authentication.jwt.JwtTokenProvider;
 import com.self.blog.member.application.exception.MemberErrorCode;
 import com.self.blog.member.application.repository.MemberRepository;
-import com.self.blog.application.repository.RefreshTokenRepository;
+import com.self.blog.member.application.repository.RefreshTokenRepository;
 import com.self.blog.member.application.usecase.MemberLoginUseCase;
 import com.self.blog.member.application.usecase.MemberSignupUseCase;
 import com.self.blog.member.application.usecase.data.JwtTokenPair;

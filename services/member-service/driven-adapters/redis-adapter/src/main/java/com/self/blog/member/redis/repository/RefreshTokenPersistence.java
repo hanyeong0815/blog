@@ -1,6 +1,6 @@
 package com.self.blog.member.redis.repository;
 
-import com.self.blog.application.repository.RefreshTokenRepository;
+import com.self.blog.member.application.repository.RefreshTokenRepository;
 import com.self.blog.member.domain.RefreshToken;
 import com.self.blog.member.redis.mapper.RefreshTokenEntityMapper;
 import lombok.RequiredArgsConstructor;

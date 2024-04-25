@@ -4,7 +4,7 @@ import com.self.blog.member.application.authentication.CustomAuthenticationManag
 import com.self.blog.member.application.authentication.UserAuthenticationFilter;
 import com.self.blog.member.application.authentication.jwt.JwtFilter;
 import com.self.blog.member.application.authentication.jwt.JwtTokenProvider;
-import com.self.blog.application.authentication.utils.filter.ExceptionHandlerFilter;
+import com.self.blog.member.application.authentication.utils.filter.ExceptionHandlerFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
