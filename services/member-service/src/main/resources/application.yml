@@ -7,6 +7,7 @@ spring:
       - app/cors/cors.yml
       - app/time/time.yml # classpath:/app/time/time.yml
       - app/jwt/jwt.yml
+      - app/password/password-encoder.yml
 
   datasource:
     url: ${MEMBER_URL:jdbc:postgresql://localhost:5432/member}

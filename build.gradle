@@ -177,6 +177,7 @@ project(mongoCore) {
 }
 
 // member-service ------------------------------------------------------------------------------------------------
+
 project(memberService) {
     dependencies {
         implementation commonProject
@@ -289,6 +290,7 @@ project(memberWebAdapter) {
 }
 
 // member-profile-service ------------------------------------------------------------------------------------------------
+
 project(memberProfileService) {
     dependencies {
         implementation commonProject
@@ -397,6 +399,92 @@ project(memberProfileInternalAdapter) {
         implementation 'org.springframework.boot:spring-boot-starter'
 
         api 'net.devh:grpc-server-spring-boot-starter:2.14.0.RELEASE'
+
+        // Map Struct
+        implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+        annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+        annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    }
+}
+
+// member-profile-service ------------------------------------------------------------------------------------------------
+
+project(boardService) {
+    dependencies {
+        implementation commonProject
+        implementation project(globalExceptionHandlerCore)
+        api project(boardApplication)
+        api project(boardNosqlAdapter)
+        api project(boardWebAdapter)
+
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+    }
+}
+
+project(boardDomain) {
+    dependencies {
+        implementation commonProject
+        implementation project(gsonCore)
+    }
+}
+
+project(boardReadModels) {
+    dependencies {
+        implementation commonProject
+        implementation project(gsonCore)
+        implementation project(boardDomain)
+    }
+}
+
+project(boardApplication) {
+    dependencies {
+        implementation commonProject
+        implementation project(gsonCore)
+        api project(boardDomain)
+        api project(boardReadModels)
+
+        implementation 'org.jetbrains:annotations:24.0.1'
+
+        // AOP
+        implementation 'org.springframework.boot:spring-boot-starter-aop'
+    }
+}
+
+project(boardNosqlAdapter) {
+    dependencies {
+        implementation commonProject
+        api project(mongoCore)
+        api project(boardApplication)
+
+        // Map Struct
+        implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+        annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+        annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    }
+}
+
+project(boardRedisAdapter) {
+    dependencies {
+        implementation commonProject
+        api project(redisCore)
+        api project(boardApplication)
+
+        // Map Struct
+        implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+        annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+        annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    }
+}
+
+project(boardWebAdapter) {
+    dependencies {
+        implementation commonProject
+        implementation project(gsonCore)
+        implementation project(boardApplication)
+
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
 
         // Map Struct
         implementation 'org.mapstruct:mapstruct:1.5.3.Final'

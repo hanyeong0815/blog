@@ -2,7 +2,59 @@
 version: "3"
 # 이 항목 밑에 실행하려는 컨테이너 들을 정의
 services:
-#   서비스 명
+  member_postgres14_blog:
+    image: postgres:14
+    container_name: member_postgres14_rdb_blog
+    environment:
+      TZ: Asia/Seoul
+      POSTGRES_DB: "${MEMBER_DB}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_INITDB_ARGS: '--encoding=UTF-8 --lc-collate=C --lc-ctype=C'
+    ports:
+      - "5432:5432"
+    volumes:
+      - member_sticky_volume:/var/lib/postgresql/data
+      - ./db/initdb.d:/docker-entrypoint-initdb.d:ro
+    env_file:
+      - .env
+    restart: always
+
+  blog_redis_proto:
+    image: redis:7.0
+    container_name: blog_redis7_proto
+    ports:
+      - "6379:6379"
+    volumes:
+      - sticky_volume_common_redis:/redis/data
+      - ./config/redis.conf:/usr/local/conf/redis.conf
+    # 컨테이너에 docker label을 이용해서 메타데이터 추가
+    labels:
+      - "name=redis"
+      - "mode=standalone"
+    # 컨테이너 종료시 재시작 여부 설정
+    restart: always
+    command: redis-server /usr/local/conf/redis.conf
+
+  profile_postgres14_blog:
+    image: postgres:14
+    container_name: profile_postgres14_rdb_blog
+    environment:
+      TZ: Asia/Seoul
+      POSTGRES_DB: "${PROFILE_DB}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_INITDB_ARGS: '--encoding=UTF-8 --lc-collate=C --lc-ctype=C'
+    ports:
+      - "5442:5432"
+    volumes:
+      - profile_sticky_volume:/var/lib/postgresql/data
+      - ./db/initdb.d:/docker-entrypoint-initdb.d:ro
+    env_file:
+      - .env
+    restart: always
+
+  #   서비스 명
   profile_log_mongo_blog:
     image: mongo:5.0 # Official Image
     container_name: profile_log_mongo_blog
@@ -30,62 +82,39 @@ services:
       ME_CONFIG_MONGODB_SERVER: profile_log_mongo_blog
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: root
-      # mongodb://root:root@localhost:27037/shop?ssl=false
 
-  member_postgres14_blog:
-    image: postgres:14
-    container_name: member_postgres14_rdb_blog
+  #   서비스 명
+  board_mongo_blog:
+    image: mongo:5.0 # Official Image
+    container_name: board_mongo_blog
     environment:
-      TZ: Asia/Seoul
-      POSTGRES_DB: "${MEMBER_DB}"
-      POSTGRES_USER: "${POSTGRES_USER}"
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
-      POSTGRES_INITDB_ARGS: '--encoding=UTF-8 --lc-collate=C --lc-ctype=C'
+      # Information to Connect (Reserved Environments)
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_INITDB_DATABASE=board
     ports:
-      - "5432:5432"
+      - 27027:27017 # accessing port : inside port
+    restart: on-failure
     volumes:
-      - member_sticky_volume:/var/lib/postgresql/data
-      - ./db/initdb.d:/docker-entrypoint-initdb.d:ro
-    env_file:
-      - .env
-    restart: always
+      # "local(or volume container):inside directory"
+      - sticky_volume_board_mongo:/data/db
 
-  profile_postgres14_blog:
-    image: postgres:14
-    container_name: profile_postgres14_rdb_blog
+  # MongoDB Client - web based
+  board_mongo_blog_express:
+    # NOTE 1.0.0-alpha exists.
+    image: mongo-express:0.54
+    restart: always
+    ports:
+      - "27028:8081"
     environment:
-      TZ: Asia/Seoul
-      POSTGRES_DB: "${PROFILE_DB}"
-      POSTGRES_USER: "${POSTGRES_USER}"
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
-      POSTGRES_INITDB_ARGS: '--encoding=UTF-8 --lc-collate=C --lc-ctype=C'
-    ports:
-      - "5442:5432"
-    volumes:
-      - profile_sticky_volume:/var/lib/postgresql/data
-      - ./db/initdb.d:/docker-entrypoint-initdb.d:ro
-    env_file:
-      - .env
-    restart: always
-
-  blog_redis_proto:
-    image: redis:7.0
-    container_name: blog_redis7_proto
-    ports:
-      - "6379:6379"
-    volumes:
-      - sticky_volume_common_redis:/redis/data
-      - ./config/redis.conf:/usr/local/conf/redis.conf
-    # 컨테이너에 docker label을 이용해서 메타데이터 추가
-    labels:
-      - "name=redis"
-      - "mode=standalone"
-    # 컨테이너 종료시 재시작 여부 설정
-    restart: always
-    command: redis-server /usr/local/conf/redis.conf
+      # ME_CONFIG_MONGODB_SERVER: ${Mongo DB container name} (required)
+      ME_CONFIG_MONGODB_SERVER: board_mongo_blog
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root
 
 volumes:
   member_sticky_volume:
-  profile_sticky_volume:
   sticky_volume_common_redis:
+  profile_sticky_volume:
   sticky_volume_profile_log_mongo:
+  sticky_volume_board_mongo:
