@@ -5,6 +5,7 @@ spring:
   config:
     import:
       - app/cors/cors.yml
+      - app/jwt/jwt.yml
       - app/time/time.yml # classpath:/app/time/time.yml
 
   datasource:

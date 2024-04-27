@@ -2,6 +2,7 @@ package com.self.blog.member.web.dto;
 
 import com.self.blog.member.domain.type.GenderType;
 import com.self.blog.member.domain.type.MemberStatus;
+import com.self.blog.member.domain.type.RoleType;
 import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import org.apache.logging.log4j.core.config.plugins.validation.constraints.NotBlank;
@@ -25,7 +26,7 @@ public record MemberSignupDto() {
             GenderType genderType,
             String name,
             String nickname,
-            List<String> roles
+            List<RoleType> roles
     ) {}
 
     @Builder

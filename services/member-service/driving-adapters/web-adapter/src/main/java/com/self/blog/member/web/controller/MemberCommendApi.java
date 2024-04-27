@@ -1,7 +1,7 @@
 package com.self.blog.member.web.controller;
 
-import com.self.blog.member.web.dto.MemberSignupDto;
 import com.self.blog.member.web.dto.MemberLoginDto.MemberLoginResponseDto;
+import com.self.blog.member.web.dto.MemberSignupDto.MemberSignupRequestDto;
 import com.self.blog.member.web.service.MemberSignupProxyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class MemberCommendApi {
     private final MemberSignupProxyService memberSignupProxyService;
 
     @PostMapping("")
-    public MemberLoginResponseDto signup(@RequestBody @Valid MemberSignupDto.MemberSignupRequestDto dto) {
+    public MemberLoginResponseDto signup(@RequestBody @Valid MemberSignupRequestDto dto) {
         return memberSignupProxyService.signup(dto);
     }
 }

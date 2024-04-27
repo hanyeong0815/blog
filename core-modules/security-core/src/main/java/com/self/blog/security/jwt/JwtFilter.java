@@ -1,4 +1,4 @@
-package com.self.blog.member.application.authentication.jwt;
+package com.self.blog.security.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

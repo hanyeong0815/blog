@@ -1,7 +1,6 @@
 package com.self.blog.member.application.service;
 
 import com.self.blog.member.application.aop.MemberSave;
-import com.self.blog.member.application.authentication.jwt.JwtTokenProvider;
 import com.self.blog.member.application.exception.MemberErrorCode;
 import com.self.blog.member.application.repository.MemberRepository;
 import com.self.blog.member.application.repository.RefreshTokenRepository;
@@ -12,6 +11,7 @@ import com.self.blog.common.utils.random.StrongStringRandom;
 import com.self.blog.common.utils.time.ServerTime;
 import com.self.blog.member.domain.Member;
 import com.self.blog.member.domain.RefreshToken;
+import com.self.blog.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
@@ -64,7 +64,7 @@ public class MemberService
         return User.builder()
                 .username(member.username)
                 .password(member.password)
-                .roles(member.roles.toArray(String[]::new))
+                .roles(member.roles.stream().map(role -> role.value).toArray(String[]::new))
                 .build();
     }
 

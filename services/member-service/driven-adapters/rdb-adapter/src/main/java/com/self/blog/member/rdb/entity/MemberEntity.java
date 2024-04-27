@@ -2,6 +2,7 @@ package com.self.blog.member.rdb.entity;
 
 import com.self.blog.member.domain.type.MemberStatus;
 import com.self.blog.jpa.UuidBaseEntity;
+import com.self.blog.member.domain.type.RoleType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -39,11 +40,12 @@ public class MemberEntity extends UuidBaseEntity implements UserDetails {
     )
     @Builder.Default
     @Column(name = "role")
-    public List<String> roles = new ArrayList<>();
+    public List<RoleType> roles = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
+                .map(role -> role.value)
                 .map(SimpleGrantedAuthority::new)
                 .toList();
     }
@@ -65,7 +67,7 @@ public class MemberEntity extends UuidBaseEntity implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return this.status.canSignIn;
     }
 
     @Override

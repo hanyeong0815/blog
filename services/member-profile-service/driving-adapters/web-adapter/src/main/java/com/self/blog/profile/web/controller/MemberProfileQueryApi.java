@@ -4,6 +4,7 @@ import com.self.blog.profile.read_model.MemberProfileReadModels.MemberProfileDet
 import com.self.blog.profile.read_model.MemberProfileReadModels.MemberProfileNickname;
 import com.self.blog.profile.web.service.MemberProfileVerifyProxyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ public class MemberProfileQueryApi {
         return memberProfileVerifyProxyService.verifyNickname(username);
     }
 
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping("detail/{username}")
     public MemberProfileDetailView verifyDetailView(@PathVariable String username) {
         return memberProfileVerifyProxyService.verifyDetailView(username);

@@ -18,4 +18,9 @@ public class MemberQueryApi {
     public MemberLoginResponseDto login(Authentication authentication) {
         return memberLoginProxyService.login(authentication);
     }
+
+    @GetMapping("test")
+    public String test(String test) {
+        return test;
+    }
 }

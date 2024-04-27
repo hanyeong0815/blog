@@ -1,6 +1,7 @@
 package com.self.blog.member.domain;
 
 import com.self.blog.member.domain.type.MemberStatus;
+import com.self.blog.member.domain.type.RoleType;
 import lombok.*;
 
 import java.util.List;
@@ -16,5 +17,5 @@ public class Member {
     public String username;
     public String password;
     public MemberStatus status;
-    public List<String> roles;
+    public List<RoleType> roles;
 }

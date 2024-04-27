@@ -122,6 +122,11 @@ project(securityCore) {
         api 'org.jetbrains:annotations:24.0.1'
         api 'org.springframework.boot:spring-boot-starter-security'
         implementation 'org.springframework.boot:spring-boot'
+
+        // jwt
+        api 'io.jsonwebtoken:jjwt-api:0.11.5'
+        api 'io.jsonwebtoken:jjwt-impl:0.11.5'
+        api 'io.jsonwebtoken:jjwt-jackson:0.11.5'
     }
 }
 
@@ -219,6 +224,7 @@ project(memberApplication) {
     dependencies {
         implementation commonProject
         implementation project(gsonCore)
+        api project(memberProfileGrpcInterfaceCore)
         api project(memberDomain)
         api project(memberReadModels)
         api project(securityCore)
@@ -226,10 +232,8 @@ project(memberApplication) {
         // AOP
         implementation 'org.springframework.boot:spring-boot-starter-aop'
 
-        // jwt
-        implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-        implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
-        implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+        // grpc
+        api 'net.devh:grpc-client-spring-boot-starter:2.14.0.RELEASE'
 
         // Map Struct
         implementation 'org.mapstruct:mapstruct:1.5.3.Final'
@@ -241,7 +245,6 @@ project(memberApplication) {
 project(memberRdbAdapter) {
     dependencies {
         implementation commonProject
-        api project(securityCore)
         api project(jpaCore)
         api project(memberApplication)
 
@@ -273,14 +276,10 @@ project(memberWebAdapter) {
     dependencies {
         implementation commonProject
         implementation project(gsonCore)
-        api project(memberProfileGrpcInterfaceCore)
         implementation project(memberApplication)
 
         implementation 'org.springframework.boot:spring-boot-starter-web'
         implementation 'org.springframework.boot:spring-boot-starter-validation'
-
-        // grpc
-        api 'net.devh:grpc-client-spring-boot-starter:2.14.0.RELEASE'
 
         // Map Struct
         implementation 'org.mapstruct:mapstruct:1.5.3.Final'
@@ -333,6 +332,7 @@ project(memberProfileApplication) {
     dependencies {
         implementation commonProject
         implementation project(gsonCore)
+        api project(securityCore)
         api project(memberProfileDomain)
         api project(memberProfileReadModels)
 
@@ -442,6 +442,7 @@ project(boardApplication) {
     dependencies {
         implementation commonProject
         implementation project(gsonCore)
+        api project(securityCore)
         api project(boardDomain)
         api project(boardReadModels)
 

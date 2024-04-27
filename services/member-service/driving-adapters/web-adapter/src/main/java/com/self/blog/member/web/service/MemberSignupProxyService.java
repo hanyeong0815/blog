@@ -9,11 +9,9 @@ import com.self.blog.member.domain.Member;
 import com.self.blog.member.domain.type.MemberStatus;
 import com.self.blog.member.web.dto.MemberSignupDto.MemberSignupRequestDto;
 import com.self.blog.member.web.mapper.MemberDtoMapper;
-import com.self.blog.profile.lib.MemberProfileInterfaceGrpc;
 import com.self.blog.profile.lib.MemberProfileInterfaceGrpc.MemberProfileInterfaceBlockingStub;
 import com.self.blog.profile.lib.MemberProfileSaveRequest;
 import com.self.blog.member.web.dto.MemberLoginDto.MemberLoginResponseDto;
-import io.grpc.ManagedChannelBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -28,12 +26,7 @@ public class MemberSignupProxyService {
     private final MemberSignupUseCase memberSignupUseCase;
     private final MemberLoginUseCase memberLoginUseCase;
 
-    private final MemberProfileInterfaceBlockingStub memberProfileInterfaceBlockingStub = MemberProfileInterfaceGrpc
-            .newBlockingStub(
-                    ManagedChannelBuilder
-                            .forAddress("localhost", 8091)
-                            .usePlaintext().build()
-    );
+    private final MemberProfileInterfaceBlockingStub memberProfileInterfaceBlockingStub;
 
     private final MemberDtoMapper memberDtoMapper;
 
@@ -45,6 +38,7 @@ public class MemberSignupProxyService {
         memberProfileInterfaceBlockingStub.save(memberProfileSaveRequest);
 
         Collection<? extends GrantedAuthority> roles = savedMember.roles.stream()
+                .map(role -> role.value)
                 .map(SimpleGrantedAuthority::new)
                 .toList();
         Authentication auth = CommonAuthenticationToken.authenticated(UserAuthenticationToken.class, savedMember.username, savedMember.password, roles);

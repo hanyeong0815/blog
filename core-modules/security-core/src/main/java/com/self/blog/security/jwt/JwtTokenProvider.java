@@ -1,5 +1,6 @@
-package com.self.blog.member.application.authentication.jwt;
+package com.self.blog.security.jwt;
 
+import com.self.blog.security.jwt.exception.JwtErrorCode;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -17,7 +18,6 @@ import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -51,7 +51,7 @@ public class JwtTokenProvider {
         Claims claims = parseClaims(accessToken);
 
         if (claims.get("auth") == null) {
-            throw new RuntimeException("권한 정보가 없는 토큰입니다.");
+            throw JwtErrorCode.CLAIMS_IS_EMPTY.defaultException();
         }
 
         Collection<? extends GrantedAuthority> authorities =
@@ -68,15 +68,14 @@ public class JwtTokenProvider {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info("Invalid JWT Token", e);
+            throw JwtErrorCode.INVALID_JWT_TOKEN.defaultException();
         } catch (ExpiredJwtException e) {
-            log.info("Expired JWT Token", e);
+            throw JwtErrorCode.EXPIRED_JWT_TOKEN.defaultException();
         } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT Token", e);
+            throw JwtErrorCode.UNSUPPORTED_JWT_TOKEN.defaultException();
         } catch (IllegalArgumentException e) {
-            log.info("JWT claims string is empty.", e);
+            throw JwtErrorCode.CLAIMS_IS_EMPTY.defaultException();
         }
-        return false;
     }
 
     private Claims parseClaims(String accessToken) {
