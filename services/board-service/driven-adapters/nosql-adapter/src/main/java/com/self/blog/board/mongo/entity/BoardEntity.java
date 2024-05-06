@@ -30,5 +30,5 @@ public class BoardEntity {
     public Instant createdAt;
     @DBRef
     @Indexed
-    public List<ReplyEntity> replies;
+    public List<CommentEntity> comments;
 }

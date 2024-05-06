@@ -16,5 +16,5 @@ public class Board {
     public String title;
     public String content;
     public Instant createdAt;
-    public List<Reply> replies;
+    public List<Comment> comments;
 }

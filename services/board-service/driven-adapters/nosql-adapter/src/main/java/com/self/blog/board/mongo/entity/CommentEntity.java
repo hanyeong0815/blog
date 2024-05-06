@@ -1,6 +1,6 @@
 package com.self.blog.board.mongo.entity;
 
-import com.self.blog.board.mongo.entity.components.ReplyOfReplyEntity;
+import com.self.blog.board.mongo.entity.components.ReplyEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -12,12 +12,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.Instant;
 import java.util.List;
 
-@Document("reply")
+@Document("comment")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ReplyEntity {
+public class CommentEntity {
     @Id
     public String id;
     @Indexed
@@ -27,5 +27,5 @@ public class ReplyEntity {
     @Indexed
     public Instant createdAt;
     @Indexed
-    public List<ReplyOfReplyEntity> replies;
+    public List<ReplyEntity> replies;
 }

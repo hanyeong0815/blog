@@ -1,6 +1,6 @@
 package com.self.blog.board.application.usecase.data;
 
-import com.self.blog.board.domain.Reply;
+import com.self.blog.board.domain.Comment;
 import lombok.Builder;
 
 import java.time.Instant;
@@ -13,7 +13,7 @@ public record BoardAndViewCount() {
             String boardId,
             String title,
             String content,
-            List<Reply> replies,
+            List<Comment> comments,
             Integer viewCount,
             Instant createdAt
     ) {}

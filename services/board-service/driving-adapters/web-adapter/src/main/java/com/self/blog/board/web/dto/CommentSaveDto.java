@@ -1,8 +1,8 @@
 package com.self.blog.board.web.dto;
 
-public record ReplySaveDto() {
-    public record ReplySaveRequestDto(
-            String targetId,
+public record CommentSaveDto() {
+    public record CommentSaveRequestDto(
+            String boardId,
             String username,
             String content
     ) {}

@@ -8,7 +8,6 @@ import com.self.blog.common.utils.time.ServerTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.ArrayList;
 
 @Service
@@ -19,10 +18,8 @@ public class ReplySaveProxyService {
 
     private final ServerTime serverTime;
 
-    public Reply saveReply(ReplySaveRequestDto req) {
-        Instant now = serverTime.nowInstant();
-
-        Reply reply = replyDtoMapper.from(req, new ArrayList<>(), now);
-        return replySaveUseCase.saveReply(req.boardId(), reply);
+    public boolean saveReply(ReplySaveRequestDto dto) {
+        Reply reply = replyDtoMapper.from(dto, new ArrayList<>(), serverTime.nowInstant());
+        return replySaveUseCase.replySaveUseCase(dto.targetId(), reply);
     }
 }

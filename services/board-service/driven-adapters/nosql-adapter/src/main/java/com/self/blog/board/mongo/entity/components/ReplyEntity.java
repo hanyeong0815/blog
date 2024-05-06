@@ -12,11 +12,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class ReplyOfReplyEntity {
+public class ReplyEntity {
     public String id;
-    public String replyId;
     public String username;
     public String content;
     public Instant createdAt;
-    public List<ReplyOfReplyEntity> replies;
+    public List<ReplyEntity> replies;
 }
