@@ -28,6 +28,7 @@ public class BoardService implements BoardSaveUseCase, BoardDetailViewUseCase {
         BoardView boardView = BoardView.builder()
                 .boardId(savedBoard.id)
                 .viewCount(0)
+                .commentAndReplyCount(0)
                 .build();
         BoardView savedBoardView = boardViewRepository.save(boardView);
 

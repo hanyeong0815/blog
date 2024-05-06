@@ -20,6 +20,6 @@ public class ReplySaveProxyService {
 
     public boolean saveReply(ReplySaveRequestDto dto) {
         Reply reply = replyDtoMapper.from(dto, new ArrayList<>(), serverTime.nowInstant());
-        return replySaveUseCase.replySaveUseCase(dto.targetId(), reply);
+        return replySaveUseCase.replySave(dto.targetId(), reply);
     }
 }

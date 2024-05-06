@@ -1,5 +1,6 @@
 package com.self.blog.board.application.service;
 
+import com.self.blog.board.application.aop.CommentAndReplyCount;
 import com.self.blog.board.application.exception.BoardErrorCode;
 import com.self.blog.board.application.exception.CommentErrorCode;
 import com.self.blog.board.application.repository.BoardRepository;
@@ -23,6 +24,7 @@ public class CommentService implements
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
 
+    @CommentAndReplyCount
     @Override
     public Comment saveComment(String boardId, Comment comment) {
         Board board = boardRepository.findById(boardId)
@@ -41,8 +43,9 @@ public class CommentService implements
         return commentRepository.save(comment);
     }
 
+    @CommentAndReplyCount
     @Override
-    public boolean replySaveUseCase(String commentOrReplyId, Reply reply) {
+    public boolean replySave(String commentOrReplyId, Reply reply) {
         String[] splitIdList = commentOrReplyId.split("_");
         String commentId = STR."\{splitIdList[0]}_\{splitIdList[1]}";
 

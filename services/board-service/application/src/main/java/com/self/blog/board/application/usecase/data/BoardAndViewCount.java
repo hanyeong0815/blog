@@ -15,6 +15,7 @@ public record BoardAndViewCount() {
             String content,
             List<Comment> comments,
             Integer viewCount,
+            Integer commentCount,
             Instant createdAt
     ) {}
 }

@@ -16,4 +16,5 @@ public class BoardViewEntity {
     @Id
     public String boardId;
     public Integer viewCount;
+    public Integer commentAndReplyCount;
 }

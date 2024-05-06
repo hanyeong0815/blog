@@ -10,4 +10,5 @@ import lombok.*;
 public class BoardView {
     public String boardId;
     public Integer viewCount;
+    public Integer commentAndReplyCount;
 }
