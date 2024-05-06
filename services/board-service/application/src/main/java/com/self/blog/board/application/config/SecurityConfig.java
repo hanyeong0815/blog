@@ -1,4 +1,4 @@
-package com.self.blog.profile.application.config;
+package com.self.blog.board.application.config;
 
 import com.self.blog.security.config.DefaultSecurityConfig;
 import com.self.blog.security.jwt.JwtTokenProvider;
@@ -12,7 +12,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig extends DefaultSecurityConfig {
-
     protected SecurityConfig(JwtTokenProvider jwtTokenProvider, SetResponse setResponse) {
         super(jwtTokenProvider, setResponse);
     }

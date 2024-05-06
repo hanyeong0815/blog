@@ -9,11 +9,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@EqualsAndHashCode
-public class Board {
+public class Reply {
+    @Getter
     public String id;
     public String username;
-    public String title;
     public String content;
     public Instant createdAt;
     public List<Reply> replies;

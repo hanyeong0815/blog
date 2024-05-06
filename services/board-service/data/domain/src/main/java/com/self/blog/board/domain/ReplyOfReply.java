@@ -1,6 +1,9 @@
 package com.self.blog.board.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.Instant;
 import java.util.List;
@@ -9,12 +12,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@EqualsAndHashCode
-public class Board {
+public class ReplyOfReply {
     public String id;
+    public String replyId;
     public String username;
-    public String title;
     public String content;
     public Instant createdAt;
-    public List<Reply> replies;
+    public List<ReplyOfReply> replies;
 }

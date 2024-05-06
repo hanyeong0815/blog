@@ -9,6 +9,8 @@ import com.self.blog.board.domain.Board;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 @RequiredArgsConstructor
 public class BoardSaveProxyService {
@@ -19,7 +21,7 @@ public class BoardSaveProxyService {
     private final ServerTime serverTime;
 
     public BoardAndViewCountResponse boardSave(BoardSaveRequestDto req) {
-        Board board = boardDtoMapper.toDomain(req, serverTime.nowInstant());
+        Board board = boardDtoMapper.toDomain(req, new ArrayList<>(), serverTime.nowInstant());
 
         return boardSaveUseCase.boardSave(board);
     }
