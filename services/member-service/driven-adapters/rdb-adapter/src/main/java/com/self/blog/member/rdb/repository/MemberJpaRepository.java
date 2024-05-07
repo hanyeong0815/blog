@@ -22,4 +22,11 @@ public interface MemberJpaRepository extends JpaRepository<MemberEntity, UUID> {
             "update MemberEntity me set me.status = ?2 where me.username = ?1"
     )
     int updateStatus(String username, MemberStatus memberStatus);
+
+    @Transactional
+    @Modifying
+    @Query(
+            "update MemberEntity me set me.password = ?2 where me.username = ?1"
+    )
+    int updatePassword(String username, String password);
 }

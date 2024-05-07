@@ -12,4 +12,5 @@ public interface MemberRepository {
     boolean existsByUsername(String username);
     Optional<MemberIdReadModel> findIdByUsername(String name);
     boolean updateMemberStatus(String username, MemberStatus memberStatus);
+    boolean updateMemberPassword(String username, String password);
 }

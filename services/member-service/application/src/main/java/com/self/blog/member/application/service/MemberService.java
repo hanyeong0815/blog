@@ -1,11 +1,13 @@
 package com.self.blog.member.application.service;
 
 import com.self.blog.member.application.aop.MemberSave;
+import com.self.blog.member.application.aop.PasswordUpdate;
 import com.self.blog.member.application.exception.MemberErrorCode;
 import com.self.blog.member.application.repository.MemberRepository;
 import com.self.blog.member.application.repository.RefreshTokenRepository;
 import com.self.blog.member.application.usecase.MemberLoginUseCase;
 import com.self.blog.member.application.usecase.MemberSignupUseCase;
+import com.self.blog.member.application.usecase.PasswordUpdateUseCase;
 import com.self.blog.member.application.usecase.data.JwtTokenPair;
 import com.self.blog.common.utils.random.StrongStringRandom;
 import com.self.blog.common.utils.time.ServerTime;
@@ -23,13 +25,16 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 
+import static com.self.blog.common.utils.exception.Preconditions.validate;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService
         implements
         MemberSignupUseCase,
         UserDetailsService,
-        MemberLoginUseCase
+        MemberLoginUseCase,
+        PasswordUpdateUseCase
 {
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -88,5 +93,17 @@ public class MemberService
                 .accessToken(STR."Bearer \{accessToken}")
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    @PasswordUpdate
+    @Override
+    public boolean updatePassword(String username, String password) {
+        boolean hasMember = memberRepository.existsByUsername(username);
+        validate(
+                !hasMember,
+                MemberErrorCode.NO_SUCH_USER
+        );
+
+        return memberRepository.updateMemberPassword(username, encoder.encode(password));
     }
 }

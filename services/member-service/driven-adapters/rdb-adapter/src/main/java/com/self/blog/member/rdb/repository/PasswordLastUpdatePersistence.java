@@ -4,10 +4,10 @@ import com.self.blog.member.application.repository.PasswordLastUpdateRepository;
 import com.self.blog.member.domain.PasswordLastUpdate;
 import com.self.blog.member.rdb.entity.PasswordLastUpdateEntity;
 import com.self.blog.member.rdb.mapper.PasswordLastUpdateEntityMapper;
-import com.self.blog.member.rdb.repository.PasswordLastUpdateJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.util.Optional;
 
 @Repository
@@ -30,5 +30,10 @@ public class PasswordLastUpdatePersistence implements PasswordLastUpdateReposito
     @Override
     public Optional<PasswordLastUpdate> findByUsername(String username) {
         return repository.findByUsername(username).map(mapper::toDomain);
+    }
+
+    @Override
+    public boolean updateCreatedAt(String username, Instant createdAt) {
+        return repository.updateCreatedAt(username, createdAt) >= 1;
     }
 }

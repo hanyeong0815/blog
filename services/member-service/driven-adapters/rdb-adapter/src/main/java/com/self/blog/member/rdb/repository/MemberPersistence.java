@@ -45,4 +45,9 @@ public class MemberPersistence implements MemberRepository {
     public boolean updateMemberStatus(String username, MemberStatus memberStatus) {
         return repository.updateStatus(username, memberStatus) >= 1;
     }
+
+    @Override
+    public boolean updateMemberPassword(String username, String password) {
+        return repository.updatePassword(username, password) >= 1;
+    }
 }
