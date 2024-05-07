@@ -4,5 +4,5 @@ import com.self.blog.board.application.usecase.data.BoardAndViewCount.BoardAndVi
 import com.self.blog.board.domain.Board;
 
 public interface BoardSaveUseCase {
-    BoardAndViewCountResponse boardSave(Board board);
+    BoardAndViewCountResponse boardSave(String category, Board board);
 }

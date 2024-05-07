@@ -6,6 +6,7 @@ public record BoardSaveDto() {
     @Builder
     public record BoardSaveRequestDto(
             String username,
+            String category,
             String title,
             String content
     ) {}

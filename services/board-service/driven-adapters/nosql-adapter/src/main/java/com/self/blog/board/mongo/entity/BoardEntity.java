@@ -21,6 +21,8 @@ public class BoardEntity {
     @Id
     public String id;
     @Indexed
+    public String categoryId;
+    @Indexed
     public String username;
     @Indexed
     public String title;

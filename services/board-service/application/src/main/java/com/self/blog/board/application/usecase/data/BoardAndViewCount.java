@@ -10,6 +10,7 @@ public record BoardAndViewCount() {
     @Builder
     public record BoardAndViewCountResponse(
             String username,
+            String category,
             String boardId,
             String title,
             String content,

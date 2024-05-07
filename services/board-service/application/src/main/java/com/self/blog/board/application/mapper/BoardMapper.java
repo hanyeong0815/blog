@@ -9,5 +9,5 @@ import org.mapstruct.Mapping;
 @Mapper
 public interface BoardMapper {
     @Mapping(target = "commentCount", source = "boardView.commentAndReplyCount")
-    BoardAndViewCountResponse from(Board board, BoardView boardView);
+    BoardAndViewCountResponse from(Board board, BoardView boardView, String category);
 }
