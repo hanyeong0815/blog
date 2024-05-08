@@ -8,17 +8,27 @@ import com.self.blog.board.application.repository.BoardRepository;
 import com.self.blog.board.application.repository.BoardViewRepository;
 import com.self.blog.board.application.repository.CategoryRepository;
 import com.self.blog.board.application.usecase.BoardDetailViewUseCase;
+import com.self.blog.board.application.usecase.BoardListViewUseCase;
 import com.self.blog.board.application.usecase.BoardSaveUseCase;
 import com.self.blog.board.application.usecase.data.BoardAndViewCount.BoardAndViewCountResponse;
+import com.self.blog.board.application.usecase.data.BoardListView.BoardListViewResponse;
 import com.self.blog.board.domain.Board;
 import com.self.blog.board.domain.BoardView;
 import com.self.blog.board.domain.Category;
+import com.self.blog.board.readmodels.BoardReadModels.BoardListViewReadModels;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class BoardService implements BoardSaveUseCase, BoardDetailViewUseCase {
+public class BoardService implements
+        BoardSaveUseCase,
+        BoardDetailViewUseCase,
+        BoardListViewUseCase
+{
     private final BoardRepository boardRepository;
     private final BoardViewRepository boardViewRepository;
     private final CategoryRepository categoryRepository;
@@ -60,5 +70,27 @@ public class BoardService implements BoardSaveUseCase, BoardDetailViewUseCase {
                 );
 
         return boardMapper.from(board, boardView, category.category);
+    }
+
+    @Override
+    public List<BoardListViewResponse> boardListView(Pageable pageable) {
+        List<BoardListViewReadModels> boardListViewReadModelsList = boardRepository.findAllBy(pageable);
+
+        if (boardListViewReadModelsList.isEmpty()) return null;
+
+        return boardListViewReadModelsList.stream()
+                .map(board -> {
+                    BoardView boardView = boardViewRepository.findByBoardId(board.id())
+                            .orElseThrow(BoardErrorCode.DEFAULT::defaultException);
+
+                    return BoardListViewResponse.builder()
+                            .boardId(board.id())
+                            .title(board.title())
+                            .username(board.username())
+                            .viewCount(boardView.viewCount)
+                            .commentCount(boardView.viewCount)
+                            .createdAt(board.createdAt())
+                            .build();
+                }).toList();
     }
 }

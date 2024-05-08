@@ -25,8 +25,14 @@ public class BoardViewPersistence implements BoardViewRepository {
     }
 
     @Override
-    public Optional<BoardView> findById(String boardId) {
-        return repository.findById(boardId)
+    public Optional<BoardView> findById(String boardViewId) {
+        return repository.findById(boardViewId)
+                .map(mapper::toDomain);
+    }
+
+    @Override
+    public Optional<BoardView> findByBoardId(String boardId) {
+        return repository.findByBoardId(boardId)
                 .map(mapper::toDomain);
     }
 

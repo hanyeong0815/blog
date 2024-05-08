@@ -4,9 +4,12 @@ import com.self.blog.board.application.repository.BoardRepository;
 import com.self.blog.board.domain.Board;
 import com.self.blog.board.mongo.entity.BoardEntity;
 import com.self.blog.board.mongo.mapper.BoardEntityMapper;
+import com.self.blog.board.readmodels.BoardReadModels.BoardListViewReadModels;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -32,5 +35,12 @@ public class BoardPersistence implements BoardRepository {
     public Optional<Board> findByUsername(String username) {
         return repository.findByUsername(username)
                 .map(mapper::toDomain);
+    }
+
+    @Override
+    public List<BoardListViewReadModels> findAllBy(Pageable pageable) {
+        return repository.findAllBy(pageable).stream()
+                .map(mapper::projectionToReadModel)
+                .toList();
     }
 }
