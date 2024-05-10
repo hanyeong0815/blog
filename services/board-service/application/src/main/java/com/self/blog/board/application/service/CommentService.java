@@ -36,26 +36,29 @@ public class CommentService implements
             board.comments = new ArrayList<>();
         }
 
-        comment.id = STR."\{board.id}_\{board.comments.size()}";
+        comment.id = createCommentOrReplyId(board.comments.stream().map(savedComment -> savedComment.id).toList(), board.id);
         board.comments.addLast(comment);
         boardRepository.save(board);
 
         return commentRepository.save(comment);
     }
 
-    @CommentAndReplyCount
+    @CommentAndReplyCount // 댓글 수 AOP 연결을 위한 annotation
     @Override
     public boolean replySave(String commentOrReplyId, Reply reply) {
+        // commentId의 구성 -> {boardId}_{comment index}
+        // replyId의 구성 -> {commentId}_{reply index}
         String[] splitIdList = commentOrReplyId.split("_");
-        String commentId = STR."\{splitIdList[0]}_\{splitIdList[1]}";
+        String commentId = STR."\{splitIdList[0]}_\{splitIdList[1]}"; // commentId 추출
 
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(
                         CommentErrorCode.COMMENT_NOT_FOUND::defaultException
                 );
 
+        // id가 comment의 id일 경우
         if (splitIdList.length == 2) {
-            reply.id = STR. "\{ comment.id }_\{ comment.replies.size() }" ;
+            reply.id = createCommentOrReplyId(comment.replies.stream().map(savedReply -> savedReply.id).toList(), commentId);
             comment.replies.addLast(reply);
             return commentRepository.save(comment) != null;
         }
@@ -73,7 +76,7 @@ public class CommentService implements
         while (!queue.isEmpty()) {
             Reply current = queue.poll();
             if (Objects.equals(current.id, targetId)) {
-                reply.id = STR."\{current.id}_\{current.replies.size()}";
+                reply.id = createCommentOrReplyId(current.replies.stream().map(currentReply -> currentReply.id).toList(), targetId);
                 current.replies.addLast(reply);
 
                 return commentRepository.save(comment) != null;
@@ -106,4 +109,20 @@ public class CommentService implements
 //
 //        return null;
 //    }
+
+    private String createCommentOrReplyId(List<String> targetList, String targetId) {
+        if (targetList.isEmpty()) {
+            return STR."\{targetId}_0";
+        }
+
+        String[] splitIds = targetList.getLast().split("_");
+        int newIdNumber = Integer.parseInt(splitIds[splitIds.length - 1] + 1);
+        StringBuilder newId = new StringBuilder();
+        for (int i = 0; i < splitIds.length - 1; i++) {
+            newId.append(splitIds[i]).append("_");
+        }
+        newId.append(newIdNumber);
+
+        return newId.toString();
+    }
 }
