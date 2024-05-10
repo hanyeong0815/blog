@@ -31,6 +31,7 @@ public class JwtTokenProvider {
     }
 
     public String generateToken(Authentication authentication) {
+        // authentication토큰에서 role(권한)을 추출
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));

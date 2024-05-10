@@ -47,9 +47,11 @@ public class MemberService
     private final ServerTime serverTime;
 
     @Override
-    @MemberSave
+    @MemberSave // 회원가입 시 처리할 AOP 작업들과 연결을 위한 annotation
     public Member save(Member member) {
+        // hashing
         String hashPassword = encoder.encode(member.password);
+        // toBuilder -> member의 데이터를 clone 후 변경할 부분만 변경
         Member cloneMember = member.toBuilder()
                 .password(hashPassword)
                 .build();
@@ -75,11 +77,13 @@ public class MemberService
 
     @Override
     public JwtTokenPair login(Authentication authentication) {
+        // TODO 현재시간이 안맞음 / annotation을 활용한 현재시간을 받는 방법 고려
         Instant now = serverTime.nowInstant();
 
-        String accessToken = jwtTokenProvider.generateToken(authentication);
-        String refreshToken = random.nextString();
+        String accessToken = jwtTokenProvider.generateToken(authentication); // accessToken 발행
+        String refreshToken = random.nextString(); // refreshToken 발행 -> TODO refreshToken도 JWT형식으로 발행할 필요가 있는지 고려
 
+        // refreshToken에관한 정보 redis에 저장
         RefreshToken refreshTokenDomain = RefreshToken.builder()
                 .refreshToken(refreshToken)
                 .subject(authentication.getName())
@@ -90,7 +94,7 @@ public class MemberService
         refreshTokenRepository.save(refreshTokenDomain);
 
         return JwtTokenPair.builder()
-                .accessToken(STR."Bearer \{accessToken}")
+                .accessToken(STR."Bearer \{accessToken}") // Java21의 기능을 활요한 String format
                 .refreshToken(refreshToken)
                 .build();
     }
@@ -98,6 +102,7 @@ public class MemberService
     @PasswordUpdate
     @Override
     public boolean updatePassword(String username, String password) {
+        // member 존재 여부 확인 후 없을 시 throw exception
         boolean hasMember = memberRepository.existsByUsername(username);
         validate(
                 !hasMember,

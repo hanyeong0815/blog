@@ -23,7 +23,7 @@ public class ProfileLogAspect {
 
     private final ServerTime serverTime;
 
-    @AfterReturning(value = "@annotation(com.self.blog.profile.application.aop.ProfileFindAspect)", returning = "memberProfileDetailView")
+    @AfterReturning(value = "@annotation(ProfileFindAspect)", returning = "memberProfileDetailView")
     public void saveProfileLogVerify(MemberProfileDetailView memberProfileDetailView) {
         UUID memberId = memberProfileRepository.findMemberIdByUsername(memberProfileDetailView.username());
 
@@ -39,7 +39,7 @@ public class ProfileLogAspect {
         System.out.println(savedProfileLog);
     }
 
-    @AfterReturning(value = "@annotation(com.self.blog.profile.application.aop.ProfileSaveAspect)", returning = "savedMemberProfile")
+    @AfterReturning(value = "@annotation(ProfileSaveAspect)", returning = "savedMemberProfile")
     public void saveProfileLogSave(MemberProfile savedMemberProfile) {
         ProfileLog profileLog = ProfileLog.builder()
                 .memberId(savedMemberProfile.memberId)

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberQueryApi {
     private final MemberLoginProxyService memberLoginProxyService;
 
+    // spring security를 통해 이미 로그인 인증처리가 완료되고 넘어온 authentication token
     @GetMapping("login")
     public MemberLoginResponseDto login(Authentication authentication) {
         return memberLoginProxyService.login(authentication);

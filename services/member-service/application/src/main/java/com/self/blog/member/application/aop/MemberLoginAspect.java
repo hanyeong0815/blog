@@ -29,11 +29,13 @@ public class MemberLoginAspect {
 
     private final ServerTime serverTime;
 
-    @Before(value = "@annotation(com.self.blog.member.application.aop.MemberLogin) && args(authentication)", argNames = "authentication")
+    // 로그인 시도 log 저장
+    @Before(value = "@annotation(MemberLogin) && args(authentication)", argNames = "authentication")
     public void saveMemberLoginTryLog(Authentication authentication) {
         Instant now = serverTime.nowInstant();
 
         String username = authentication.getName();
+        // log 저장을 위한 memberId 조회 및 없을 시 throw exception
         UUID memberId = memberRepository
                 .findIdByUsername(username)
                 .orElseThrow(
@@ -51,20 +53,24 @@ public class MemberLoginAspect {
         signLogRepository.save(signLog);
     }
 
-    @AfterThrowing(value = "@annotation(com.self.blog.member.application.aop.MemberLogin) && args(authentication)")
+    // 로그인 때 exception 발생 시 로직
+    @AfterThrowing(value = "@annotation(MemberLogin) && args(authentication)")
     public void countSignInTry(Authentication authentication) {
         String username = authentication.getName();
         boolean hasMember = memberRepository.existsByUsername(username);
 
-        if (!hasMember) return;
+        if (!hasMember) return; // member 조회 후 없을 시 아무 작업없이 return
 
+        // 로그인 횟수 증가 TODO 로그인 횟수 제한을 통해 username을 유추할 수 있으므로 로직 삭제 고려
         SignInTry signInTry = signInTryRepository.countUpSignTry(username);
 
+        // 로그인 실패 5회 이상 시 계정 보호 조치 로직
         if (signInTry.tryCount >= 5) {
             memberRepository.updateMemberStatus(username, MemberStatus.PROTECTED);
 
-            UUID memberId = memberRepository.findIdByUsername(username).get().id();
+            UUID memberId = memberRepository.findIdByUsername(username).get().id(); // member 존재 여부는 위에서 확인 했으므로 바로 get
 
+            // 계정 보호 조치 log 저장
             SignLog signLog = SignLog.builder()
                     .memberId(memberId)
                     .username(username)
@@ -74,13 +80,14 @@ public class MemberLoginAspect {
                     .build();
 
             signLogRepository.save(signLog);
-            signInTryRepository.deleteById(username);
+            signInTryRepository.deleteById(username); // 로그인 횟수 초기화
 
             throw MemberErrorCode.PROTECTED_ACCOUNT.defaultException();
         }
     }
 
-    @AfterReturning("@annotation(com.self.blog.member.application.aop.MemberLogin) && args(authentication)")
+    // 로그인 성공 시 log 남기는 로직
+    @AfterReturning("@annotation(MemberLogin) && args(authentication)")
     public void successLogin(Authentication authentication) {
         String username = authentication.getName();
         UUID memberId = memberRepository.findIdByUsername(username)

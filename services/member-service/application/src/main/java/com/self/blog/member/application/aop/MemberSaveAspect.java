@@ -33,7 +33,8 @@ public class MemberSaveAspect {
 
     private final ServerTime serverTime;
 
-    @Before("@annotation(com.self.blog.member.application.aop.MemberSave) && args(member)")
+    // 멤버 조회 후 이미 존재할 시 throw exception(회원 중복 가입 방지)
+    @Before("@annotation(MemberSave) && args(member)")
     public void hasMember(Member member) {
         boolean hasMember = memberRepository.existsByUsername(member.username);
         validate(
@@ -42,7 +43,8 @@ public class MemberSaveAspect {
         );
     }
 
-    @AfterReturning(value = "@annotation(com.self.blog.member.application.aop.MemberSave)", returning = "member")
+    // 회원가입 시 로그 남기기
+    @AfterReturning(value = "@annotation(MemberSave)", returning = "member")
     public void saveSignLog(Member member) {
         Instant now = serverTime.nowInstant();
 
@@ -57,7 +59,8 @@ public class MemberSaveAspect {
         signLogRepository.save(signLog);
     }
 
-    @AfterReturning(value = "@annotation(com.self.blog.member.application.aop.MemberSave)", returning = "savedMember")
+    // 회원가입 일자 저장
+    @AfterReturning(value = "@annotation(MemberSave)", returning = "savedMember")
     public void savedAccountRegistryDatetime(Member savedMember) {
         Instant now = serverTime.nowInstant();
 
@@ -69,7 +72,8 @@ public class MemberSaveAspect {
         memberRegistryDateTimeRepository.save(memberRegistryDatetime);
     }
 
-    @AfterReturning(value = "@annotation(com.self.blog.member.application.aop.MemberSave)", returning = "savedMember")
+    // password 마지막 변경 데이터 생성
+    @AfterReturning(value = "@annotation(MemberSave)", returning = "savedMember")
     public void savePasswordLastUpdate(Member savedMember) {
         Instant now = serverTime.nowInstant();
 
@@ -82,14 +86,16 @@ public class MemberSaveAspect {
         passwordLastUpdateRepository.save(passwordLastUpdate);
     }
 
+    // 회원의 password 이력 저장 로직
     @AfterReturning(
-            value = "@annotation(com.self.blog.member.application.aop.MemberSave) && args(member)",
+            value = "@annotation(MemberSave) && args(member)",
             returning = "savedMember",
             argNames = "member,savedMember"
     )
     public void savePasswordHistoryLog(Member member, Member savedMember) {
         Instant now = serverTime.nowInstant();
 
+        // member 개개인의 static salt 조회 및 첫 생성 시 없을 경우 static salt 생성
         MemberStaticSalt memberStaticSalt = memberStaticSaltRepository
                 .findTopByUsernameOrderByCreatedAt(member.username)
                 .orElseGet(() -> {
@@ -106,10 +112,12 @@ public class MemberSaveAspect {
 
         String staticSalt = memberStaticSalt.staticSalt;
         String rawPassword = member.password;
+        // rawPassword를 sha256encoder로 static salt를 사용하여 hashing
         String sha256Password = sha256SaltedEncoderSupplier
                 .getEncoder(staticSalt)
                 .encode(rawPassword);
 
+        // hashing된 hashPassword 저장
         PasswordHistoryLog passwordHistoryLog = PasswordHistoryLog.builder()
                 .memberId(savedMember.id)
                 .username(savedMember.username)

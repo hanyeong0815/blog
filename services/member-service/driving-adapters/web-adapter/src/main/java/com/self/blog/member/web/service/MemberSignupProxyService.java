@@ -31,12 +31,17 @@ public class MemberSignupProxyService {
     private final MemberDtoMapper memberDtoMapper;
 
     public MemberLoginResponseDto signup(MemberSignupRequestDto dto) {
+        // dto to domain
         Member member = memberDtoMapper.from(dto, MemberStatus.ACTIVE);
         Member savedMember = memberSignupUseCase.save(member);
 
+        // domain에서 gRPC를 위한 형태로 변환
         MemberProfileSaveRequest memberProfileSaveRequest = memberDtoMapper.from(savedMember, dto);
+        // gRPC통신으로 member-profile 송신
+        // TODO member-profile을 저장할 때 exception 발생 시 이미 저장된 member 데이터 처리
         memberProfileInterfaceBlockingStub.save(memberProfileSaveRequest);
 
+        // login logic 시작
         Collection<? extends GrantedAuthority> roles = savedMember.roles.stream()
                 .map(role -> role.value)
                 .map(SimpleGrantedAuthority::new)

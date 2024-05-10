@@ -44,6 +44,7 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
         }));
     }
 
+    // 로그인 인증 security 관련 AOP
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String username;
@@ -62,6 +63,7 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
         Authentication authentication;
 
         try {
+            // 로그인 인증을 위한 토큰 생성
             authentication = CommonAuthenticationToken.unauthenticated(
                     UserAuthenticationToken.class, username, password
             );
@@ -69,7 +71,7 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
             throw new AuthenticationServiceException("occurred a problem while creating token");
         }
 
-        return this.getAuthenticationManager().authenticate(authentication);
+        return this.getAuthenticationManager().authenticate(authentication); // 로그인 인증
     }
 
     @Override
