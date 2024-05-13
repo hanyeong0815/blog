@@ -18,4 +18,5 @@ public class ReplyEntity {
     public String content;
     public Instant createdAt;
     public List<ReplyEntity> replies;
+    public boolean isDeleted;
 }

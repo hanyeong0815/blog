@@ -6,6 +6,7 @@ import com.self.blog.board.web.dto.BoardSaveDto.BoardSaveRequestDto;
 import com.self.blog.board.web.dto.CommentSaveDto.CommentSaveRequestDto;
 import com.self.blog.board.web.dto.ReplySaveDto.ReplySaveRequestDto;
 import com.self.blog.board.web.service.BoardSaveProxyService;
+import com.self.blog.board.web.service.CommentDeleteProxyService;
 import com.self.blog.board.web.service.CommentSaveProxyService;
 import com.self.blog.board.web.service.ReplySaveProxyService;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ public class BoardCommendApi {
     private final BoardSaveProxyService boardSaveProxyService;
     private final CommentSaveProxyService commentSaveProxyService;
     private final ReplySaveProxyService replySaveProxyService;
+    private final CommentDeleteProxyService commentDeleteProxyService;
 
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping("")
@@ -36,5 +38,11 @@ public class BoardCommendApi {
     @PostMapping("reply")
     public boolean replySave(@RequestBody ReplySaveRequestDto dto) {
         return replySaveProxyService.saveReply(dto);
+    }
+
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @DeleteMapping("comment/{commentId}")
+    public Comment commentDelete(@PathVariable String commentId) {
+        return commentDeleteProxyService.commentDelete(commentId);
     }
 }

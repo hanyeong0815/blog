@@ -296,7 +296,7 @@ project(memberProfileService) {
         implementation project(globalExceptionHandlerCore)
         api project(memberProfileApplication)
         api project(memberProfileRdbAdapter)
-        api project(memberProfileNosqlAdapter)
+        api project(memberProfileMongoAdapter)
         api project(memberProfileWebAdapter)
         api project(memberProfileInternalAdapter)
 
@@ -360,7 +360,7 @@ project(memberProfileRdbAdapter) {
     }
 }
 
-project(memberProfileNosqlAdapter) {
+project(memberProfileMongoAdapter) {
     dependencies {
         implementation commonProject
         api project(mongoCore)
@@ -414,7 +414,7 @@ project(boardService) {
         implementation commonProject
         implementation project(globalExceptionHandlerCore)
         api project(boardApplication)
-        api project(boardNosqlAdapter)
+        api project(boardMongoAdapter)
         api project(boardRedisAdapter)
         api project(boardWebAdapter)
 
@@ -458,7 +458,7 @@ project(boardApplication) {
     }
 }
 
-project(boardNosqlAdapter) {
+project(boardMongoAdapter) {
     dependencies {
         implementation commonProject
         api project(mongoCore)

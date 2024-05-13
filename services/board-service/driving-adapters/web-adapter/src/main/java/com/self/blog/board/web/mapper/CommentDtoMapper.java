@@ -10,5 +10,5 @@ import java.util.List;
 
 @Mapper
 public interface CommentDtoMapper {
-    Comment from(CommentSaveRequestDto dto, List<Reply> replies, Instant createdAt);
+    Comment from(CommentSaveRequestDto dto, List<Reply> replies, boolean isDeleted, Instant createdAt);
 }

@@ -45,13 +45,13 @@ public final class Preconditions {
     }
 
     public static void validate(boolean condition, ErrorCode errorCode) {
-        if(condition) {
+        if(!condition) {
             throw errorCode.defaultException();
         }
     }
 
     public static void validate(boolean condition, ErrorCode errorCode, Throwable cause) {
-        if(condition) {
+        if(!condition) {
             throw errorCode.defaultException(cause);
         }
     }

@@ -19,7 +19,7 @@ public class ReplySaveProxyService {
     private final ServerTime serverTime;
 
     public boolean saveReply(ReplySaveRequestDto dto) {
-        Reply reply = replyDtoMapper.from(dto, new ArrayList<>(), serverTime.nowInstant());
+        Reply reply = replyDtoMapper.from(dto, new ArrayList<>(), false, serverTime.nowInstant());
         return replySaveUseCase.replySave(dto.targetId(), reply);
     }
 }

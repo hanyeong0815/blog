@@ -22,7 +22,7 @@ public class CommentSaveProxyService {
     public Comment saveComment(CommentSaveRequestDto req) {
         Instant now = serverTime.nowInstant();
 
-        Comment comment = commentDtoMapper.from(req, new ArrayList<>(), now);
+        Comment comment = commentDtoMapper.from(req, new ArrayList<>(), false, now);
         return commentSaveUseCase.saveComment(req.boardId(), comment);
     }
 }

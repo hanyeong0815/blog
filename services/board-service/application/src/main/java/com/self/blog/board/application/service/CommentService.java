@@ -5,6 +5,7 @@ import com.self.blog.board.application.exception.BoardErrorCode;
 import com.self.blog.board.application.exception.CommentErrorCode;
 import com.self.blog.board.application.repository.BoardRepository;
 import com.self.blog.board.application.repository.CommentRepository;
+import com.self.blog.board.application.usecase.CommentDeleteUseCase;
 import com.self.blog.board.application.usecase.CommentSaveUseCase;
 import com.self.blog.board.application.usecase.ReplySaveUseCase;
 import com.self.blog.board.domain.Board;
@@ -19,7 +20,8 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CommentService implements
         CommentSaveUseCase,
-        ReplySaveUseCase
+        ReplySaveUseCase,
+        CommentDeleteUseCase
 {
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
@@ -67,6 +69,20 @@ public class CommentService implements
 //        return this.replyOfReplySave(comment, comment.replies, commentOrReplyId, reply) != null;
     }
 
+    @Override
+    public Comment deleteComment(String commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(
+                        CommentErrorCode.COMMENT_NOT_FOUND::defaultException
+                );
+
+        comment.username = null;
+        comment.content = "삭제된 댓글입니다.";
+        comment.isDeleted = true;
+
+        return commentRepository.save(comment);
+    }
+
     // Queue를 사용한 경우
     // 큐를 사용하므로 스택 오버플로우의 위험이 없다. 따라서 댓글이 많더라도 안정적이다.
     // 댓글의 수가 적더라도 재귀함수와 비교했을 때 큰 성능차이는 없다.
@@ -76,7 +92,8 @@ public class CommentService implements
         while (!queue.isEmpty()) {
             Reply current = queue.poll();
             if (Objects.equals(current.id, targetId)) {
-                reply.id = createCommentOrReplyId(current.replies.stream().map(currentReply -> currentReply.id).toList(), targetId);
+                reply.id = createCommentOrReplyId(current.replies.stream()
+                        .map(currentReply -> currentReply.id).toList(), targetId);
                 current.replies.addLast(reply);
 
                 return commentRepository.save(comment) != null;

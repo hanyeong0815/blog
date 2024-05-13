@@ -5,7 +5,7 @@ import lombok.*;
 import java.time.Instant;
 import java.util.List;
 
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -16,4 +16,5 @@ public class Comment {
     public String content;
     public Instant createdAt;
     public List<Reply> replies;
+    public boolean isDeleted;
 }

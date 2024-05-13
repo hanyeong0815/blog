@@ -46,7 +46,7 @@ public class PasswordUpdateAspect {
         List<String> passwordHistories = passwordHistoryLogRepository.findByUsername(username);
         for (String passwordHistory : passwordHistories) {
             validate(
-                    encoder.matches(password, passwordHistory),
+                    !encoder.matches(password, passwordHistory),
                     MemberErrorCode.PASSWORD_ALREADY_USED
             );
         }

@@ -29,7 +29,7 @@ public class CustomAuthenticationManager implements AuthenticationProvider {
 
         // 유저가 없을 시 throw exception
         validate(
-                user == null,
+                user != null,
                 MemberErrorCode.NO_SUCH_USER
         );
 
@@ -41,7 +41,7 @@ public class CustomAuthenticationManager implements AuthenticationProvider {
 
         // password 대조 실패 시 throw exception
         validate(
-                !isAuthenticated,
+                isAuthenticated,
                 MemberErrorCode.INVALID_USERNAME_OR_PASSWORD
         );
 

@@ -38,7 +38,7 @@ public class MemberSaveAspect {
     public void hasMember(Member member) {
         boolean hasMember = memberRepository.existsByUsername(member.username);
         validate(
-                hasMember,
+                !hasMember,
                 MemberErrorCode.USERNAME_ALREADY_USED
         );
     }

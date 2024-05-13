@@ -13,7 +13,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Document("comment")
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
@@ -28,4 +28,5 @@ public class CommentEntity {
     public Instant createdAt;
     @Indexed
     public List<ReplyEntity> replies;
+    public boolean isDeleted;
 }

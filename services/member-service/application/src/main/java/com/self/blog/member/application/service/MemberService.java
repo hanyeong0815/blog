@@ -105,7 +105,7 @@ public class MemberService
         // member 존재 여부 확인 후 없을 시 throw exception
         boolean hasMember = memberRepository.existsByUsername(username);
         validate(
-                !hasMember,
+                hasMember,
                 MemberErrorCode.NO_SUCH_USER
         );
 
