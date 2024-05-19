@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +27,8 @@ public class CommentService implements
 {
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
+
+    private final Lock lock = new ReentrantLock();
 
     @CommentAndReplyCount
     @Override
@@ -127,19 +131,29 @@ public class CommentService implements
 //        return null;
 //    }
 
+    // 동시성 보장을 위한 방벙 { synchronized, lock }
+    // synchronized: 사용하기 간단하나 단일 스레드만 접근할 수 있어 성능저하가 발생할 수 있음. 또한 synchronized block을 사용할 경우 block에 접근 탈출 자체에 리소스를 소비
+    // lock: reentrantLock안에 다양한 기능을 사용할 수 있음. 대신 unlock을 반드시 명시해야하는 단점이 있음
+    // 그 이외의 방법들 { java: { atomic, concurrent }, spring: { @Async, @Scheduled, Executor, JPA: { @Transactional } }, ... }
+    // TODO 우선 Lock을 사용했으나 좀 더 실험 후 그대로 적용 혹은 변경
     private String createCommentOrReplyId(List<String> targetList, String targetId) {
-        if (targetList.isEmpty()) {
-            return STR."\{targetId}_0";
-        }
+        lock.lock();
+        try {
+            if (targetList.isEmpty()) {
+                return STR."\{targetId}_0" ;
+            }
 
-        String[] splitIds = targetList.getLast().split("_");
-        int newIdNumber = Integer.parseInt(splitIds[splitIds.length - 1] + 1);
-        StringBuilder newId = new StringBuilder();
-        for (int i = 0; i < splitIds.length - 1; i++) {
-            newId.append(splitIds[i]).append("_");
-        }
-        newId.append(newIdNumber);
+            String[] splitIds = targetList.getLast().split("_");
+            int newIdNumber = Integer.parseInt(splitIds[splitIds.length - 1] + 1);
+            StringBuilder newId = new StringBuilder();
+            for (int i = 0; i < splitIds.length - 1; i++) {
+                newId.append(splitIds[i]).append("_");
+            }
+            newId.append(newIdNumber);
 
-        return newId.toString();
+            return newId.toString();
+        } finally {
+            lock.unlock();
+        }
     }
 }
