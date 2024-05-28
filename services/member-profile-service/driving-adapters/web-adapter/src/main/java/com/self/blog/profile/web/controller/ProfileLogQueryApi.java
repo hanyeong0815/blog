@@ -21,8 +21,6 @@ public class ProfileLogQueryApi {
     public List<ProfileLogDetailViewReadModel> findAllProfileLog(@PageableDefault Pageable pageable) {
         pageable = pageable.previousOrFirst();
 
-        System.out.println(STR."pageable = \{pageable}");
-
         return profileLogFindAllProxyService.findAll(pageable);
     }
 }
