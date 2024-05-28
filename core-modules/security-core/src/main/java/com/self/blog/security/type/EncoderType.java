@@ -1,4 +1,4 @@
-package com.self.music.passwordEncoder.type;
+package com.self.blog.security.type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.gson.annotations.SerializedName;

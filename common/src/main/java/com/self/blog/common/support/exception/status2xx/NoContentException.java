@@ -1,4 +1,4 @@
-package com.self.music.common.support.exception.status2xx;
+package com.self.blog.common.support.exception.status2xx;
 
 public class NoContentException extends RuntimeException {
     public NoContentException() {}

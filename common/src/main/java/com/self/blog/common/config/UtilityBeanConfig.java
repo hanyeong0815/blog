@@ -1,4 +1,4 @@
-package com.self.music.common.config;
+package com.self.blog.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

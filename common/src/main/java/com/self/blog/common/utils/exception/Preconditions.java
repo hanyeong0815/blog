@@ -1,6 +1,6 @@
-package com.self.music.common.utils.exception;
+package com.self.blog.common.utils.exception;
 
-import com.self.music.common.support.exception.ErrorCode;
+import com.self.blog.common.support.exception.ErrorCode;
 
 import java.text.MessageFormat;
 import java.util.Objects;
@@ -45,13 +45,13 @@ public final class Preconditions {
     }
 
     public static void validate(boolean condition, ErrorCode errorCode) {
-        if(condition) {
+        if(!condition) {
             throw errorCode.defaultException();
         }
     }
 
     public static void validate(boolean condition, ErrorCode errorCode, Throwable cause) {
-        if(condition) {
+        if(!condition) {
             throw errorCode.defaultException(cause);
         }
     }

@@ -1,6 +1,6 @@
-package com.self.music.passwordEncoder.propterties;
+package com.self.blog.security.propterties;
 
-import com.self.music.passwordEncoder.type.Pbkdf2AlgorithmWithHmacOf;
+import com.self.blog.security.type.Pbkdf2AlgorithmWithHmacOf;
 import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 
 @ConfigurationPropertiesBinding

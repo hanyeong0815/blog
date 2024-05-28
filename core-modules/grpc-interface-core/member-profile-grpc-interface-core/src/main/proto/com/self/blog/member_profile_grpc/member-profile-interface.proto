@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.self.blog.profile.lib";
+option java_outer_classname = "MemberProfileProtobuf";
+
+service MemberProfileInterface {
+  rpc save (MemberProfileSaveRequest) returns (MemberProfileDetailResponse) {}
+  rpc findByUsername(MemberProfileFindByUsernameRequest) returns (MemberProfileDetailResponse) {}
+}
+
+message MemberProfileSaveRequest {
+  string memberId = 1;
+  string username = 2;
+  string email = 3;
+  GenderType genderType = 4;
+  string name = 5;
+  string nickname = 6;
+}
+
+message MemberProfileFindByUsernameRequest {
+  string username = 1;
+}
+
+message MemberProfileDetailResponse {
+  string memberId = 1;
+  string username = 2;
+  string email = 3;
+  GenderType genderType = 4;
+  string name = 5;
+  string nickname = 6;
+}
+
+enum GenderType {
+  M = 0;
+  F = 1;
+}

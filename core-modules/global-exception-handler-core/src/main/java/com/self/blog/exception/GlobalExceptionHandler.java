@@ -1,10 +1,10 @@
-package com.self.music.exception;
+package com.self.blog.exception;
 
-import com.self.music.common.support.exception.CustomException;
-import com.self.music.common.support.exception.ErrorCode;
-import com.self.music.common.support.exception.ResponseError;
-import com.self.music.common.support.exception.status2xx.NoContentException;
-import com.self.music.common.utils.time.ServerTime;
+import com.self.blog.common.support.exception.CustomException;
+import com.self.blog.common.support.exception.ErrorCode;
+import com.self.blog.common.support.exception.ResponseError;
+import com.self.blog.common.support.exception.status2xx.NoContentException;
+import com.self.blog.common.utils.time.ServerTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice
+import static com.self.blog.common.support.ServerConstants.BASE_PACKAGE;
+
+@RestControllerAdvice(basePackages = BASE_PACKAGE)
 @RequiredArgsConstructor
 public final class GlobalExceptionHandler {
     private final ServerTime serverTime;

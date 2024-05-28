@@ -1,6 +1,6 @@
-package com.self.music.passwordEncoder.generator;
+package com.self.blog.security.generator;
 
-import com.self.music.passwordEncoder.type.Pbkdf2AlgorithmWithHmacOf;
+import com.self.blog.security.type.Pbkdf2AlgorithmWithHmacOf;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 
 public class Pbkdf2Generator {

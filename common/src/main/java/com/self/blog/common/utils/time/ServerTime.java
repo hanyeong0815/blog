@@ -1,6 +1,6 @@
-package com.self.music.common.utils.time;
+package com.self.blog.common.utils.time;
 
-import com.self.music.common.properties.time.ServerTimeProperties;
+import com.self.blog.common.properties.time.ServerTimeProperties;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;

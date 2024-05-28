@@ -1,4 +1,4 @@
-package com.self.music.passwordEncoder.propterties;
+package com.self.blog.security.propterties;
 
 public record ScryptProperties(
         Integer cpuCost,

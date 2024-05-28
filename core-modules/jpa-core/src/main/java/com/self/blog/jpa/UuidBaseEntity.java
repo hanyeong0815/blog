@@ -1,4 +1,4 @@
-package com.self.music.jpa;
+package com.self.blog.jpa;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;

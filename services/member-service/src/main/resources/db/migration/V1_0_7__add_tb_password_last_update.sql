@@ -1,8 +1,10 @@
 CREATE TABLE IF NOT EXISTS member.password_last_update (
-    id                  bigserial      PRIMARY KEY,
+    id                  bigserial,
     member_id           uuid,
     username            VARCHAR(255),
-    created_at          timestamp(6)         NOT NULL            DEFAULT CURRENT_TIMESTAMP(6)
+    created_at          timestamp(6)         NOT NULL            DEFAULT CURRENT_TIMESTAMP(6),
+
+    constraint pk_password_last_update_id primary key(id)
 );
 
 -- 로그인 시 조회할 가능성이 있기 때문에 인덱스 부여
