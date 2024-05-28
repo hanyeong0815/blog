@@ -42,7 +42,9 @@ public class CommentService implements
             board.comments = new ArrayList<>();
         }
 
-        comment.id = createCommentOrReplyId(board.comments.stream().map(savedComment -> savedComment.id).toList(), board.id);
+        comment.id = createCommentOrReplyId(board.comments.stream()
+                .map(savedComment -> savedComment.id).toList(), board.id);
+
         board.comments.addLast(comment);
         boardRepository.save(board);
 

@@ -7,7 +7,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesBindin
 @ConfigurationPropertiesBinding
 public record ServerTimeProperties(String timeZone) {
     public ServerTimeProperties {
-        if (timeZone == null || "".equals(timeZone)) {
+        if (timeZone == null || timeZone.isEmpty()) {
             timeZone = "Asia/Seoul";
         }
     }
