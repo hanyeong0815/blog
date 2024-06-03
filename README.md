@@ -44,7 +44,18 @@ git clone [code link]
 ```
 
 ### Run
-- Open the terminal and use the `cd` command to navigate to the project folder.<br/>
+1. Please create a `.env` file in the root folder.
+- Example
+```
+MEMBER_DB=member
+PROFILE_DB=profile
+POSTGRES_USER=root
+POSTGRES_PASSWORD=root
+MEMBER_URL=:jdbc:postgresql://localhost:5432/member
+PROFILE_URL=:jdbc:postgresql://localhost:5442/profile
+```
+
+2. Open the terminal and use the `cd` command to navigate to the project folder.<br/>
 Then, enter the following code into the terminal.
 ```shell
 docker-compose up -d
@@ -94,7 +105,17 @@ git clone [코드 링크]
 ```
 
 ### 실행
-- 터미널을 열고 `cd` 커멘드를 사용하여 프로젝트 폴더로 이동합니다.<br/>
+1. 루트 폴더에 `.env`을 작성하여 주세요.
+- 예시
+```
+MEMBER_DB=member
+PROFILE_DB=profile
+POSTGRES_USER=root
+POSTGRES_PASSWORD=root
+MEMBER_URL=:jdbc:postgresql://localhost:5432/member
+PROFILE_URL=:jdbc:postgresql://localhost:5442/profile
+```
+2. 터미널을 열고 `cd` 커멘드를 사용하여 프로젝트 폴더로 이동합니다.<br/>
 이후 아래 코드를 터미널에 입력하여 주세요.
 ```shell
 docker-compose up -d
@@ -144,7 +165,18 @@ git clone [コードのリンク]
 ```
 
 ### 実行
-- ターミナルを開き、`cd` コマンドを使用してプロジェクトフォルダに移動します。<br/>
+1. ルートフォルダに `.env` ファイルを作成してください。
+- 例
+```
+MEMBER_DB=member
+PROFILE_DB=profile
+POSTGRES_USER=root
+POSTGRES_PASSWORD=root
+MEMBER_URL=:jdbc:postgresql://localhost:5432/member
+PROFILE_URL=:jdbc:postgresql://localhost:5442/profile
+```
+
+2. ターミナルを開き、`cd` コマンドを使用してプロジェクトフォルダに移動します。<br/>
   その後、以下のコードをターミナルに入力してください。
 ```shell
 docker-compose up -d
