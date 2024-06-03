@@ -1,9 +1,6 @@
 package com.self.blog.board.mongo.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -13,24 +10,26 @@ import java.time.Instant;
 import java.util.List;
 
 @Document("board")
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 public class BoardEntity {
     @Id
-    public String id;
+    private String id;
     @Indexed
-    public String categoryId;
+    private String categoryId;
     @Indexed
-    public String username;
+    private String username;
     @Indexed
-    public String title;
+    private String title;
     @Indexed
-    public String content;
+    private String content;
     @Indexed
-    public Instant createdAt;
+    private Instant createdAt;
     @DBRef
     @Indexed
-    public List<CommentEntity> comments;
+    private List<CommentEntity> comments;
 }

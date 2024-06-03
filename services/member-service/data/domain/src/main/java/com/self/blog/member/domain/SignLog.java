@@ -6,16 +6,18 @@ import lombok.*;
 import java.time.Instant;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
 public class SignLog {
-    public Long id;
-    public UUID memberId;
-    public String username;
-    public SignType eventType;
-    public String remarks;
-    public Instant createdAt;
+    private Long id;
+    private UUID memberId;
+    private String username;
+    private SignType eventType;
+    private String remarks;
+    private Instant createdAt;
 }

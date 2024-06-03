@@ -5,13 +5,15 @@ import lombok.*;
 import java.time.Instant;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
 public class MemberRegistryDatetime {
-    public Long id;
-    public UUID memberId;
-    public Instant createdAt;
+    private Long id;
+    private UUID memberId;
+    private Instant createdAt;
 }

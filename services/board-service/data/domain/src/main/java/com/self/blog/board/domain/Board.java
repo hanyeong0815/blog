@@ -5,17 +5,19 @@ import lombok.*;
 import java.time.Instant;
 import java.util.List;
 
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
 public class Board {
-    public String id;
-    public String categoryId;
-    public String username;
-    public String title;
-    public String content;
-    public Instant createdAt;
-    public List<Comment> comments;
+    private String id;
+    private String categoryId;
+    private String username;
+    private String title;
+    private String content;
+    private Instant createdAt;
+    private List<Comment> comments;
 }

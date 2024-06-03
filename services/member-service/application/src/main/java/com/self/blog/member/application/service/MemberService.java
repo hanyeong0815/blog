@@ -50,7 +50,7 @@ public class MemberService
     @MemberSave // 회원가입 시 처리할 AOP 작업들과 연결을 위한 annotation
     public Member save(Member member) {
         // hashing
-        String hashPassword = encoder.encode(member.password);
+        String hashPassword = encoder.encode(member.getPassword());
         // toBuilder -> member의 데이터를 clone 후 변경할 부분만 변경
         Member cloneMember = member.toBuilder()
                 .password(hashPassword)
@@ -69,9 +69,9 @@ public class MemberService
 
     private UserDetails createUserDetails(Member member) {
         return User.builder()
-                .username(member.username)
-                .password(member.password)
-                .roles(member.roles.stream().map(role -> role.value).toArray(String[]::new))
+                .username(member.getUsername())
+                .password(member.getPassword())
+                .roles(member.getRoles().stream().map(role -> role.value).toArray(String[]::new))
                 .build();
     }
 

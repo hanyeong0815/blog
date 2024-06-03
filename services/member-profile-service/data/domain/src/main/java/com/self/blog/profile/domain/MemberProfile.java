@@ -5,17 +5,19 @@ import lombok.*;
 
 import java.util.UUID;
 
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
 public class MemberProfile {
-    public Long id;
-    public UUID memberId;
-    public String username;
-    public String email;
-    public GenderType genderType;
-    public String name;
-    public String nickname;
+    private Long id;
+    private UUID memberId;
+    private String username;
+    private String email;
+    private GenderType genderType;
+    private String name;
+    private String nickname;
 }

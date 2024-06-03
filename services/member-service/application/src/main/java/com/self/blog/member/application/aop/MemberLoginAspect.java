@@ -65,7 +65,7 @@ public class MemberLoginAspect {
         SignInTry signInTry = signInTryRepository.countUpSignTry(username);
 
         // 로그인 실패 5회 이상 시 계정 보호 조치 로직
-        if (signInTry.tryCount >= 5) {
+        if (signInTry.getTryCount() >= 5) {
             memberRepository.updateMemberStatus(username, MemberStatus.PROTECTED);
 
             UUID memberId = memberRepository.findIdByUsername(username).get().id(); // member 존재 여부는 위에서 확인 했으므로 바로 get

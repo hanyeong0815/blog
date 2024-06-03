@@ -39,18 +39,18 @@ public class BoardService implements
     public BoardAndViewCountResponse boardSave(String category, Board board) {
         Category findCategory = categoryRepository.findByCategory(category)
                 .orElseThrow(CategoryErrorCode.CATEGORY_NOT_FOUND::defaultException);
-        board.categoryId = findCategory.id;
+        board.setCategoryId(findCategory.getId());
 
         Board savedBoard = boardRepository.save(board);
 
         BoardView boardView = BoardView.builder()
-                .boardId(savedBoard.id)
+                .boardId(savedBoard.getId())
                 .viewCount(0)
                 .commentAndReplyCount(0)
                 .build();
         BoardView savedBoardView = boardViewRepository.save(boardView);
 
-        return boardMapper.from(savedBoard, savedBoardView, findCategory.category);
+        return boardMapper.from(savedBoard, savedBoardView, findCategory.getCategory());
     }
 
     @ViewCountUp
@@ -60,16 +60,16 @@ public class BoardService implements
                 .orElseThrow(
                         BoardErrorCode.BOARD_NOT_FOUND::defaultException
                 );
-        BoardView boardView = boardViewRepository.findById(board.id)
+        BoardView boardView = boardViewRepository.findById(board.getId())
                 .orElseThrow(
                         BoardErrorCode.DEFAULT::defaultException
                 );
-        Category category = categoryRepository.findById(board.categoryId)
+        Category category = categoryRepository.findById(board.getCategoryId())
                 .orElseThrow(
                         CategoryErrorCode.CATEGORY_NOT_FOUND::defaultException
                 );
 
-        return boardMapper.from(board, boardView, category.category);
+        return boardMapper.from(board, boardView, category.getCategory());
     }
 
     @Override
@@ -87,8 +87,8 @@ public class BoardService implements
                             .boardId(board.id())
                             .title(board.title())
                             .username(board.username())
-                            .viewCount(boardView.viewCount)
-                            .commentCount(boardView.viewCount)
+                            .viewCount(boardView.getViewCount())
+                            .commentCount(boardView.getCommentAndReplyCount())
                             .createdAt(board.createdAt())
                             .build();
                 }).toList();

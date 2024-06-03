@@ -42,11 +42,16 @@ public class MemberSignupProxyService {
         memberProfileInterfaceBlockingStub.save(memberProfileSaveRequest);
 
         // login logic 시작
-        Collection<? extends GrantedAuthority> roles = savedMember.roles.stream()
+        Collection<? extends GrantedAuthority> roles = savedMember.getRoles().stream()
                 .map(role -> role.value)
                 .map(SimpleGrantedAuthority::new)
                 .toList();
-        Authentication auth = CommonAuthenticationToken.authenticated(UserAuthenticationToken.class, savedMember.username, savedMember.password, roles);
+        Authentication auth = CommonAuthenticationToken.authenticated(
+                UserAuthenticationToken.class,
+                savedMember.getUsername(),
+                savedMember.getPassword(),
+                roles
+        );
         JwtTokenPair jwtTokenPair = memberLoginUseCase.login(auth);
         return MemberLoginResponseDto.builder()
                 .username(auth.getName())

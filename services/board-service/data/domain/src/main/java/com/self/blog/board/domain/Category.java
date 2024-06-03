@@ -1,16 +1,15 @@
 package com.self.blog.board.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 public class Category {
-    public String id;
-    public String category;
-    public Integer level;
+    private String id;
+    private String category;
+    private Integer level;
 }

@@ -40,7 +40,7 @@ public class PasswordUpdateAspect {
         MemberStaticSalt memberStaticSalt = memberStaticSaltRepository.findTopByUsernameOrderByCreatedAt(username)
                 .orElseThrow(MemberErrorCode.DEFAULT::defaultException);
 
-        String staticSalt = memberStaticSalt.staticSalt;
+        String staticSalt = memberStaticSalt.getStaticSalt();
         Sha256SaltedEncoder encoder = sha256SaltedEncoderSupplier.getEncoder(staticSalt);
 
         List<String> passwordHistories = passwordHistoryLogRepository.findByUsername(username);
@@ -60,7 +60,7 @@ public class PasswordUpdateAspect {
         MemberStaticSalt memberStaticSalt = memberStaticSaltRepository.findTopByUsernameOrderByCreatedAt(username)
                 .orElseThrow(MemberErrorCode.DEFAULT::defaultException);
 
-        String staticSalt = memberStaticSalt.staticSalt;
+        String staticSalt = memberStaticSalt.getStaticSalt();
         String sha256Password = sha256SaltedEncoderSupplier.getEncoder(staticSalt).encode(password);
         UUID memberId = memberRepository.findIdByUsername(username)
                 .orElseThrow(

@@ -41,7 +41,7 @@ public class BoardViewPersistence implements BoardViewRepository {
         BoardViewEntity boardViewEntity = repository.findById(boardId)
                 .orElseThrow(BoardErrorCode.DEFAULT::defaultException);
 
-        boardViewEntity.viewCount += 1;
+        boardViewEntity.setViewCount(boardViewEntity.getViewCount() + 1);
         repository.save(boardViewEntity);
     }
 }

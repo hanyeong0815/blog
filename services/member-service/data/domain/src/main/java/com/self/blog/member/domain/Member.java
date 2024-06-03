@@ -7,15 +7,17 @@ import lombok.*;
 import java.util.List;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
 public class Member {
-    public UUID id;
-    public String username;
-    public String password;
-    public MemberStatus status;
-    public List<RoleType> roles;
+    private UUID id;
+    private String username;
+    private String password;
+    private MemberStatus status;
+    private List<RoleType> roles;
 }

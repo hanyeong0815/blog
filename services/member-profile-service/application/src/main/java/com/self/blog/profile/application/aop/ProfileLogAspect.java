@@ -42,8 +42,8 @@ public class ProfileLogAspect {
     @AfterReturning(value = "@annotation(ProfileSaveAspect)", returning = "savedMemberProfile")
     public void saveProfileLogSave(MemberProfile savedMemberProfile) {
         ProfileLog profileLog = ProfileLog.builder()
-                .memberId(savedMemberProfile.memberId)
-                .username(savedMemberProfile.username)
+                .memberId(savedMemberProfile.getMemberId())
+                .username(savedMemberProfile.getUsername())
                 .logType(ProfileLogType.CREATE)
                 .remark(ProfileLogType.CREATE.remark)
                 .createdAt(serverTime.nowInstant())

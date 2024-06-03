@@ -6,16 +6,18 @@ import lombok.*;
 import java.time.Instant;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
 public class ProfileLog {
-    public String id;
-    public UUID memberId;
-    public String username;
-    public ProfileLogType logType;
-    public String remark;
-    public Instant createdAt;
+    private String id;
+    private UUID memberId;
+    private String username;
+    private ProfileLogType logType;
+    private String remark;
+    private Instant createdAt;
 }

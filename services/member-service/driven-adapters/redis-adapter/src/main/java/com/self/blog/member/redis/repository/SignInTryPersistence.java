@@ -42,7 +42,7 @@ public class SignInTryPersistence implements SignInTryRepository {
                         .ttl(86_400_000L)
                         .build());
 
-        signInTryEntity.tryCount += 1;
+        signInTryEntity.setTryCount(signInTryEntity.getTryCount() + 1);
 
         return mapper.toDomain(
                 repository.save(signInTryEntity)

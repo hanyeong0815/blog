@@ -1,8 +1,6 @@
 package com.self.blog.member.redis.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
@@ -10,15 +8,17 @@ import org.springframework.data.redis.core.TimeToLive;
 import java.time.Instant;
 import java.util.concurrent.TimeUnit;
 
+@Getter
+@Setter
 @Builder
 @RedisHash(value = "sign_in_try")
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignInTryEntity {
     @Id
-    public String username;
-    public int tryCount;
-    public Instant firstTryTime;
+    private String username;
+    private int tryCount;
+    private Instant firstTryTime;
     @TimeToLive(unit = TimeUnit.MILLISECONDS)
-    public Long ttl;
+    private Long ttl;
 }
