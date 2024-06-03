@@ -62,9 +62,10 @@ public class PasswordUpdateAspect {
 
         String staticSalt = memberStaticSalt.staticSalt;
         String sha256Password = sha256SaltedEncoderSupplier.getEncoder(staticSalt).encode(password);
-        UUID memberId = memberRepository.findIdByUsername(username).orElseThrow(
-                MemberErrorCode.NO_SUCH_USER::defaultException
-        ).id();
+        UUID memberId = memberRepository.findIdByUsername(username)
+                .orElseThrow(
+                        MemberErrorCode.NO_SUCH_USER::defaultException
+                ).id();
 
         PasswordHistoryLog passwordHistoryLog = PasswordHistoryLog.builder()
                 .memberId(memberId)
