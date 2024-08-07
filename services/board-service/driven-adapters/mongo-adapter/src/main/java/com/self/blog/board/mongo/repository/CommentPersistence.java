@@ -3,7 +3,7 @@ package com.self.blog.board.mongo.repository;
 import com.self.blog.board.application.repository.CommentRepository;
 import com.self.blog.board.domain.Comment;
 import com.self.blog.board.mongo.entity.CommentEntity;
-import com.self.blog.board.mongo.mapper.ReplyEntityMapper;
+import com.self.blog.board.mongo.mapper.CommentEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +13,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CommentPersistence implements CommentRepository {
     private final ReplyMongoRepository repository;
-    private final ReplyEntityMapper mapper;
+    private final CommentEntityMapper mapper;
 
     @Override
     public Comment save(Comment comment) {

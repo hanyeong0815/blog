@@ -2,14 +2,16 @@ package com.self.blog.board.domain;
 
 import lombok.*;
 
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
 public class ViewCountValidation {
-    public String boardId;
-    public String username;
-    public String viewIp;
-    public Long ttl;
+    private String boardId;
+    private String username;
+    private String viewIp;
+    private Long ttl;
 }

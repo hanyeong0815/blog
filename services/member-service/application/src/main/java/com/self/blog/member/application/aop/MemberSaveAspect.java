@@ -36,7 +36,7 @@ public class MemberSaveAspect {
     // 멤버 조회 후 이미 존재할 시 throw exception(회원 중복 가입 방지)
     @Before("@annotation(MemberSave) && args(member)")
     public void hasMember(Member member) {
-        boolean hasMember = memberRepository.existsByUsername(member.username);
+        boolean hasMember = memberRepository.existsByUsername(member.getUsername());
         validate(
                 !hasMember,
                 MemberErrorCode.USERNAME_ALREADY_USED
@@ -49,8 +49,8 @@ public class MemberSaveAspect {
         Instant now = serverTime.nowInstant();
 
         SignLog signLog = SignLog.builder()
-                .memberId(member.id)
-                .username(member.username)
+                .memberId(member.getId())
+                .username(member.getUsername())
                 .eventType(SignType.SIGN_UP)
                 .remarks("회원가입")
                 .createdAt(now)
@@ -65,7 +65,7 @@ public class MemberSaveAspect {
         Instant now = serverTime.nowInstant();
 
         MemberRegistryDatetime memberRegistryDatetime = MemberRegistryDatetime.builder()
-                .memberId(savedMember.id)
+                .memberId(savedMember.getId())
                 .createdAt(now)
                 .build();
 
@@ -78,8 +78,8 @@ public class MemberSaveAspect {
         Instant now = serverTime.nowInstant();
 
         PasswordLastUpdate passwordLastUpdate = PasswordLastUpdate.builder()
-                .memberId(savedMember.id)
-                .username(savedMember.username)
+                .memberId(savedMember.getId())
+                .username(savedMember.getUsername())
                 .createdAt(now)
                 .build();
 
@@ -97,12 +97,12 @@ public class MemberSaveAspect {
 
         // member 개개인의 static salt 조회 및 첫 생성 시 없을 경우 static salt 생성
         MemberStaticSalt memberStaticSalt = memberStaticSaltRepository
-                .findTopByUsernameOrderByCreatedAt(member.username)
+                .findTopByUsernameOrderByCreatedAt(member.getUsername())
                 .orElseGet(() -> {
                     String salt = strongStringRandom.nextString();
                     MemberStaticSalt newMemberStaticSalt = MemberStaticSalt.builder()
-                            .memberId(savedMember.id)
-                            .username(savedMember.username)
+                            .memberId(savedMember.getId())
+                            .username(savedMember.getUsername())
                             .staticSalt(salt)
                             .createdAt(now)
                             .build();
@@ -110,8 +110,8 @@ public class MemberSaveAspect {
                     return memberStaticSaltRepository.save(newMemberStaticSalt);
                 });
 
-        String staticSalt = memberStaticSalt.staticSalt;
-        String rawPassword = member.password;
+        String staticSalt = memberStaticSalt.getStaticSalt();
+        String rawPassword = member.getPassword();
         // rawPassword를 sha256encoder로 static salt를 사용하여 hashing
         String sha256Password = sha256SaltedEncoderSupplier
                 .getEncoder(staticSalt)
@@ -119,8 +119,8 @@ public class MemberSaveAspect {
 
         // hashing된 hashPassword 저장
         PasswordHistoryLog passwordHistoryLog = PasswordHistoryLog.builder()
-                .memberId(savedMember.id)
-                .username(savedMember.username)
+                .memberId(savedMember.getId())
+                .username(savedMember.getUsername())
                 .personalSignedDigest(sha256Password)
                 .createdAt(now)
                 .build();

@@ -1,17 +1,17 @@
 package com.self.blog.member.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.Instant;
 
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class SignInTry {
-    public String username;
-    public int tryCount;
-    public Instant firstTryTime;
-    public Long ttl;
+    private String username;
+    private int tryCount;
+    private Instant firstTryTime;
+    private Long ttl;
 }

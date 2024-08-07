@@ -8,8 +8,6 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-
 @Component
 @RequiredArgsConstructor
 public class MemberProfileServerRunner implements ApplicationRunner {
@@ -20,22 +18,12 @@ public class MemberProfileServerRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        try {
-            Server server = ServerBuilder
-                    .forPort(PORT)
-                    .addService(memberProfileSaveProxyService)
-                    .build();
+        Server server = ServerBuilder
+                .forPort(PORT)
+                .addService(memberProfileSaveProxyService)
+                .build();
 
-            server.start();
-            server.awaitTermination();
-        } catch (IOException ie) {
-            Server server = ServerBuilder
-                    .forPort(PORT + 1)
-                    .addService(memberProfileSaveProxyService)
-                    .build();
-
-            server.start();
-            server.awaitTermination();
-        }
+        server.start();
+        server.awaitTermination();
     }
 }

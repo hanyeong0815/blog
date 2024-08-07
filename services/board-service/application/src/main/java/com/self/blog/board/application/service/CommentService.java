@@ -12,6 +12,7 @@ import com.self.blog.board.domain.Board;
 import com.self.blog.board.domain.Comment;
 import com.self.blog.board.domain.Reply;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -19,6 +20,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 @Service
+@Log4j2
 @RequiredArgsConstructor
 public class CommentService implements
         CommentSaveUseCase,
@@ -38,14 +40,16 @@ public class CommentService implements
                         BoardErrorCode.BOARD_NOT_FOUND::defaultException
                 );
 
-        if (board.comments == null) {
-            board.comments = new ArrayList<>();
+        if (board.getComments() == null) {
+            board.setComments(new ArrayList<>());
         }
 
-        comment.id = createCommentOrReplyId(board.comments.stream()
-                .map(savedComment -> savedComment.id).toList(), board.id);
+        comment.setId(
+                createCommentOrReplyId(board.getComments().stream()
+                        .map(Comment::getId).toList(), board.getId())
+        );
 
-        board.comments.addLast(comment);
+        board.getComments().addLast(comment);
         boardRepository.save(board);
 
         return commentRepository.save(comment);
@@ -66,8 +70,11 @@ public class CommentService implements
 
         // id가 comment의 id일 경우
         if (splitIdList.length == 2) {
-            reply.id = createCommentOrReplyId(comment.replies.stream().map(savedReply -> savedReply.id).toList(), commentId);
-            comment.replies.addLast(reply);
+            reply.setId(
+                    createCommentOrReplyId(comment.getReplies().stream()
+                            .map(Reply::getId).toList(), commentId)
+            );
+            comment.getReplies().addLast(reply);
             return commentRepository.save(comment) != null;
         }
 
@@ -82,9 +89,9 @@ public class CommentService implements
                         CommentErrorCode.COMMENT_NOT_FOUND::defaultException
                 );
 
-        comment.username = null;
-        comment.content = "삭제된 댓글입니다.";
-        comment.isDeleted = true;
+        comment.setUsername(null);
+        comment.setContent("삭제된 댓글입니다.");
+        comment.setDeleted(true);
 
         return commentRepository.save(comment);
     }
@@ -93,19 +100,21 @@ public class CommentService implements
     // 큐를 사용하므로 스택 오버플로우의 위험이 없다. 따라서 댓글이 많더라도 안정적이다.
     // 댓글의 수가 적더라도 재귀함수와 비교했을 때 큰 성능차이는 없다.
     private boolean replyOfReplySave(Comment comment, String targetId, Reply reply) {
-        Queue<Reply> queue = new LinkedList<>(comment.replies);
+        Queue<Reply> queue = new LinkedList<>(comment.getReplies());
 
         while (!queue.isEmpty()) {
             Reply current = queue.poll();
-            if (Objects.equals(current.id, targetId)) {
-                reply.id = createCommentOrReplyId(current.replies.stream()
-                        .map(currentReply -> currentReply.id).toList(), targetId);
-                current.replies.addLast(reply);
+            if (Objects.equals(current.getId(), targetId)) {
+                reply.setId(
+                        createCommentOrReplyId(current.getReplies().stream()
+                                .map(Reply::getId).toList(), targetId)
+                );
+                current.getReplies().addLast(reply);
 
                 return commentRepository.save(comment) != null;
             }
 
-            queue.addAll(current.replies);
+            queue.addAll(current.getReplies());
         }
 
         throw CommentErrorCode.COMMENT_NOT_FOUND.defaultException();

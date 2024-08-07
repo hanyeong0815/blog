@@ -1,9 +1,6 @@
 package com.self.blog.board.redis.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.TimeToLive;
@@ -11,6 +8,8 @@ import org.springframework.data.redis.core.index.Indexed;
 
 import java.util.concurrent.TimeUnit;
 
+@Getter
+@Setter
 @Builder
 @RedisHash(value = "view_count_validation")
 @NoArgsConstructor
@@ -19,11 +18,11 @@ import java.util.concurrent.TimeUnit;
 public class ViewCountValidationEntity {
     @Id
     @Indexed
-    public String boardId;
+    private String boardId;
     @Indexed
-    public String username;
+    private String username;
     @Indexed
-    public String viewIp;
+    private String viewIp;
     @TimeToLive(unit = TimeUnit.DAYS)
-    public Long ttl;
+    private Long ttl;
 }

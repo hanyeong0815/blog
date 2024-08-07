@@ -1,10 +1,7 @@
 package com.self.blog.board.mongo.entity;
 
 import com.self.blog.board.mongo.entity.components.ReplyEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,20 +10,22 @@ import java.time.Instant;
 import java.util.List;
 
 @Document("comment")
+@Getter
+@Setter
 @Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 public class CommentEntity {
     @Id
-    public String id;
+    private String id;
     @Indexed
-    public String username;
+    private String username;
     @Indexed
-    public String content;
+    private String content;
     @Indexed
-    public Instant createdAt;
+    private Instant createdAt;
     @Indexed
-    public List<ReplyEntity> replies;
-    public boolean isDeleted;
+    private List<ReplyEntity> replies;
+    private boolean isDeleted;
 }

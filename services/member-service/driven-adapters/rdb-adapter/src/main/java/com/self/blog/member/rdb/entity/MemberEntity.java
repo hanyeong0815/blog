@@ -4,9 +4,7 @@ import com.self.blog.member.domain.type.MemberStatus;
 import com.self.blog.jpa.UuidBaseEntity;
 import com.self.blog.member.domain.type.RoleType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +16,8 @@ import java.util.List;
 import static com.self.blog.member.rdb.support.MemberSchemaConstants.*;
 
 @Entity
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,10 +27,10 @@ import static com.self.blog.member.rdb.support.MemberSchemaConstants.*;
         name = TB_MEMBER
 )
 public class MemberEntity extends UuidBaseEntity implements UserDetails {
-    public String username;
-    public String password;
+    private String username;
+    private String password;
     @Enumerated(EnumType.STRING)
-    public MemberStatus status;
+    private MemberStatus status;
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @CollectionTable(
@@ -40,7 +40,7 @@ public class MemberEntity extends UuidBaseEntity implements UserDetails {
     )
     @Builder.Default
     @Column(name = "role")
-    public List<RoleType> roles = new ArrayList<>();
+    private List<RoleType> roles = new ArrayList<>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

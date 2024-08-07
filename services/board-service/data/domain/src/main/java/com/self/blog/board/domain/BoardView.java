@@ -2,13 +2,15 @@ package com.self.blog.board.domain;
 
 import lombok.*;
 
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
 public class BoardView {
-    public String boardId;
-    public Integer viewCount;
-    public Integer commentAndReplyCount;
+    private String boardId;
+    private Integer viewCount;
+    private Integer commentAndReplyCount;
 }

@@ -5,14 +5,16 @@ import lombok.*;
 import java.time.Instant;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
 public class PasswordLastUpdate {
-    public Long id;
-    public UUID memberId;
-    public String username;
-    public Instant createdAt;
+    private Long id;
+    private UUID memberId;
+    private String username;
+    private Instant createdAt;
 }

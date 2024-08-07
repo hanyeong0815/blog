@@ -5,15 +5,17 @@ import lombok.*;
 import java.time.Instant;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
 public class PasswordHistoryLog {
-    public UUID id;
-    public UUID memberId;
-    public String username;
-    public String personalSignedDigest;
-    public Instant createdAt;
+    private UUID id;
+    private UUID memberId;
+    private String username;
+    private String personalSignedDigest;
+    private Instant createdAt;
 }

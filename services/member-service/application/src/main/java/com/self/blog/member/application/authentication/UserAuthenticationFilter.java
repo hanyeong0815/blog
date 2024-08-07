@@ -54,8 +54,8 @@ public class UserAuthenticationFilter extends UsernamePasswordAuthenticationFilt
             String requestBody = StreamUtils.copyToString(request.getInputStream(), StandardCharsets.UTF_8);
             ObjectMapper objectMapper = new ObjectMapper();
             Member loginRequest = objectMapper.readValue(requestBody, Member.class);
-            username = loginRequest.username.trim();
-            password = (loginRequest.password != null) ? loginRequest.password : "";
+            username = loginRequest.getUsername().trim();
+            password = (loginRequest.getPassword() != null) ? loginRequest.getPassword() : "";
         } catch (Exception e) {
             throw new BadCredentialsException("invalid credential request");
         }

@@ -1,17 +1,17 @@
 package com.self.blog.member.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.Instant;
 
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class RefreshToken {
-    public String refreshToken;
-    public String subject;
-    public Instant createdAt;
-    public Long ttl;
+    private String refreshToken;
+    private String subject;
+    private Instant createdAt;
+    private Long ttl;
 }

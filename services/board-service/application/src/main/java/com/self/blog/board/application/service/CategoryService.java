@@ -16,7 +16,7 @@ public class CategoryService implements CategorySaveUseCase {
 
     @Override
     public Category saveCategory(Category category) {
-        boolean hasCategory = categoryRepository.existsByCategory(category.category);
+        boolean hasCategory = categoryRepository.existsByCategory(category.getCategory());
         validate(
                 !hasCategory,
                 CategoryErrorCode.CATEGORY_ALREADY_USED

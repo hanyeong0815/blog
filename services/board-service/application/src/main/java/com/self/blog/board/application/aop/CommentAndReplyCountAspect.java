@@ -22,7 +22,7 @@ public class CommentAndReplyCountAspect {
         Object result = pjp.proceed();
 
         BoardView boardView = boardViewRepository.findById(boardId).orElseThrow(BoardErrorCode.DEFAULT::defaultException);
-        boardView.commentAndReplyCount += 1;
+        boardView.setCommentAndReplyCount(boardView.getCommentAndReplyCount() + 1);
         boardViewRepository.save(boardView);
 
         return result;
@@ -35,7 +35,7 @@ public class CommentAndReplyCountAspect {
         String boardId = commentOrReplyId.substring(0, commentOrReplyId.indexOf("_"));
 
         BoardView boardView = boardViewRepository.findById(boardId).orElseThrow(BoardErrorCode.DEFAULT::defaultException);
-        boardView.commentAndReplyCount += 1;
+        boardView.setCommentAndReplyCount(boardView.getCommentAndReplyCount() + 1);
         boardViewRepository.save(boardView);
 
         return result;

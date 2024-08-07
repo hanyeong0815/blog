@@ -6,9 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -16,6 +14,8 @@ import static com.self.blog.profile.rdb.support.ProfileSchemaConstants.SCHEMA;
 import static com.self.blog.profile.rdb.support.ProfileSchemaConstants.TB_PROFILE;
 
 @Entity
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,11 +25,11 @@ import static com.self.blog.profile.rdb.support.ProfileSchemaConstants.TB_PROFIL
         name = TB_PROFILE
 )
 public class MemberProfileEntity extends BaseEntity {
-    public UUID memberId;
-    public String username;
-    public String email;
+    private UUID memberId;
+    private String username;
+    private String email;
     @Enumerated(EnumType.STRING)
-    public GenderType genderType;
-    public String name;
-    public String nickname;
+    private GenderType genderType;
+    private String name;
+    private String nickname;
 }
