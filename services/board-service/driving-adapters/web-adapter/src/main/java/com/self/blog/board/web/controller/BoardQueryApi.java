@@ -1,7 +1,7 @@
 package com.self.blog.board.web.controller;
 
 import com.self.blog.board.application.usecase.data.BoardAndViewCount.BoardAndViewCountResponse;
-import com.self.blog.board.application.usecase.data.BoardListView.BoardListViewResponse;
+import com.self.blog.board.application.usecase.data.BoardListViewDto.BoardListResponse;
 import com.self.blog.board.web.service.BoardDetailViewProxyService;
 import com.self.blog.board.web.service.BoardListViewProxyService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("board")
 @RequiredArgsConstructor
@@ -23,7 +21,7 @@ public class BoardQueryApi {
     private final BoardDetailViewProxyService boardDetailViewProxyService;
 
     @GetMapping("")
-    public List<BoardListViewResponse> boardListView(@PageableDefault Pageable pageable) {
+    public BoardListResponse boardListView(@PageableDefault Pageable pageable) {
         pageable = pageable.previousOrFirst();
         return boardListViewProxyService.boardListView(pageable);
     }

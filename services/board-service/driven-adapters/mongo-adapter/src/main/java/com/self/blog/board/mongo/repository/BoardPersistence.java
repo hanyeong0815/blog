@@ -6,10 +6,10 @@ import com.self.blog.board.mongo.entity.BoardEntity;
 import com.self.blog.board.mongo.mapper.BoardEntityMapper;
 import com.self.blog.board.readmodels.BoardReadModels.BoardListViewReadModels;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -38,9 +38,8 @@ public class BoardPersistence implements BoardRepository {
     }
 
     @Override
-    public List<BoardListViewReadModels> findAllBy(Pageable pageable) {
-        return repository.findAllBy(pageable).stream()
-                .map(mapper::projectionToReadModel)
-                .toList();
+    public Page<BoardListViewReadModels> findAllBy(Pageable pageable) {
+        return repository.findAllBy(pageable)
+                .map(mapper::projectionToReadModel);
     }
 }
