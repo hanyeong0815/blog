@@ -93,7 +93,7 @@ docker-compose down -v
 - 본 프로젝트는 [docker desktop](https://www.docker.com/products/docker-desktop/)과 [git](https://git-scm.com/downloads)이 설치되어 있음을 전제하에 작성되었습니다.
 
 ### PORT
-> BE: 8080, 8090, 8100<br/>
+> BE: 8080, 8090, 8100, 8000<br/>
 > RDB: 5432, 5442<br/>
 > Redis: 6379<br/>
 > MongoDB: 27017, 27027<br/>
