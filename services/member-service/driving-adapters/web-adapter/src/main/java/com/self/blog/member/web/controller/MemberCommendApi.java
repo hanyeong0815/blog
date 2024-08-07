@@ -1,8 +1,10 @@
 package com.self.blog.member.web.controller;
 
+import com.self.blog.member.web.dto.InvitationCodeDto;
 import com.self.blog.member.web.dto.MemberLoginDto.MemberLoginResponseDto;
 import com.self.blog.member.web.dto.MemberSignupDto.MemberSignupRequestDto;
 import com.self.blog.member.web.dto.PasswordUpdateDto.PasswordUpdateRequestDto;
+import com.self.blog.member.web.service.CreateInvitationCodeProxyService;
 import com.self.blog.member.web.service.MemberSignupProxyService;
 import com.self.blog.member.web.service.PasswordUpdateProxyService;
 import jakarta.validation.Valid;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberCommendApi {
     private final MemberSignupProxyService memberSignupProxyService;
     private final PasswordUpdateProxyService passwordUpdateProxyService;
+    private final CreateInvitationCodeProxyService createInvitationCodeProxyService;
 
     @PostMapping("")
     public MemberLoginResponseDto signup(@RequestBody @Valid MemberSignupRequestDto dto) {
@@ -24,5 +27,10 @@ public class MemberCommendApi {
     @PatchMapping("password-update")
     public boolean updatePassword(@RequestBody PasswordUpdateRequestDto dto) {
         return passwordUpdateProxyService.passwordUpdate(dto);
+    }
+
+    @PostMapping("invitation-code/send")
+    public boolean createInvitationCode(@RequestBody @Valid InvitationCodeDto.InvitationCodeRequestDto dto) {
+        return createInvitationCodeProxyService.createInvitationCode(dto.email());
     }
 }

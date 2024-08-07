@@ -181,6 +181,27 @@ project(mongoCore) {
     }
 }
 
+project(webClientCore) {
+    dependencies {
+        implementation commonProject
+        api 'org.springframework.boot:spring-boot-starter-webflux'
+    }
+}
+
+project(notificationEmailData) {
+    dependencies {
+        implementation commonProject
+    }
+}
+
+project(notificationEmailClient) {
+    dependencies {
+        implementation commonProject
+        api project(notificationEmailData)
+        api project(webClientCore)
+    }
+}
+
 // member-service ------------------------------------------------------------------------------------------------
 
 project(memberService) {
@@ -224,10 +245,12 @@ project(memberApplication) {
     dependencies {
         implementation commonProject
         implementation project(gsonCore)
+        implementation project(webClientCore)
+        implementation project(notificationEmailClient)
+        api project(securityCore)
         api project(memberProfileGrpcInterfaceCore)
         api project(memberDomain)
         api project(memberReadModels)
-        api project(securityCore)
 
         // AOP
         implementation 'org.springframework.boot:spring-boot-starter-aop'
@@ -421,6 +444,10 @@ project(boardService) {
         implementation 'org.springframework.boot:spring-boot-starter-web'
         implementation 'org.springframework.boot:spring-boot-starter-validation'
     }
+
+    bootJar {
+        enabled = true
+    }
 }
 
 project(boardDomain) {
@@ -497,5 +524,61 @@ project(boardWebAdapter) {
         implementation 'org.mapstruct:mapstruct:1.5.3.Final'
         annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
         annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    }
+}
+
+// member-profile-service ------------------------------------------------------------------------------------------------
+
+project(notificationService) {
+    dependencies {
+        implementation commonProject
+        implementation project(globalExceptionHandlerCore)
+        implementation project(notificationApplication)
+        implementation project(notificationInternalAdapter)
+
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+        implementation 'org.springframework.boot:spring-boot-starter-validation'
+    }
+
+    bootJar {
+        enabled = true
+    }
+}
+
+project(notificationDomain) {
+    dependencies {
+        implementation commonProject
+        implementation project(gsonCore)
+    }
+}
+
+project(notificationReadModels) {
+    dependencies {
+        implementation commonProject
+        implementation project(gsonCore)
+        implementation project(notificationDomain)
+    }
+}
+
+project(notificationApplication) {
+    dependencies {
+        implementation commonProject
+        implementation project(gsonCore)
+        implementation project(notificationEmailData)
+        api project(notificationDomain)
+        api project(notificationReadModels)
+
+        api 'org.springframework.boot:spring-boot-starter-mail'
+    }
+}
+
+project(notificationInternalAdapter) {
+    dependencies {
+        implementation commonProject
+        implementation project(gsonCore)
+        implementation project(notificationEmailData)
+        implementation project(notificationApplication)
+
+        implementation 'org.springframework.boot:spring-boot-starter-web'
     }
 }

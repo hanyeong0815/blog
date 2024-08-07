@@ -56,6 +56,11 @@ public class PasswordUpdateAspect {
     public void updatePasswordLastUpdate(String username, String password) {
         Instant now = serverTime.nowInstant();
         passwordLastUpdateRepository.updateCreatedAt(username, now);
+    }
+
+    @After(value = "@annotation(PasswordUpdate) && args(username, password)", argNames = "username,password")
+    public void createPasswordHistoryLogForPasswordUpdate(String username, String password) {
+        Instant now = serverTime.nowInstant();
 
         MemberStaticSalt memberStaticSalt = memberStaticSaltRepository.findTopByUsernameOrderByCreatedAt(username)
                 .orElseThrow(MemberErrorCode.DEFAULT::defaultException);
@@ -76,4 +81,5 @@ public class PasswordUpdateAspect {
 
         passwordHistoryLogRepository.save(passwordHistoryLog);
     }
+
 }

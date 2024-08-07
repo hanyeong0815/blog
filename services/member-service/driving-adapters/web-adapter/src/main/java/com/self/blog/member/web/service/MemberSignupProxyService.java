@@ -55,6 +55,7 @@ public class MemberSignupProxyService {
         JwtTokenPair jwtTokenPair = memberLoginUseCase.login(auth);
         return MemberLoginResponseDto.builder()
                 .username(auth.getName())
+                .nickname(dto.nickname())
                 .jwtTokenPair(jwtTokenPair)
                 .build();
     }
