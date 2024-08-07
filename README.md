@@ -32,7 +32,7 @@ The primary goal is to identify and correct any mistakes.
 - This project was developed with the assumption that [Docker Desktop](https://www.docker.com/products/docker-desktop/) and [Git](https://git-scm.com/downloads) are installed.
 
 ### PORT
-> BE: 8080, 8090, 8100<br/>
+> BE: 8080, 8090, 8100, 8000<br/>
 > RDB: 5432, 5442<br/>
 > Redis: 6379<br/>
 > MongoDB: 27017, 27027<br/>
@@ -153,7 +153,7 @@ docker-compose down -v
 - 本プロジェクトは [docker desktop](https://www.docker.com/products/docker-desktop/)と [git](https://git-scm.com/downloads)が設置された事を前提に作成されました。
 
 ### PORT
-> BE: 8080, 8090, 8100<br/>
+> BE: 8080, 8090, 8100, 8000<br/>
 > RDB: 5432, 5442<br/>
 > Redis: 6379<br/>
 > MongoDB: 27017, 27027<br/>
