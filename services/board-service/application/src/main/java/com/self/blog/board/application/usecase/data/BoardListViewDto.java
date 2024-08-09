@@ -3,11 +3,20 @@ package com.self.blog.board.application.usecase.data;
 import lombok.Builder;
 
 import java.time.Instant;
+import java.util.List;
 
-public record BoardListView() {
+public record BoardListViewDto() {
     @Builder
-    public record BoardListViewResponse(
+    public record BoardListResponse(
+            List<BoardListView> boardList,
+            Integer totalPage,
+            Long totalElement
+    ) {}
+
+    @Builder
+    public record BoardListView (
             String boardId,
+            String category,
             String title,
             String username,
             Integer viewCount,

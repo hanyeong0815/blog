@@ -23,6 +23,6 @@ public class BoardSaveProxyService {
     public BoardAndViewCountResponse boardSave(BoardSaveRequestDto req) {
         Board board = boardDtoMapper.toDomain(req, new ArrayList<>(), serverTime.nowInstant());
 
-        return boardSaveUseCase.boardSave(req.category(), board);
+        return boardSaveUseCase.boardSave(board);
     }
 }

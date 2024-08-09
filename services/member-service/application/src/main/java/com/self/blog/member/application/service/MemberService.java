@@ -17,8 +17,10 @@ import com.self.blog.member.domain.InvitationCode;
 import com.self.blog.member.domain.Member;
 import com.self.blog.member.domain.RefreshToken;
 import com.self.blog.security.jwt.JwtTokenProvider;
+import com.self.blog.security.jwt.exception.JwtErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,9 +30,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Instant;
+import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import static com.self.blog.common.utils.exception.Preconditions.validate;
 
@@ -45,7 +49,8 @@ public class MemberService
         VerifyUsernameUseCase,
         GetNicknameUseCase,
         CreateInvitationCodeUseCase,
-        CertifyInvitationCodeUseCase
+        CertifyInvitationCodeUseCase,
+        RefreshJwtTokenUseCase
 {
     private final MemberRepository memberRepository;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -61,6 +66,7 @@ public class MemberService
     private final NotificationEmailPostClient notificationEmailPostClient;
     private final WebClient webClient = WebClient.builder().baseUrl(BOARD_URL).build();
 
+    private static final Long REFRESH_TOKEN_TTL = 2_628_000L;
     private static final String BOARD_URL = "http://localhost:8090";
 
     @Override
@@ -93,22 +99,32 @@ public class MemberService
     }
 
     @Override
-    public JwtTokenPair login(Authentication authentication) {
-        // TODO 현재시간이 안맞음 / annotation을 활용한 현재시간을 받는 방법 고려
-        Instant now = serverTime.nowInstant();
+    public JwtTokenPair login(Member member) {
+        String authorities = getAuthorities(memberRepository.getAuthorities(member));
 
-        String accessToken = jwtTokenProvider.generateToken(authentication); // accessToken 발행
-        String refreshToken = random.nextString(); // refreshToken 발행 -> TODO refreshToken도 JWT형식으로 발행할 필요가 있는지 고려
+        String accessToken = jwtTokenProvider.generateToken(
+                member.getUsername(),
+                authorities
+        );
 
-        // refreshToken에관한 정보 redis에 저장
-        RefreshToken refreshTokenDomain = RefreshToken.builder()
+        // accessToken 발행
+        String refreshToken = createRefreshToken(member.getUsername());
+
+        return JwtTokenPair.builder()
+                .accessToken(STR."Bearer \{accessToken}") // Java21의 기능을 활요한 String format
                 .refreshToken(refreshToken)
-                .subject(authentication.getName())
-                .createdAt(now)
-                .ttl(2_628_000L)
                 .build();
+    }
 
-        refreshTokenRepository.save(refreshTokenDomain);
+    @Override
+    public JwtTokenPair login(Authentication authentication) {
+        String accessToken = jwtTokenProvider.generateToken(
+                authentication.getName(),
+                getAuthorities(authentication.getAuthorities())
+        );
+
+        // accessToken 발행
+        String refreshToken = createRefreshToken(authentication.getName());
 
         return JwtTokenPair.builder()
                 .accessToken(STR."Bearer \{accessToken}") // Java21의 기능을 활요한 String format
@@ -185,5 +201,59 @@ public class MemberService
 
         invitationCodeRepository.deleteById(filteringInvitationCode.get().getInvitationCode());
         return true;
+    }
+
+    @Override
+    public JwtTokenPair refreshJwtToken(String refreshToken) {
+        // Search refreshToken from redis for using member's username
+        RefreshToken refreshTokenDomain = refreshTokenRepository.findById(refreshToken)
+                .orElseThrow(
+                        JwtErrorCode.INVALID_JWT_TOKEN::defaultException
+                );
+
+        // extract member's authorities
+        Collection<? extends GrantedAuthority> memberRoles = memberRepository.findRolesByUsername(
+                refreshTokenDomain.getSubject()
+        );
+
+        // create accessToken
+        String accessToken = jwtTokenProvider.generateToken(
+                refreshTokenDomain.getSubject(),
+                getAuthorities(memberRoles)
+        );
+
+        // create refreshToken
+        String newRefreshToken = createRefreshToken(refreshTokenDomain.getSubject());
+
+        // delete old refreshToken
+        refreshTokenRepository.deleteById(refreshTokenDomain.getRefreshToken());
+
+        return JwtTokenPair.builder()
+                .accessToken(accessToken)
+                .refreshToken(newRefreshToken)
+                .build();
+    }
+
+    private String getAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        return authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+    }
+
+    private String createRefreshToken(String subject) {
+        // TODO 현재시간이 안맞음 / annotation을 활용한 현재시간을 받는 방법 고려
+        Instant now = serverTime.nowInstant();
+
+        String refreshToken = random.nextString(); // refreshToken 발행
+
+        // refreshToken에관한 정보 redis에 저장
+        RefreshToken refreshTokenDomain = RefreshToken.builder()
+                .refreshToken(refreshToken)
+                .subject(subject)
+                .createdAt(now)
+                .ttl(REFRESH_TOKEN_TTL)
+                .build();
+
+        return refreshTokenRepository.save(refreshTokenDomain).getRefreshToken();
     }
 }

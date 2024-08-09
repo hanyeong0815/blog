@@ -14,7 +14,7 @@ import java.util.List;
 @EqualsAndHashCode
 public class Board {
     private String id;
-    private String categoryId;
+    private String category;
     private String username;
     private String title;
     private String content;

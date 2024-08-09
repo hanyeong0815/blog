@@ -7,6 +7,7 @@ import com.self.blog.board.mongo.mapper.CategoryEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -29,8 +30,10 @@ public class CategoryPersistence implements CategoryRepository {
     }
 
     @Override
-    public Optional<Category> findByCategory(String category) {
-        return repository.findByCategory(category).map(mapper::toDomain);
+    public List<Category> findAll() {
+        return repository.findAll().stream()
+                .map(mapper::toDomain)
+                .toList();
     }
 
     @Override
