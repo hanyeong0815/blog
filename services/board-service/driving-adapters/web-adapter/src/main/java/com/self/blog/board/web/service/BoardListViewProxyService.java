@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class BoardListViewProxyService {
     private final BoardListViewUseCase boardListViewUseCase;
 
-    public BoardListResponse boardListView(Pageable pageable) {
-        return boardListViewUseCase.boardListView(pageable);
+    public BoardListResponse boardListView(String category, Pageable pageable) {
+        return boardListViewUseCase.boardListView(category, pageable);
     }
 }

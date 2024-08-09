@@ -42,4 +42,10 @@ public class BoardPersistence implements BoardRepository {
         return repository.findAllBy(pageable)
                 .map(mapper::projectionToReadModel);
     }
+
+    @Override
+    public Page<BoardListViewReadModels> findByCategory(String category, Pageable pageable) {
+        return repository.findByCategory(category, pageable)
+                .map(mapper::projectionToReadModel);
+    }
 }

@@ -4,5 +4,5 @@ import com.self.blog.board.application.usecase.data.BoardListViewDto.BoardListRe
 import org.springframework.data.domain.Pageable;
 
 public interface BoardListViewUseCase {
-    BoardListResponse boardListView(Pageable pageable);
+    BoardListResponse boardListView(String category, Pageable pageable);
 }

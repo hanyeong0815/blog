@@ -20,7 +20,7 @@ public class BoardEntity {
     @Id
     private String id;
     @Indexed
-    private String categoryId;
+    private String category;
     @Indexed
     private String username;
     @Indexed

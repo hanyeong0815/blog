@@ -16,6 +16,7 @@ public record BoardListViewDto() {
     @Builder
     public record BoardListView (
             String boardId,
+            String category,
             String title,
             String username,
             Integer viewCount,

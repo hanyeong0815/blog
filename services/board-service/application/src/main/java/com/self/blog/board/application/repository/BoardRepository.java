@@ -12,4 +12,5 @@ public interface BoardRepository {
     Optional<Board> findById(String id);
     Optional<Board> findByUsername(String username);
     Page<BoardListViewReadModels> findAllBy(Pageable pageable);
+    Page<BoardListViewReadModels> findByCategory(String category, Pageable pageable);
 }
