@@ -14,6 +14,7 @@ import java.util.List;
 public class Comment {
     private String id;
     private String username;
+    private String nickname;
     private String content;
     private Instant createdAt;
     private List<Reply> replies;

@@ -8,6 +8,7 @@ public record BoardReadModels() {
             String category,
             String title,
             String username,
+            String nickname,
             Instant createdAt
     ) {}
 }

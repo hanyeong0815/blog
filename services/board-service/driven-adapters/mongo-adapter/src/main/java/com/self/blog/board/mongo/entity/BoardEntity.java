@@ -24,6 +24,8 @@ public class BoardEntity {
     @Indexed
     private String username;
     @Indexed
+    private String nickname;
+    @Indexed
     private String title;
     @Indexed
     private String content;

@@ -16,6 +16,7 @@ public class Board {
     private String id;
     private String category;
     private String username;
+    private String nickname;
     private String title;
     private String content;
     private Instant createdAt;

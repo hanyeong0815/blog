@@ -87,6 +87,7 @@ public class BoardService implements
                                             .category(board.category())
                                             .title(board.title())
                                             .username(board.username())
+                                            .nickname(board.nickname())
                                             .viewCount(boardView.getViewCount())
                                             .commentCount(boardView.getCommentAndReplyCount())
                                             .createdAt(board.createdAt())

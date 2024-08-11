@@ -4,6 +4,7 @@ public record ReplySaveDto() {
     public record ReplySaveRequestDto(
             String targetId,
             String username,
+            String nickname,
             String content
     ) {}
 }

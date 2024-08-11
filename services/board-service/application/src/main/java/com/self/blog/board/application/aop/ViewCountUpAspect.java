@@ -17,12 +17,13 @@ public class ViewCountUpAspect {
 
     @Before(value = "@annotation(ViewCountUp) && args(boardId, username, viewIp)", argNames = "boardId,username,viewIp")
     public void viewCountUp(String boardId, String username, String viewIp) {
-        boolean hasViewCountValidation = viewCountValidationRepository
-                .existsViewCountValidationByIdAndUsernameAndViewIp(
-                        boardId, username, viewIp
-                );
-
-        if (hasViewCountValidation) return;
+        // FIXME 계속 조회수 안올가는 문제있음
+//        boolean hasViewCountValidation = viewCountValidationRepository
+//                .existsViewCountValidationByIdAndUsernameAndViewIp(
+//                        boardId, username, viewIp
+//                );
+//
+//        if (hasViewCountValidation) return;
 
         boardViewRepository.viewCountUp(boardId);
         ViewCountValidation viewCountValidation = ViewCountValidation.builder()

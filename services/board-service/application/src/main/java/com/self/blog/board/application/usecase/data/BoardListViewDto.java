@@ -19,6 +19,7 @@ public record BoardListViewDto() {
             String category,
             String title,
             String username,
+            String nickname,
             Integer viewCount,
             Integer commentCount,
             Instant createdAt
