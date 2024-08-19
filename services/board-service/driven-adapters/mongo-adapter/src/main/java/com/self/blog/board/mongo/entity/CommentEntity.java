@@ -29,5 +29,5 @@ public class CommentEntity {
     private Instant createdAt;
     @Indexed
     private List<ReplyEntity> replies;
-    private boolean isDeleted;
+    private boolean deleted;
 }

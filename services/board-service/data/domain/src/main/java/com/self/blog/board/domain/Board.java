@@ -21,4 +21,5 @@ public class Board {
     private String content;
     private Instant createdAt;
     private List<Comment> comments;
+    private Boolean deleted;
 }

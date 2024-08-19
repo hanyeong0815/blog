@@ -34,4 +34,6 @@ public class BoardEntity {
     @DBRef
     @Indexed
     private List<CommentEntity> comments;
+    @Indexed
+    private Boolean deleted;
 }

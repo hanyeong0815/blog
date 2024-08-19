@@ -7,6 +7,7 @@ import com.self.blog.board.application.repository.BoardRepository;
 import com.self.blog.board.application.repository.CommentRepository;
 import com.self.blog.board.application.usecase.CommentDeleteUseCase;
 import com.self.blog.board.application.usecase.CommentSaveUseCase;
+import com.self.blog.board.application.usecase.CommentUpdateUseCase;
 import com.self.blog.board.application.usecase.ReplySaveUseCase;
 import com.self.blog.board.domain.Board;
 import com.self.blog.board.domain.Comment;
@@ -19,13 +20,16 @@ import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import static com.self.blog.common.utils.exception.Preconditions.validate;
+
 @Service
 @Log4j2
 @RequiredArgsConstructor
 public class CommentService implements
         CommentSaveUseCase,
         ReplySaveUseCase,
-        CommentDeleteUseCase
+        CommentDeleteUseCase,
+        CommentUpdateUseCase
 {
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
@@ -83,13 +87,19 @@ public class CommentService implements
     }
 
     @Override
-    public Comment deleteComment(String commentId) {
+    public Comment deleteComment(String commentId, String username) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(
                         CommentErrorCode.COMMENT_NOT_FOUND::defaultException
                 );
 
+        validate(
+                comment.getUsername().equals(username),
+                CommentErrorCode.DEFAULT
+        );
+
         comment.setUsername(null);
+        comment.setNickname(null);
         comment.setContent("삭제된 댓글입니다.");
         comment.setDeleted(true);
 
@@ -155,7 +165,7 @@ public class CommentService implements
             }
 
             String[] splitIds = targetList.getLast().split("_");
-            int newIdNumber = Integer.parseInt(splitIds[splitIds.length - 1] + 1);
+            int newIdNumber = Integer.parseInt(splitIds[splitIds.length - 1]) + 1;
             StringBuilder newId = new StringBuilder();
             for (int i = 0; i < splitIds.length - 1; i++) {
                 newId.append(splitIds[i]).append("_");
@@ -166,5 +176,25 @@ public class CommentService implements
         } finally {
             lock.unlock();
         }
+    }
+
+    @Override
+    public boolean commentUpdate(Comment comment) {
+        Comment findComment = commentRepository.findById(comment.getId())
+                .orElseThrow(
+                        CommentErrorCode.COMMENT_NOT_FOUND::defaultException
+                );
+
+        validate(
+                findComment.getUsername().equals(comment.getUsername()),
+                CommentErrorCode.DEFAULT
+        );
+
+        Comment cloneComment = findComment.toBuilder()
+                .content(comment.getContent())
+                .createdAt(comment.getCreatedAt())
+                .build();
+
+        return commentRepository.save(cloneComment) != null;
     }
 }

@@ -11,7 +11,8 @@ import java.util.Optional;
 
 public interface BoardMongoRepository extends MongoRepository<BoardEntity, String> {
     Optional<BoardEntity> findByUsername(String username);
-    Page<BoardListViewProjection> findAllBy (Pageable pageable);
-    Page<BoardListViewProjection> findByCategory(String Category, Pageable pageable);
+    Page<BoardListViewProjection> findByDeleted (Pageable pageable, boolean deleted);
+    Page<BoardListViewProjection> findByCategoryAndDeleted(String Category, Pageable pageable, boolean deleted);
     Optional<BoardFindForUpdateProjection> findProjectionsById(String id);
+    boolean existsByIdAndUsername(String id, String username);
 }

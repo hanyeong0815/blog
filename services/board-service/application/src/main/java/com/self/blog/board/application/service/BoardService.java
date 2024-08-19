@@ -5,10 +5,7 @@ import com.self.blog.board.application.exception.BoardErrorCode;
 import com.self.blog.board.application.mapper.BoardMapper;
 import com.self.blog.board.application.repository.BoardRepository;
 import com.self.blog.board.application.repository.BoardViewRepository;
-import com.self.blog.board.application.usecase.BoardDetailViewUseCase;
-import com.self.blog.board.application.usecase.BoardFindForUpdateUseCase;
-import com.self.blog.board.application.usecase.BoardListViewUseCase;
-import com.self.blog.board.application.usecase.BoardSaveUseCase;
+import com.self.blog.board.application.usecase.*;
 import com.self.blog.board.application.usecase.data.BoardAndViewCount.BoardAndViewCountResponse;
 import com.self.blog.board.application.usecase.data.BoardListViewDto.BoardListResponse;
 import com.self.blog.board.application.usecase.data.BoardListViewDto.BoardListView;
@@ -30,7 +27,8 @@ public class BoardService implements
         BoardSaveUseCase,
         BoardDetailViewUseCase,
         BoardListViewUseCase,
-        BoardFindForUpdateUseCase
+        BoardFindForUpdateUseCase,
+        BoardDeleteUseCase
 {
     private final BoardRepository boardRepository;
     private final BoardViewRepository boardViewRepository;
@@ -53,7 +51,7 @@ public class BoardService implements
                 .build();
         BoardView savedBoardView = boardViewRepository.save(boardView);
 
-        return boardMapper.from(savedBoard, savedBoardView);
+        return boardMapper.from(savedBoard, savedBoardView, savedBoard.getComments());
     }
 
     @ViewCountUp
@@ -68,7 +66,7 @@ public class BoardService implements
                         BoardErrorCode.DEFAULT::defaultException
                 );
 
-        return boardMapper.from(board, boardView);
+        return boardMapper.from(board, boardView, board.getComments());
     }
 
     @Override
@@ -119,7 +117,7 @@ public class BoardService implements
                 );
 
         validate(
-                !boardReadModel.username().equals(username),
+                boardReadModel.username().equals(username),
                 BoardErrorCode.DEFAULT
         );
 
@@ -146,6 +144,26 @@ public class BoardService implements
                         BoardErrorCode.DEFAULT::defaultException
                 );
 
-        return boardMapper.from(updateBoard, boardView);
+        return boardMapper.from(updateBoard, boardView, updateBoard.getComments());
+    }
+
+    @Override
+    public boolean boardDelete(String boardId, String username) {
+        Board findBoard = boardRepository.findById(boardId)
+                .orElseThrow(
+                        BoardErrorCode.BOARD_NOT_FOUND::defaultException
+                );
+
+        validate(
+                findBoard.getUsername().equals(username),
+                BoardErrorCode.DEFAULT
+        );
+        boardRepository.save(
+                findBoard.toBuilder()
+                        .deleted(true)
+                        .build()
+        );
+
+        return true;
     }
 }

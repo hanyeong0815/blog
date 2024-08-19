@@ -40,13 +40,13 @@ public class BoardPersistence implements BoardRepository {
 
     @Override
     public Page<BoardListViewReadModel> findAllBy(Pageable pageable) {
-        return repository.findAllBy(pageable)
+        return repository.findByDeleted(pageable, false)
                 .map(mapper::projectionToReadModel);
     }
 
     @Override
     public Page<BoardListViewReadModel> findByCategory(String category, Pageable pageable) {
-        return repository.findByCategory(category, pageable)
+        return repository.findByCategoryAndDeleted(category, pageable, false)
                 .map(mapper::projectionToReadModel);
     }
 
@@ -54,5 +54,10 @@ public class BoardPersistence implements BoardRepository {
     public Optional<BoardFindForUpdateReadModel> findByIdForUpdate(String boardId) {
         return repository.findProjectionsById(boardId)
                 .map(mapper::projectionToReadModel);
+    }
+
+    @Override
+    public boolean existsByIdAndUsername(String boardId, String username) {
+        return repository.existsByIdAndUsername(boardId, username);
     }
 }

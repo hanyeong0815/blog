@@ -18,5 +18,5 @@ public class Reply {
     private String content;
     private Instant createdAt;
     private List<Reply> replies;
-    private boolean isDeleted;
+    private boolean deleted;
 }

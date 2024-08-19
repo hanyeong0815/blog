@@ -15,4 +15,5 @@ public interface BoardRepository {
     Page<BoardListViewReadModel> findAllBy(Pageable pageable);
     Page<BoardListViewReadModel> findByCategory(String category, Pageable pageable);
     Optional<BoardFindForUpdateReadModel> findByIdForUpdate(String boardId);
+    boolean existsByIdAndUsername(String boardId, String username);
 }
