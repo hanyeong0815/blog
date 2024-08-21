@@ -14,8 +14,9 @@ import java.util.List;
 public class ReplyEntity {
     private String id;
     private String username;
+    private String nickname;
     private String content;
     private Instant createdAt;
     private List<ReplyEntity> replies;
-    private boolean isDeleted;
+    private boolean deleted;
 }

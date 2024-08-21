@@ -21,7 +21,7 @@ public class BoardSaveProxyService {
     private final ServerTime serverTime;
 
     public BoardAndViewCountResponse boardSave(BoardSaveRequestDto req) {
-        Board board = boardDtoMapper.toDomain(req, new ArrayList<>(), serverTime.nowInstant());
+        Board board = boardDtoMapper.toDomain(req, new ArrayList<>(), serverTime.nowInstant(), false);
 
         return boardSaveUseCase.boardSave(board);
     }

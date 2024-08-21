@@ -22,7 +22,7 @@ public class ViewCountValidationPersistence implements ViewCountValidationReposi
     }
 
     @Override
-    public boolean existsViewCountValidationByIdAndUsernameAndViewIp(String boardId, String username, String viewIp) {
-        return repository.existsByBoardIdAndUsername(boardId, username) || repository.existsByBoardIdAndViewIp(boardId, viewIp);
+    public boolean existsByIdAndUsername(String boardId, String username) {
+        return repository.existsByBoardIdAndUsername(boardId, username);
     }
 }

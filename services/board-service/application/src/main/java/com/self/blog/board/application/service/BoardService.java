@@ -5,26 +5,30 @@ import com.self.blog.board.application.exception.BoardErrorCode;
 import com.self.blog.board.application.mapper.BoardMapper;
 import com.self.blog.board.application.repository.BoardRepository;
 import com.self.blog.board.application.repository.BoardViewRepository;
-import com.self.blog.board.application.usecase.BoardDetailViewUseCase;
-import com.self.blog.board.application.usecase.BoardListViewUseCase;
-import com.self.blog.board.application.usecase.BoardSaveUseCase;
+import com.self.blog.board.application.usecase.*;
 import com.self.blog.board.application.usecase.data.BoardAndViewCount.BoardAndViewCountResponse;
 import com.self.blog.board.application.usecase.data.BoardListViewDto.BoardListResponse;
 import com.self.blog.board.application.usecase.data.BoardListViewDto.BoardListView;
+import com.self.blog.board.application.usecase.data.BoardUpdateDto.BoardFindForUpdateResponse;
 import com.self.blog.board.domain.Board;
 import com.self.blog.board.domain.BoardView;
-import com.self.blog.board.readmodels.BoardReadModels.BoardListViewReadModels;
+import com.self.blog.board.readmodels.BoardReadModels.BoardFindForUpdateReadModel;
+import com.self.blog.board.readmodels.BoardReadModels.BoardListViewReadModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import static com.self.blog.common.utils.exception.Preconditions.validate;
 
 @Service
 @RequiredArgsConstructor
 public class BoardService implements
         BoardSaveUseCase,
         BoardDetailViewUseCase,
-        BoardListViewUseCase
+        BoardListViewUseCase,
+        BoardFindForUpdateUseCase,
+        BoardDeleteUseCase
 {
     private final BoardRepository boardRepository;
     private final BoardViewRepository boardViewRepository;
@@ -33,6 +37,11 @@ public class BoardService implements
 
     @Override
     public BoardAndViewCountResponse boardSave(Board board) {
+        if(board.getId() != null) {
+            System.out.println("진입");
+            return boardUpdate(board);
+        }
+
         Board savedBoard = boardRepository.save(board);
 
         BoardView boardView = BoardView.builder()
@@ -42,7 +51,7 @@ public class BoardService implements
                 .build();
         BoardView savedBoardView = boardViewRepository.save(boardView);
 
-        return boardMapper.from(savedBoard, savedBoardView);
+        return boardMapper.from(savedBoard, savedBoardView, savedBoard.getComments());
     }
 
     @ViewCountUp
@@ -57,12 +66,12 @@ public class BoardService implements
                         BoardErrorCode.DEFAULT::defaultException
                 );
 
-        return boardMapper.from(board, boardView);
+        return boardMapper.from(board, boardView, board.getComments());
     }
 
     @Override
     public BoardListResponse boardListView(String category, Pageable pageable) {
-        Page<BoardListViewReadModels> boardListViewReadModelsList;
+        Page<BoardListViewReadModel> boardListViewReadModelsList;
 
         if(category == null) {
             boardListViewReadModelsList = boardRepository.findAllBy(pageable);
@@ -87,6 +96,7 @@ public class BoardService implements
                                             .category(board.category())
                                             .title(board.title())
                                             .username(board.username())
+                                            .nickname(board.nickname())
                                             .viewCount(boardView.getViewCount())
                                             .commentCount(boardView.getCommentAndReplyCount())
                                             .createdAt(board.createdAt())
@@ -97,5 +107,63 @@ public class BoardService implements
                 .totalPage(boardListViewReadModelsList.getTotalPages())
                 .totalElement(boardListViewReadModelsList.getTotalElements())
                 .build();
+    }
+
+    @Override
+    public BoardFindForUpdateResponse boardFindForUpdate(String boardId, String username) {
+        BoardFindForUpdateReadModel boardReadModel = boardRepository.findByIdForUpdate(boardId)
+                .orElseThrow(
+                        BoardErrorCode.BOARD_NOT_FOUND::defaultException
+                );
+
+        validate(
+                boardReadModel.username().equals(username),
+                BoardErrorCode.DEFAULT
+        );
+
+        return boardMapper.from(boardReadModel);
+    }
+
+    private BoardAndViewCountResponse boardUpdate(Board board) {
+        Board findBoard = boardRepository.findById(board.getId())
+                .orElseThrow(
+                        BoardErrorCode.BOARD_NOT_FOUND::defaultException
+                );
+
+        Board updateBoard = boardRepository.save(
+                findBoard.toBuilder()
+                        .category(board.getCategory())
+                        .title(board.getTitle())
+                        .content(board.getContent())
+                        .createdAt(board.getCreatedAt())
+                        .build()
+        );
+
+        BoardView boardView = boardViewRepository.findByBoardId(updateBoard.getId())
+                .orElseThrow(
+                        BoardErrorCode.DEFAULT::defaultException
+                );
+
+        return boardMapper.from(updateBoard, boardView, updateBoard.getComments());
+    }
+
+    @Override
+    public boolean boardDelete(String boardId, String username) {
+        Board findBoard = boardRepository.findById(boardId)
+                .orElseThrow(
+                        BoardErrorCode.BOARD_NOT_FOUND::defaultException
+                );
+
+        validate(
+                findBoard.getUsername().equals(username),
+                BoardErrorCode.DEFAULT
+        );
+        boardRepository.save(
+                findBoard.toBuilder()
+                        .deleted(true)
+                        .build()
+        );
+
+        return true;
     }
 }

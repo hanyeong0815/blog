@@ -4,7 +4,8 @@ import com.self.blog.board.application.repository.BoardRepository;
 import com.self.blog.board.domain.Board;
 import com.self.blog.board.mongo.entity.BoardEntity;
 import com.self.blog.board.mongo.mapper.BoardEntityMapper;
-import com.self.blog.board.readmodels.BoardReadModels.BoardListViewReadModels;
+import com.self.blog.board.readmodels.BoardReadModels.BoardFindForUpdateReadModel;
+import com.self.blog.board.readmodels.BoardReadModels.BoardListViewReadModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,14 +39,25 @@ public class BoardPersistence implements BoardRepository {
     }
 
     @Override
-    public Page<BoardListViewReadModels> findAllBy(Pageable pageable) {
-        return repository.findAllBy(pageable)
+    public Page<BoardListViewReadModel> findAllBy(Pageable pageable) {
+        return repository.findByDeleted(pageable, false)
                 .map(mapper::projectionToReadModel);
     }
 
     @Override
-    public Page<BoardListViewReadModels> findByCategory(String category, Pageable pageable) {
-        return repository.findByCategory(category, pageable)
+    public Page<BoardListViewReadModel> findByCategory(String category, Pageable pageable) {
+        return repository.findByCategoryAndDeleted(category, pageable, false)
                 .map(mapper::projectionToReadModel);
+    }
+
+    @Override
+    public Optional<BoardFindForUpdateReadModel> findByIdForUpdate(String boardId) {
+        return repository.findProjectionsById(boardId)
+                .map(mapper::projectionToReadModel);
+    }
+
+    @Override
+    public boolean existsByIdAndUsername(String boardId, String username) {
+        return repository.existsByIdAndUsername(boardId, username);
     }
 }

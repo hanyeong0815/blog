@@ -9,5 +9,5 @@ import java.util.List;
 
 @Mapper
 public interface ReplyDtoMapper {
-    Reply from(ReplySaveRequestDto dto, List<Reply> replies, boolean isDeleted, Instant createdAt);
+    Reply from(ReplySaveRequestDto dto, List<Reply> replies, boolean deleted, Instant createdAt);
 }

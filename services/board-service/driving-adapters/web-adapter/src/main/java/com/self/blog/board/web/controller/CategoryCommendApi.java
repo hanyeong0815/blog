@@ -3,6 +3,7 @@ package com.self.blog.board.web.controller;
 import com.self.blog.board.domain.Category;
 import com.self.blog.board.web.dto.CategoryDto.CategorySaveRequestDto;
 import com.self.blog.board.web.service.CategorySaveProxyService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ public class CategoryCommendApi {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("")
-    public Category saveCategory(@RequestBody CategorySaveRequestDto dto) {
+    public Category saveCategory(@RequestBody @Valid CategorySaveRequestDto dto) {
         return categorySaveProxyService.saveCategory(dto);
     }
 }

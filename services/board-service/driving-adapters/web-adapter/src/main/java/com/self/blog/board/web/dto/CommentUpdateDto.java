@@ -2,14 +2,12 @@ package com.self.blog.board.web.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record ReplySaveDto() {
-    public record ReplySaveRequestDto(
+public record CommentUpdateDto() {
+    public record CommentUpdateRequestDto(
             @NotBlank
-            String targetId,
+            String commentId,
             @NotBlank
             String username,
-            @NotBlank
-            String nickname,
             @NotBlank
             String content
     ) {}

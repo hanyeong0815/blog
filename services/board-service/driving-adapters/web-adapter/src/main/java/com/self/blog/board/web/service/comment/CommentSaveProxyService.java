@@ -1,4 +1,4 @@
-package com.self.blog.board.web.service;
+package com.self.blog.board.web.service.comment;
 
 import com.self.blog.board.application.usecase.CommentSaveUseCase;
 import com.self.blog.board.domain.Comment;

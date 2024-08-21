@@ -24,6 +24,8 @@ public class BoardEntity {
     @Indexed
     private String username;
     @Indexed
+    private String nickname;
+    @Indexed
     private String title;
     @Indexed
     private String content;
@@ -32,4 +34,6 @@ public class BoardEntity {
     @DBRef
     @Indexed
     private List<CommentEntity> comments;
+    @Indexed
+    private Boolean deleted;
 }

@@ -3,20 +3,17 @@ package com.self.blog.board.domain;
 import lombok.*;
 
 import java.time.Instant;
-import java.util.List;
 
+@Builder
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Reply {
+@EqualsAndHashCode
+public class FavoriteBoard {
     private String id;
+    private String boardId;
     private String username;
-    private String nickname;
-    private String content;
     private Instant createdAt;
-    private List<Reply> replies;
-    private boolean deleted;
 }

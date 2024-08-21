@@ -10,5 +10,5 @@ import java.util.List;
 
 @Mapper
 public interface BoardDtoMapper {
-    Board toDomain(BoardSaveRequestDto boardSaveRequestDto, List<Comment> comments, Instant createdAt);
+    Board toDomain(BoardSaveRequestDto boardSaveRequestDto, List<Comment> comments, Instant createdAt, boolean deleted);
 }
