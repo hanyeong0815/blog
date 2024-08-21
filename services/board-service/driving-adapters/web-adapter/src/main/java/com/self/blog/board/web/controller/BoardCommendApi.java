@@ -7,6 +7,7 @@ import com.self.blog.board.web.dto.BoardSaveDto.BoardSaveRequestDto;
 import com.self.blog.board.web.dto.CommentDeleteDto.CommentDeleteRequestDto;
 import com.self.blog.board.web.dto.CommentSaveDto.CommentSaveRequestDto;
 import com.self.blog.board.web.dto.CommentUpdateDto.CommentUpdateRequestDto;
+import com.self.blog.board.web.dto.FavoriteBoardInsertOrDeleteDto.FavoriteBoardInsertOrDeleteRequestDto;
 import com.self.blog.board.web.dto.ReplySaveDto.ReplySaveRequestDto;
 import com.self.blog.board.web.service.*;
 import com.self.blog.board.web.service.comment.CommentDeleteProxyService;
@@ -28,6 +29,7 @@ public class BoardCommendApi {
     private final CommentDeleteProxyService commentDeleteProxyService;
     private final BoardDeleteProxyService boardDeleteProxyService;
     private final CommentUpdateProxyService commentUpdateProxyService;
+    private final FavoriteBoardInsertOrDeleteProxyService favoriteBoardInsertOrDeleteProxyService;
 
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping("")
@@ -63,5 +65,11 @@ public class BoardCommendApi {
     @PatchMapping("comment")
     public boolean commentUpdate(@RequestBody @Valid CommentUpdateRequestDto dto) {
         return commentUpdateProxyService.commentUpdate(dto);
+    }
+
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PostMapping("favorite")
+    public boolean favoriteInsertOrDelete(@RequestBody @Valid FavoriteBoardInsertOrDeleteRequestDto dto) {
+        return favoriteBoardInsertOrDeleteProxyService.favoriteBoardInsertOrDelete(dto.boardId(), dto.username());
     }
 }

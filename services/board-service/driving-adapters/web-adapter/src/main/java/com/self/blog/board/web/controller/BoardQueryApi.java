@@ -6,6 +6,7 @@ import com.self.blog.board.application.usecase.data.BoardUpdateDto.BoardFindForU
 import com.self.blog.board.web.service.BoardDetailViewProxyService;
 import com.self.blog.board.web.service.BoardFindForUpdateProxyService;
 import com.self.blog.board.web.service.BoardListViewProxyService;
+import com.self.blog.board.web.service.FavoriteBoardIsPresentProxyService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ public class BoardQueryApi {
     private final BoardListViewProxyService boardListViewProxyService;
     private final BoardDetailViewProxyService boardDetailViewProxyService;
     private final BoardFindForUpdateProxyService boardFindForUpdateProxyService;
+    private final FavoriteBoardIsPresentProxyService favoriteBoardIsPresentProxyService;
 
     @GetMapping("")
     public BoardListResponse boardListView(
@@ -48,5 +50,13 @@ public class BoardQueryApi {
             @PathVariable(value = "username") String username
     ) {
         return boardFindForUpdateProxyService.boardFindForUpdateResponse(boardId, username);
+    }
+
+    @GetMapping("favorite/{boardId}/{username}")
+    public boolean favoriteBoardIsPresent(
+            @PathVariable(value = "boardId") String boardId,
+            @PathVariable(value = "username") String username
+    ) {
+        return favoriteBoardIsPresentProxyService.favoriteBoardIsPresent(boardId, username);
     }
 }
