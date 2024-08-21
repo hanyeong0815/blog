@@ -21,6 +21,6 @@ public class RefreshTokenEntity {
     @Indexed
     private String subject;
     private Instant createdAt;
-    @TimeToLive(unit = TimeUnit.MILLISECONDS)
+    @TimeToLive(unit = TimeUnit.DAYS)
     private Long ttl;
 }

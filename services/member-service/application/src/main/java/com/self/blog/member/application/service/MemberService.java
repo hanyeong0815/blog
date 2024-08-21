@@ -45,6 +45,7 @@ public class MemberService
         MemberSignupUseCase,
         UserDetailsService,
         MemberLoginUseCase,
+        MemberLogoutUseCase,
         PasswordUpdateUseCase,
         VerifyUsernameUseCase,
         GetNicknameUseCase,
@@ -66,7 +67,7 @@ public class MemberService
     private final NotificationEmailPostClient notificationEmailPostClient;
     private final WebClient webClient = WebClient.builder().baseUrl(BOARD_URL).build();
 
-    private static final Long REFRESH_TOKEN_TTL = 2_628_000L;
+    private static final Long REFRESH_TOKEN_TTL = 1L;
     private static final String BOARD_URL = "http://localhost:8090";
 
     @Override
@@ -130,6 +131,11 @@ public class MemberService
                 .accessToken(STR."Bearer \{accessToken}") // Java21의 기능을 활요한 String format
                 .refreshToken(refreshToken)
                 .build();
+    }
+
+    @Override
+    public void logout(String refreshToken) {
+        refreshTokenRepository.deleteById(refreshToken);
     }
 
     @PasswordUpdate
@@ -241,7 +247,7 @@ public class MemberService
     }
 
     private String createRefreshToken(String subject) {
-        // TODO 현재시간이 안맞음 / annotation을 활용한 현재시간을 받는 방법 고려
+        // TODO annotation을 활용한 현재시간을 받는 방법 고려
         Instant now = serverTime.nowInstant();
 
         String refreshToken = random.nextString(); // refreshToken 발행
