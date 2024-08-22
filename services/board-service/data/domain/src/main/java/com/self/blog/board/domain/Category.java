@@ -11,5 +11,6 @@ import lombok.*;
 public class Category {
     private String id;
     private String category;
+    private Long sequence;
     private Integer level;
 }

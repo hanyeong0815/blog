@@ -10,4 +10,5 @@ public interface CategoryRepository {
     Optional<Category> findById(String id);
     List<Category> findAll();
     boolean existsByCategory(String category);
+    Long countUpAndGetSequence(String category);
 }

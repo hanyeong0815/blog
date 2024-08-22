@@ -14,7 +14,7 @@ public class CategorySaveProxyService {
     private final CategoryDtoMapper categoryDtoMapper;
 
     public Category saveCategory(CategorySaveRequestDto dto) {
-        Category category = categoryDtoMapper.from(dto);
+        Category category = categoryDtoMapper.from(dto, 0L);
         return categorySaveUseCase.saveCategory(category);
     }
 }
