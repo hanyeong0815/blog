@@ -7,17 +7,21 @@ import java.util.List;
 
 @Getter
 @Setter
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
 public class Board {
     private String id;
-    private String categoryId;
+    private Long defaultSequence;
+    private Long categorySequence;
+    private String category;
     private String username;
+    private String nickname;
     private String title;
     private String content;
     private Instant createdAt;
     private List<Comment> comments;
+    private Boolean deleted;
 }

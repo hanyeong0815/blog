@@ -5,5 +5,4 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ViewCountValidationRedisRepository extends CrudRepository<ViewCountValidationEntity, String> {
     boolean existsByBoardIdAndUsername(String boardId, String username);
-    boolean existsByBoardIdAndViewIp(String boardId, String viewIp);
 }

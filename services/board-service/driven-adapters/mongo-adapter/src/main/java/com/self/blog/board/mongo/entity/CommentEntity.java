@@ -22,10 +22,12 @@ public class CommentEntity {
     @Indexed
     private String username;
     @Indexed
+    private String nickname;
+    @Indexed
     private String content;
     @Indexed
     private Instant createdAt;
     @Indexed
     private List<ReplyEntity> replies;
-    private boolean isDeleted;
+    private boolean deleted;
 }

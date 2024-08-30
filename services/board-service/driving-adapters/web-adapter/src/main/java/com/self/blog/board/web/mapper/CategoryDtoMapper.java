@@ -6,5 +6,5 @@ import org.mapstruct.Mapper;
 
 @Mapper
 public interface CategoryDtoMapper {
-    Category from(CategorySaveRequestDto dto);
+    Category from(CategorySaveRequestDto dto, Long sequence);
 }

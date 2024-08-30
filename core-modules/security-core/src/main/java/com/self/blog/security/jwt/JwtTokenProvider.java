@@ -18,7 +18,6 @@ import java.security.Key;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -30,18 +29,13 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(Authentication authentication) {
-        // authentication토큰에서 role(권한)을 추출
-        String authorities = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
-
+    public String generateToken(String username, String authorities) {
         long now = (new Date()).getTime();
 
         Date accessTokenExpiresIn = new Date(now + 86_400_000);
 
         return Jwts.builder()
-                .setSubject(authentication.getName())
+                .setSubject(username)
                 .claim("auth", authorities)
                 .setExpiration(accessTokenExpiresIn)
                 .signWith(key, SignatureAlgorithm.HS256)

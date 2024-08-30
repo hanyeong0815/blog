@@ -4,12 +4,13 @@ import com.self.blog.board.application.repository.BoardRepository;
 import com.self.blog.board.domain.Board;
 import com.self.blog.board.mongo.entity.BoardEntity;
 import com.self.blog.board.mongo.mapper.BoardEntityMapper;
-import com.self.blog.board.readmodels.BoardReadModels.BoardListViewReadModels;
+import com.self.blog.board.readmodels.BoardReadModels.BoardFindForUpdateReadModel;
+import com.self.blog.board.readmodels.BoardReadModels.BoardListViewReadModel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -38,9 +39,25 @@ public class BoardPersistence implements BoardRepository {
     }
 
     @Override
-    public List<BoardListViewReadModels> findAllBy(Pageable pageable) {
-        return repository.findAllBy(pageable).stream()
-                .map(mapper::projectionToReadModel)
-                .toList();
+    public Page<BoardListViewReadModel> findAllBy(Pageable pageable) {
+        return repository.findByDeleted(pageable, false)
+                .map(mapper::projectionToReadModel);
+    }
+
+    @Override
+    public Page<BoardListViewReadModel> findByCategory(String category, Pageable pageable) {
+        return repository.findByCategoryAndDeleted(category, pageable, false)
+                .map(mapper::projectionToReadModel);
+    }
+
+    @Override
+    public Optional<BoardFindForUpdateReadModel> findByIdForUpdate(String boardId) {
+        return repository.findProjectionsById(boardId)
+                .map(mapper::projectionToReadModel);
+    }
+
+    @Override
+    public boolean existsByIdAndUsername(String boardId, String username) {
+        return repository.existsByIdAndUsername(boardId, username);
     }
 }

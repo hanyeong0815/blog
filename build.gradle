@@ -222,6 +222,7 @@ project(memberService) {
 
     bootJar {
         enabled = true
+        archiveFileName = "member-service.jar"
     }
 }
 
@@ -332,6 +333,7 @@ project(memberProfileService) {
 
     bootJar {
         enabled = true
+        archiveFileName = "member-profile-service.jar"
     }
 }
 
@@ -447,6 +449,7 @@ project(boardService) {
 
     bootJar {
         enabled = true
+        archiveFileName = "board-service.jar"
     }
 }
 
@@ -542,6 +545,7 @@ project(notificationService) {
 
     bootJar {
         enabled = true
+        archiveFileName = "notification-service.jar"
     }
 }
 

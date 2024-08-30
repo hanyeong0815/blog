@@ -2,6 +2,37 @@
 version: "3"
 # 이 항목 밑에 실행하려는 컨테이너 들을 정의
 services:
+#  member-service:
+#    image: yoehadu815/member-service:latest
+#    container_name: member_service_container
+#    ports:
+#      - "8080:8080"
+#    depends_on:
+#      - member-profile-service
+#    restart: always
+#
+#  member-profile-service:
+#    image: yoehadu815/member-profile-service:latest
+#    container_name: member_profile_service_container
+#    ports:
+#      - "8091:8091"
+#      - "8090:8090"
+#    restart: always
+
+#  board-service:
+#    image: yoehadu815/board-service:latest
+#    container_name: board_service_container
+#    ports:
+#      - "8100:8100"
+#    restart: always
+#
+#  notification-service:
+#    image: yoehadu815/notification-service:latest
+#    container_name: notification_service_container
+#    ports:
+#      - "8000:8000"
+#    restart: always
+#
   member_postgres14_blog:
     image: postgres:14
     container_name: member_postgres14_rdb_blog
@@ -111,6 +142,10 @@ services:
       ME_CONFIG_MONGODB_SERVER: board_mongo_blog
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: root
+
+networks:
+  default:
+    driver: bridge
 
 volumes:
   member_sticky_volume:

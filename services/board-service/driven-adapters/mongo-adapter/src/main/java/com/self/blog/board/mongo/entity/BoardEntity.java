@@ -19,10 +19,14 @@ import java.util.List;
 public class BoardEntity {
     @Id
     private String id;
+    private Long defaultSequence;
+    private Long categorySequence;
     @Indexed
-    private String categoryId;
+    private String category;
     @Indexed
     private String username;
+    @Indexed
+    private String nickname;
     @Indexed
     private String title;
     @Indexed
@@ -32,4 +36,6 @@ public class BoardEntity {
     @DBRef
     @Indexed
     private List<CommentEntity> comments;
+    @Indexed
+    private Boolean deleted;
 }

@@ -15,5 +15,6 @@ public class CategoryEntity {
     @Id
     private String id;
     private String category;
+    private Long sequence;
     private Integer level;
 }

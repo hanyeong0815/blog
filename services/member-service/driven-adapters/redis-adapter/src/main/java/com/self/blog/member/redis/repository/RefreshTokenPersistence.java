@@ -34,4 +34,9 @@ public class RefreshTokenPersistence implements RefreshTokenRepository {
         return repository.findBySubject(subject)
                 .map(mapper::toDomain);
     }
+
+    @Override
+    public void deleteById(String refreshToken) {
+        repository.deleteById(refreshToken);
+    }
 }
