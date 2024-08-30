@@ -1,6 +1,0 @@
-app:
-  url:
-    profile:
-      server-url: http://member-profile-service:8090
-    notification:
-      noti-url: http://13.125.32.218:8000

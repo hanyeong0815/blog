@@ -4,7 +4,10 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-!**/src/main/resources/application.yml
+**/src/main/resources/application.yml
+**/src/main/resources/app/cors/cors.yml
+**/src/main/resources/app/jwt/jwt.yml
+**/src/main/resources/app/url/url.yml
 
 ### STS ###
 .apt_generated
