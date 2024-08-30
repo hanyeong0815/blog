@@ -1,0 +1,21 @@
+server:
+  port: 9100
+
+spring:
+  config:
+    import:
+      - app/cors/cors.yml
+      - app/time/time.yml # classpath:/app/time/time.yml
+      - app/jwt/jwt.yml
+
+  data:
+    mongodb:
+      username: root
+      password: root
+      database: board
+      authentication-database: admin
+      port: 27027
+      host: localhost
+    redis:
+      host: localhost
+      port: 6379

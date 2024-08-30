@@ -5,6 +5,8 @@ import java.time.Instant;
 public record BoardProjection() {
     public record BoardListViewProjection(
             String id,
+            Long defaultSequence,
+            Long categorySequence,
             String category,
             String title,
             String username,

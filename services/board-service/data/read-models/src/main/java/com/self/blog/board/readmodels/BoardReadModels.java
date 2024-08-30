@@ -5,6 +5,8 @@ import java.time.Instant;
 public record BoardReadModels() {
     public record BoardListViewReadModel(
             String id,
+            Long defaultSequence,
+            Long categorySequence,
             String category,
             String title,
             String username,

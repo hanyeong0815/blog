@@ -1,5 +1,6 @@
 package com.self.blog.board.mongo.repository;
 
+import com.self.blog.board.application.exception.CategoryErrorCode;
 import com.self.blog.board.application.repository.CategoryRepository;
 import com.self.blog.board.domain.Category;
 import com.self.blog.board.mongo.entity.CategoryEntity;
@@ -39,5 +40,16 @@ public class CategoryPersistence implements CategoryRepository {
     @Override
     public boolean existsByCategory(String category) {
         return repository.existsByCategory(category);
+    }
+
+    @Override
+    public Long countUpAndGetSequence(String category) {
+        CategoryEntity findCategoryEntity = repository.findByCategory(category).orElseThrow(
+                CategoryErrorCode.CATEGORY_NOT_FOUND::defaultException
+        );
+
+        findCategoryEntity.setSequence(findCategoryEntity.getSequence() + 1);
+
+        return repository.save(findCategoryEntity).getSequence();
     }
 }

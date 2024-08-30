@@ -14,6 +14,8 @@ import java.util.List;
 @EqualsAndHashCode
 public class Board {
     private String id;
+    private Long defaultSequence;
+    private Long categorySequence;
     private String category;
     private String username;
     private String nickname;

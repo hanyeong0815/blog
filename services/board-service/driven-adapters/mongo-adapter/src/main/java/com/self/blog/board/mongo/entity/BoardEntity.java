@@ -19,6 +19,8 @@ import java.util.List;
 public class BoardEntity {
     @Id
     private String id;
+    private Long defaultSequence;
+    private Long categorySequence;
     @Indexed
     private String category;
     @Indexed

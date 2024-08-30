@@ -3,8 +3,10 @@ package com.self.blog.board.application.service;
 import com.self.blog.board.application.aop.ViewCountUp;
 import com.self.blog.board.application.exception.BoardErrorCode;
 import com.self.blog.board.application.mapper.BoardMapper;
+import com.self.blog.board.application.repository.BoardDefaultSequenceRepository;
 import com.self.blog.board.application.repository.BoardRepository;
 import com.self.blog.board.application.repository.BoardViewRepository;
+import com.self.blog.board.application.repository.CategoryRepository;
 import com.self.blog.board.application.usecase.*;
 import com.self.blog.board.application.usecase.data.BoardAndViewCount.BoardAndViewCountResponse;
 import com.self.blog.board.application.usecase.data.BoardListViewDto.BoardListResponse;
@@ -19,6 +21,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.self.blog.common.utils.exception.Preconditions.validate;
 
 @Service
@@ -32,17 +36,26 @@ public class BoardService implements
 {
     private final BoardRepository boardRepository;
     private final BoardViewRepository boardViewRepository;
+    private final CategoryRepository categoryRepository;
+    private final BoardDefaultSequenceRepository boardDefaultSequenceRepository;
 
     private final BoardMapper boardMapper;
 
     @Override
     public BoardAndViewCountResponse boardSave(Board board) {
         if(board.getId() != null) {
-            System.out.println("진입");
             return boardUpdate(board);
         }
 
-        Board savedBoard = boardRepository.save(board);
+        Long defaultSequence = boardDefaultSequenceRepository.CountUpAndGetSequence();
+        Long categorySequence = categoryRepository.countUpAndGetSequence(board.getCategory());
+
+        Board cloneBoard = board.toBuilder()
+                .defaultSequence(defaultSequence)
+                .categorySequence(categorySequence)
+                .build();
+
+        Board savedBoard = boardRepository.save(cloneBoard);
 
         BoardView boardView = BoardView.builder()
                 .boardId(savedBoard.getId())
@@ -79,7 +92,13 @@ public class BoardService implements
             boardListViewReadModelsList = boardRepository.findByCategory(category, pageable);
         }
 
-        if (boardListViewReadModelsList.isEmpty()) return null;
+        if (boardListViewReadModelsList.isEmpty()) {
+            return BoardListResponse.builder()
+                    .totalElement(0L)
+                    .totalPage(0)
+                    .boardList(List.of())
+                    .build();
+        }
 
         return BoardListResponse.builder()
                 .boardList(
@@ -93,6 +112,7 @@ public class BoardService implements
 
                                     return BoardListView.builder()
                                             .boardId(board.id())
+                                            .sequence(category == null ? board.defaultSequence() : board.categorySequence())
                                             .category(board.category())
                                             .title(board.title())
                                             .username(board.username())
