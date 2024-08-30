@@ -13,7 +13,7 @@ public class GrpcStubConfig {
         return MemberProfileInterfaceGrpc
                 .newBlockingStub(
                         ManagedChannelBuilder
-                                .forAddress("localhost", 8091)
+                                .forAddress("member-profile-service", 8091) // TODO member-profile-service 배포 시 변경
                                 .usePlaintext().build()
                 );
     }

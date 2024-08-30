@@ -15,4 +15,7 @@ spring:
       database: board
       authentication-database: admin
       port: 27027
-      host: localhost
+      host: 3.35.139.172
+    redis:
+      host: 3.35.139.172
+      port: 6379

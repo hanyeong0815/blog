@@ -1,0 +1,6 @@
+app:
+  url:
+    profile:
+      server-url: http://localhost:9090
+    notification:
+      noti-url: http://localhost:9000

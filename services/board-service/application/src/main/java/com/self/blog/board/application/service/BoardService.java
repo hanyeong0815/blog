@@ -21,6 +21,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.self.blog.common.utils.exception.Preconditions.validate;
 
 @Service
@@ -90,7 +92,13 @@ public class BoardService implements
             boardListViewReadModelsList = boardRepository.findByCategory(category, pageable);
         }
 
-        if (boardListViewReadModelsList.isEmpty()) return null;
+        if (boardListViewReadModelsList.isEmpty()) {
+            return BoardListResponse.builder()
+                    .totalElement(0L)
+                    .totalPage(0)
+                    .boardList(List.of())
+                    .build();
+        }
 
         return BoardListResponse.builder()
                 .boardList(

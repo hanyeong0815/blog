@@ -9,9 +9,9 @@ spring:
       - app/time/time.yml # classpath:/app/time/time.yml
 
   datasource:
-    url: ${PROFILE_URL:jdbc:postgresql://localhost:5442/profile}
-    username: ${POSTGRES_USER:root}
-    password: ${POSTGRES_PASSWORD:root}
+    url: ${PROFILE_URL:jdbc:postgresql://rdb-blog-member-profile.cl002464cek4.ap-northeast-2.rds.amazonaws.com:5442/profile}
+    username: ${POSTGRES_USER:blog_admin}
+    password: ${POSTGRES_PASSWORD:rhehdgur23!}
     driver-class-name: org.postgresql.Driver
 
     hikari:
@@ -30,7 +30,7 @@ spring:
 
   data:
     mongodb:
-      host: localhost
+      host: 3.35.139.172
       port: 27017
       username: root
       password: root

@@ -5,6 +5,7 @@ import com.self.blog.email.data.NotificationEmail.DirectNotificationEmail;
 import com.self.blog.member.application.aop.MemberSave;
 import com.self.blog.member.application.aop.PasswordUpdate;
 import com.self.blog.member.application.exception.MemberErrorCode;
+import com.self.blog.member.application.properties.ServerUrlProperties.ProfileServerProperties;
 import com.self.blog.member.application.repository.InvitationCodeRepository;
 import com.self.blog.member.application.repository.MemberRepository;
 import com.self.blog.member.application.repository.RefreshTokenRepository;
@@ -18,7 +19,6 @@ import com.self.blog.member.domain.Member;
 import com.self.blog.member.domain.RefreshToken;
 import com.self.blog.security.jwt.JwtTokenProvider;
 import com.self.blog.security.jwt.exception.JwtErrorCode;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -39,7 +39,6 @@ import java.util.stream.Collectors;
 import static com.self.blog.common.utils.exception.Preconditions.validate;
 
 @Service
-@RequiredArgsConstructor
 public class MemberService
         implements
         MemberSignupUseCase,
@@ -65,10 +64,33 @@ public class MemberService
     private final ServerTime serverTime;
 
     private final NotificationEmailPostClient notificationEmailPostClient;
-    private final WebClient webClient = WebClient.builder().baseUrl(BOARD_URL).build();
+    private final WebClient webClient;
+
+    public MemberService(
+            MemberRepository memberRepository,
+            RefreshTokenRepository refreshTokenRepository,
+            InvitationCodeRepository invitationCodeRepository,
+            JwtTokenProvider jwtTokenProvider,
+            PasswordEncoder encoder,
+            StrongStringRandom random,
+            ServerTime serverTime,
+            NotificationEmailPostClient notificationEmailPostClient,
+            ProfileServerProperties profileServerProperties
+    ) {
+        this.memberRepository = memberRepository;
+        this.refreshTokenRepository = refreshTokenRepository;
+        this.invitationCodeRepository = invitationCodeRepository;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.encoder = encoder;
+        this.random = random;
+        this.serverTime = serverTime;
+        this.notificationEmailPostClient = notificationEmailPostClient;
+        this.webClient = WebClient.builder()
+                .baseUrl(profileServerProperties.serverUrl())
+                .build();
+    }
 
     private static final Long REFRESH_TOKEN_TTL = 1L;
-    private static final String BOARD_URL = "http://localhost:8090";
 
     @Override
     @MemberSave // 회원가입 시 처리할 AOP 작업들과 연결을 위한 annotation
@@ -101,10 +123,11 @@ public class MemberService
 
     @Override
     public JwtTokenPair login(Member member) {
-        String authorities = getAuthorities(memberRepository.getAuthorities(member));
+        UserDetails user = this.loadUserByUsername(member.getUsername());
+        String authorities = getAuthorities(user.getAuthorities());
 
         String accessToken = jwtTokenProvider.generateToken(
-                member.getUsername(),
+                user.getUsername(),
                 authorities
         );
 
@@ -235,7 +258,7 @@ public class MemberService
         refreshTokenRepository.deleteById(refreshTokenDomain.getRefreshToken());
 
         return JwtTokenPair.builder()
-                .accessToken(accessToken)
+                .accessToken(STR."Bearer \{accessToken}")
                 .refreshToken(newRefreshToken)
                 .build();
     }

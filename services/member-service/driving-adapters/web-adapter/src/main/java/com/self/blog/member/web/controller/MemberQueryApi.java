@@ -10,6 +10,7 @@ import com.self.blog.member.web.service.RefreshJwtTokenProxyService;
 import com.self.blog.member.web.service.VerifyUsernameProxyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,5 +42,11 @@ public class MemberQueryApi {
     @PostMapping("refresh-token")
     public JwtTokenPair refreshJwtToken(@RequestBody RefreshJwtTokenRequestDto dto) {
         return refreshJwtTokenProxyService.refreshJwtToken(dto.refreshToken());
+    }
+
+    @GetMapping("is-auth")
+    @PreAuthorize("hasAnyRole('USER')")
+    public boolean isAuth() {
+        return true;
     }
 }

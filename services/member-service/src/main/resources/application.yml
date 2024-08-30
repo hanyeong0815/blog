@@ -8,11 +8,12 @@ spring:
       - app/time/time.yml # classpath:/app/time/time.yml
       - app/jwt/jwt.yml
       - app/password/password-encoder.yml
+      - app/url/url.yml
 
   datasource:
-    url: ${MEMBER_URL:jdbc:postgresql://localhost:5432/member}
-    username: ${POSTGRES_USER:root}
-    password: ${POSTGRES_PASSWORD:root}
+    url: ${MEMBER_URL:jdbc:postgresql://rdb-blog-member.cl002464cek4.ap-northeast-2.rds.amazonaws.com:5432/member}
+    username: ${MEMBER_USER:blog_amdin}
+    password: ${POSTGRES_PASSWORD:rhehdgur23!}
     driver-class-name: org.postgresql.Driver
 
     hikari:
@@ -36,5 +37,5 @@ spring:
 
   data:
     redis:
-      host: localhost
+      host: 3.35.139.172
       port: 6379
