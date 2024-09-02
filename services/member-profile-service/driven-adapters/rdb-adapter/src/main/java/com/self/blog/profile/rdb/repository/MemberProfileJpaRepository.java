@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface MemberProfileJpaRepository extends JpaRepository<MemberProfileEntity, Long> {
+    boolean existsByNickname(String nickname);
     Optional<MemberProfileEntity> findByMemberId(UUID memberId);
     Optional<MemberProfileEntity> findByUsername(String username);
     Optional<MemberProfileNicknameProjection> findNicknameByUsername(String username);

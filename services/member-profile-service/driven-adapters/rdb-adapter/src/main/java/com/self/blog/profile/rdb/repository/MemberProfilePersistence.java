@@ -28,6 +28,11 @@ public class MemberProfilePersistence implements MemberProfileRepository {
     }
 
     @Override
+    public boolean existsByNickname(String nickname) {
+        return repository.existsByNickname(nickname);
+    }
+
+    @Override
     public Optional<MemberProfile> findByUsername(String username) {
         return repository.findByUsername(username).map(mapper::toDomain);
     }

@@ -9,6 +9,7 @@ import java.util.UUID;
 
 public interface MemberProfileRepository {
     MemberProfile save(MemberProfile memberProfile);
+    boolean existsByNickname(String nickname);
     Optional<MemberProfile> findByUsername(String username);
     Optional<MemberProfile> findByMemberId(UUID memberId);
     Optional<MemberProfileNickname> findNicknameByUsername(String username);
