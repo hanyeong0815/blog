@@ -35,7 +35,7 @@ public class ProfileLogAspect {
                 .createdAt(serverTime.nowInstant())
                 .build();
 
-        ProfileLog savedProfileLog = profileLogRepository.save(profileLog);
+        profileLogRepository.save(profileLog);
     }
 
     @AfterReturning(value = "@annotation(ProfileSaveAspect)", returning = "savedMemberProfile")
