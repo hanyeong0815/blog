@@ -30,10 +30,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.time.Instant;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.self.blog.common.utils.exception.Preconditions.validate;
@@ -42,6 +39,7 @@ import static com.self.blog.common.utils.exception.Preconditions.validate;
 public class MemberService
         implements
         MemberSignupUseCase,
+        MemberDeleteByExceptionUseCase,
         UserDetailsService,
         MemberLoginUseCase,
         MemberLogoutUseCase,
@@ -102,6 +100,11 @@ public class MemberService
                 .password(hashPassword)
                 .build();
         return memberRepository.save(cloneMember);
+    }
+
+    @Override
+    public void memberDeleteByException(UUID memberId) {
+        memberRepository.deleteById(memberId);
     }
 
     @Override

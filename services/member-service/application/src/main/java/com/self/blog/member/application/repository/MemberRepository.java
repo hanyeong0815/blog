@@ -7,9 +7,11 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface MemberRepository {
     Member save(Member member);
+    void deleteById(UUID id);
     Optional<Member> findByUsername(String username);
     Collection<? extends GrantedAuthority> findRolesByUsername(String username);
     boolean existsByUsername(String username);
