@@ -7,6 +7,7 @@ import com.self.blog.profile.application.repository.MemberProfileRepository;
 import com.self.blog.profile.application.usecase.MemberProfileFindDetailViewUseCase;
 import com.self.blog.profile.application.usecase.MemberProfileFindNicknameUseCase;
 import com.self.blog.profile.application.usecase.MemberProfileSaveUseCase;
+import com.self.blog.profile.application.usecase.VerifyNicknameUseCase;
 import com.self.blog.profile.domain.MemberProfile;
 import com.self.blog.profile.read_model.MemberProfileReadModels.MemberProfileDetailView;
 import com.self.blog.profile.read_model.MemberProfileReadModels.MemberProfileNickname;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class MemberProfileService
         implements
         MemberProfileSaveUseCase,
+        VerifyNicknameUseCase,
         MemberProfileFindNicknameUseCase,
         MemberProfileFindDetailViewUseCase
 {
@@ -28,6 +30,11 @@ public class MemberProfileService
     public MemberProfile save(MemberProfile memberProfile) {
 
         return memberProfileRepository.save(memberProfile);
+    }
+
+    @Override
+    public boolean verifyNickname(String nickname) {
+        return !memberProfileRepository.existsByNickname(nickname);
     }
 
     @Override
