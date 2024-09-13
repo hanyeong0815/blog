@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -30,6 +31,20 @@ public class BoardPersistence implements BoardRepository {
     @Override
     public Optional<Board> findById(String id) {
         return repository.findById(id).map(mapper::toDomain);
+    }
+
+    @Override
+    public List<Board> findAll() {
+        return repository.findAll().stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<Board> findByIdIn(List<String> id) {
+        return repository.findByIdIn(id).stream()
+                .map(mapper::toDomain)
+                .toList();
     }
 
     @Override

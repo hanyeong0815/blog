@@ -1,5 +1,7 @@
 package com.self.blog.member.web.service;
 
+import com.self.blog.member.application.exception.MemberErrorCode;
+import com.self.blog.member.application.usecase.MemberDeleteByExceptionUseCase;
 import com.self.blog.member.application.usecase.MemberLoginUseCase;
 import com.self.blog.member.application.usecase.MemberSignupUseCase;
 import com.self.blog.member.application.usecase.data.JwtTokenPair;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MemberSignupProxyService {
     private final MemberSignupUseCase memberSignupUseCase;
+    private final MemberDeleteByExceptionUseCase memberDeleteByExceptionUseCase;
     private final MemberLoginUseCase memberLoginUseCase;
 
     private final MemberProfileInterfaceBlockingStub memberProfileInterfaceBlockingStub;
@@ -30,9 +33,14 @@ public class MemberSignupProxyService {
 
         // domain에서 gRPC를 위한 형태로 변환
         MemberProfileSaveRequest memberProfileSaveRequest = memberDtoMapper.from(savedMember, dto);
-        // gRPC통신으로 member-profile 송신
-        // TODO member-profile을 저장할 때 exception 발생 시 이미 저장된 member 데이터 처리
-        memberProfileInterfaceBlockingStub.save(memberProfileSaveRequest);
+
+        try {
+            // gRPC통신으로 member-profile 송신
+            memberProfileInterfaceBlockingStub.save(memberProfileSaveRequest);
+        } catch (Exception e) {
+            memberDeleteByExceptionUseCase.memberDeleteByException(savedMember.getId());
+            throw MemberErrorCode.DEFAULT.defaultException();
+        }
 
 
         JwtTokenPair jwtTokenPair = memberLoginUseCase.login(savedMember);

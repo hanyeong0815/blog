@@ -1,5 +1,5 @@
 server:
-  port: 9100
+  port: 8100
 
 spring:
   config:
@@ -19,3 +19,6 @@ spring:
     redis:
       host: localhost
       port: 6379
+
+  elasticsearch:
+    uris: http://localhost:9200

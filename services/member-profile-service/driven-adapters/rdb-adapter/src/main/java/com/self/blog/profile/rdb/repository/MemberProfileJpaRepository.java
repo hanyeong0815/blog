@@ -2,6 +2,7 @@ package com.self.blog.profile.rdb.repository;
 
 import com.self.blog.profile.rdb.entity.MemberProfileEntity;
 import com.self.blog.profile.rdb.projection.MemberProfileProjections.MemberProfileDetailViewProjection;
+import com.self.blog.profile.rdb.projection.MemberProfileProjections.MemberProfileIdProjection;
 import com.self.blog.profile.rdb.projection.MemberProfileProjections.MemberProfileMemberIdProjection;
 import com.self.blog.profile.rdb.projection.MemberProfileProjections.MemberProfileNicknameProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,4 +17,5 @@ public interface MemberProfileJpaRepository extends JpaRepository<MemberProfileE
     Optional<MemberProfileNicknameProjection> findNicknameByUsername(String username);
     Optional<MemberProfileDetailViewProjection> findDetailViewByUsername(String username);
     Optional<MemberProfileMemberIdProjection> findMemberIdByUsername(String username);
+    Optional<MemberProfileIdProjection> findProjectionsByUsername(String username);
 }

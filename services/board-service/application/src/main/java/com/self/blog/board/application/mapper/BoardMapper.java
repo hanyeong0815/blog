@@ -1,6 +1,8 @@
 package com.self.blog.board.application.mapper;
 
 import com.self.blog.board.application.usecase.data.BoardAndViewCount.BoardAndViewCountResponse;
+import com.self.blog.board.application.usecase.data.BoardListViewDto.BoardListView;
+import com.self.blog.board.application.usecase.data.BoardListViewDto.BoardRecommendListView;
 import com.self.blog.board.application.usecase.data.BoardUpdateDto.BoardFindForUpdateResponse;
 import com.self.blog.board.domain.Board;
 import com.self.blog.board.domain.BoardView;
@@ -19,4 +21,12 @@ public interface BoardMapper {
     })
     BoardAndViewCountResponse from(Board board, BoardView boardView, List<Comment> comments);
     BoardFindForUpdateResponse from(BoardFindForUpdateReadModel readModel);
+    @Mappings({
+            @Mapping(target = "boardId", source = "board.id")
+    })
+    BoardListView from(Board board);
+    @Mappings({
+            @Mapping(target = "boardId", source = "board.id")
+    })
+    BoardRecommendListView domainFromBoardRecommendListView(Board board);
 }
