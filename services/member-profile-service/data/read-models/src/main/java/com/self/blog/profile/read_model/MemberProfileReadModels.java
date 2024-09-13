@@ -15,4 +15,6 @@ public record MemberProfileReadModels() {
             String name,
             String nickname
     ) {}
+
+    public record MemberProfileIdReadModel(Long id) {}
 }

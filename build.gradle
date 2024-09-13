@@ -202,6 +202,14 @@ project(notificationEmailClient) {
     }
 }
 
+project(elasticsearchCore) {
+    dependencies {
+        implementation commonProject
+        api 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
+        api 'co.elastic.clients:elasticsearch-java:8.5.0'
+    }
+}
+
 // member-service ------------------------------------------------------------------------------------------------
 
 project(memberService) {
@@ -455,10 +463,13 @@ project(boardService) {
         api project(boardApplication)
         api project(boardMongoAdapter)
         api project(boardRedisAdapter)
+        api project(boardElasticsearchAdapter)
         api project(boardWebAdapter)
 
         implementation 'org.springframework.boot:spring-boot-starter-web'
         implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+        implementation 'net.logstash.logback:logstash-logback-encoder:7.4'
     }
 
     bootJar {
@@ -487,6 +498,7 @@ project(boardApplication) {
         implementation commonProject
         implementation project(gsonCore)
         api project(securityCore)
+        api project(webClientCore)
         api project(boardDomain)
         api project(boardReadModels)
 
@@ -506,6 +518,19 @@ project(boardMongoAdapter) {
     dependencies {
         implementation commonProject
         api project(mongoCore)
+        api project(boardApplication)
+
+        // Map Struct
+        implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+        annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+        annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    }
+}
+
+project(boardElasticsearchAdapter) {
+    dependencies {
+        implementation commonProject
+        api project(elasticsearchCore)
         api project(boardApplication)
 
         // Map Struct

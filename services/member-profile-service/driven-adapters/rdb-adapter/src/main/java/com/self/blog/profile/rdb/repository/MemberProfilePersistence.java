@@ -6,6 +6,7 @@ import com.self.blog.profile.domain.MemberProfile;
 import com.self.blog.profile.rdb.entity.MemberProfileEntity;
 import com.self.blog.profile.rdb.mapper.MemberProfileEntityMapper;
 import com.self.blog.profile.read_model.MemberProfileReadModels.MemberProfileDetailView;
+import com.self.blog.profile.read_model.MemberProfileReadModels.MemberProfileIdReadModel;
 import com.self.blog.profile.read_model.MemberProfileReadModels.MemberProfileNickname;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -58,5 +59,11 @@ public class MemberProfilePersistence implements MemberProfileRepository {
                 .orElseThrow(
                         MemberProfileErrorCode.DEFAULT::defaultException
                 ).memberId();
+    }
+
+    @Override
+    public Optional<MemberProfileIdReadModel> findIdByUsername(String username) {
+        return repository.findProjectionsByUsername(username)
+                .map(mapper::from);
     }
 }

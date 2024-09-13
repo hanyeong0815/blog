@@ -19,8 +19,12 @@ import java.util.List;
 public class BoardEntity {
     @Id
     private String id;
+    @DBRef
+    private MemberDomainEntity memberDomainEntity;
     private Long defaultSequence;
     private Long categorySequence;
+    @Indexed
+    private String boardDomain;
     @Indexed
     private String category;
     @Indexed

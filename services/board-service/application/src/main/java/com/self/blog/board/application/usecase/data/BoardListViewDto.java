@@ -25,4 +25,15 @@ public record BoardListViewDto() {
             Integer commentCount,
             Instant createdAt
     ) {}
+
+    @Builder
+    public record BoardRecommendListView(
+            String boardId,
+            String category,
+            String title,
+            String content,
+            String username,
+            String nickname,
+            Instant createdAt
+    ) {}
 }

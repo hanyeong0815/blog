@@ -16,4 +16,5 @@ public record MemberProfileProjections() {
     ) {}
 
     public record MemberProfileMemberIdProjection(UUID memberId) {}
+    public record MemberProfileIdProjection(Long id) {}
 }

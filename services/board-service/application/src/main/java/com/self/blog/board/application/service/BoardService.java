@@ -3,24 +3,29 @@ package com.self.blog.board.application.service;
 import com.self.blog.board.application.aop.ViewCountUp;
 import com.self.blog.board.application.exception.BoardErrorCode;
 import com.self.blog.board.application.mapper.BoardMapper;
-import com.self.blog.board.application.repository.BoardDefaultSequenceRepository;
-import com.self.blog.board.application.repository.BoardRepository;
-import com.self.blog.board.application.repository.BoardViewRepository;
-import com.self.blog.board.application.repository.CategoryRepository;
+import com.self.blog.board.application.repository.*;
 import com.self.blog.board.application.usecase.*;
 import com.self.blog.board.application.usecase.data.BoardAndViewCount.BoardAndViewCountResponse;
 import com.self.blog.board.application.usecase.data.BoardListViewDto.BoardListResponse;
 import com.self.blog.board.application.usecase.data.BoardListViewDto.BoardListView;
+import com.self.blog.board.application.usecase.data.BoardListViewDto.BoardRecommendListView;
 import com.self.blog.board.application.usecase.data.BoardUpdateDto.BoardFindForUpdateResponse;
 import com.self.blog.board.domain.Board;
+import com.self.blog.board.domain.BoardActionLog;
 import com.self.blog.board.domain.BoardView;
 import com.self.blog.board.readmodels.BoardReadModels.BoardFindForUpdateReadModel;
 import com.self.blog.board.readmodels.BoardReadModels.BoardListViewReadModel;
+import com.self.blog.common.utils.time.ServerTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.MediaType;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.BodyInserters;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import java.io.IOException;
 import java.util.List;
 
 import static com.self.blog.common.utils.exception.Preconditions.validate;
@@ -32,14 +37,22 @@ public class BoardService implements
         BoardDetailViewUseCase,
         BoardListViewUseCase,
         BoardFindForUpdateUseCase,
-        BoardDeleteUseCase
+        BoardDeleteUseCase,
+        RecommendBoardUseCase
 {
     private final BoardRepository boardRepository;
     private final BoardViewRepository boardViewRepository;
     private final CategoryRepository categoryRepository;
     private final BoardDefaultSequenceRepository boardDefaultSequenceRepository;
+    private final BoardSearchRepository boardSearchRepository;
 
     private final BoardMapper boardMapper;
+
+    private final ServerTime serverTime;
+
+    private final WebClient webClient = WebClient.builder()
+            .baseUrl("http://localhost:5044")
+            .build();
 
     @Override
     public BoardAndViewCountResponse boardSave(Board board) {
@@ -78,6 +91,8 @@ public class BoardService implements
                 .orElseThrow(
                         BoardErrorCode.DEFAULT::defaultException
                 );
+
+        sendLogToLogstash(board.getId());
 
         return boardMapper.from(board, boardView, board.getComments());
     }
@@ -185,5 +200,36 @@ public class BoardService implements
         );
 
         return true;
+    }
+
+    @Override
+    public List<BoardRecommendListView> recommendBoard() throws IOException {
+        List<String> topIds = boardSearchRepository.search();
+        return boardRepository.findByIdIn(topIds).stream()
+                .map(boardMapper::domainFromBoardRecommendListView)
+                .toList();
+    }
+
+    private void sendLogToLogstash(String boardId) {
+        BoardActionLog boardActionLog = BoardActionLog.builder()
+                .boardId(boardId)
+                .action("view")
+                .timestamp(serverTime.nowInstant())
+                .build();
+
+        webClient.post()
+                .uri("/")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(boardActionLog))
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
+    }
+
+    @Scheduled(fixedRate = 60000)
+    public void indexBoard() {
+        System.out.println("indexing");
+        List<Board> boardList = boardRepository.findAll();
+        boardSearchRepository.saveAll(boardList);
     }
 }

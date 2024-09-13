@@ -13,6 +13,7 @@ import java.util.List;
 @ToString
 public class Comment {
     private String id;
+    private String boardId;
     private String username;
     private String nickname;
     private String content;
