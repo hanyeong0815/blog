@@ -12,6 +12,7 @@ import com.self.blog.board.application.usecase.data.BoardListViewDto.BoardRecomm
 import com.self.blog.board.application.usecase.data.BoardUpdateDto.BoardFindForUpdateResponse;
 import com.self.blog.board.domain.Board;
 import com.self.blog.board.domain.BoardActionLog;
+import com.self.blog.board.domain.BoardElasticsearch;
 import com.self.blog.board.domain.BoardView;
 import com.self.blog.board.readmodels.BoardReadModels.BoardFindForUpdateReadModel;
 import com.self.blog.board.readmodels.BoardReadModels.BoardListViewReadModel;
@@ -204,10 +205,7 @@ public class BoardService implements
 
     @Override
     public List<BoardRecommendListView> recommendBoard() throws IOException {
-        List<String> topIds = boardSearchRepository.search();
-        return boardRepository.findByIdIn(topIds).stream()
-                .map(boardMapper::domainFromBoardRecommendListView)
-                .toList();
+        return boardSearchRepository.search();
     }
 
     private void sendLogToLogstash(String boardId) {
@@ -228,8 +226,7 @@ public class BoardService implements
 
     @Scheduled(fixedRate = 60000)
     public void indexBoard() {
-        System.out.println("indexing");
-        List<Board> boardList = boardRepository.findAll();
+        List<BoardElasticsearch> boardList = boardRepository.findAllByDeleted();
         boardSearchRepository.saveAll(boardList);
     }
 }

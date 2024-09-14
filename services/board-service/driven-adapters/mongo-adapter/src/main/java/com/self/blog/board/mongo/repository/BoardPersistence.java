@@ -2,6 +2,7 @@ package com.self.blog.board.mongo.repository;
 
 import com.self.blog.board.application.repository.BoardRepository;
 import com.self.blog.board.domain.Board;
+import com.self.blog.board.domain.BoardElasticsearch;
 import com.self.blog.board.mongo.entity.BoardEntity;
 import com.self.blog.board.mongo.mapper.BoardEntityMapper;
 import com.self.blog.board.readmodels.BoardReadModels.BoardFindForUpdateReadModel;
@@ -37,6 +38,13 @@ public class BoardPersistence implements BoardRepository {
     public List<Board> findAll() {
         return repository.findAll().stream()
                 .map(mapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<BoardElasticsearch> findAllByDeleted() {
+        return repository.findByDeleted(false).stream()
+                .map(mapper::projectionToDomain)
                 .toList();
     }
 

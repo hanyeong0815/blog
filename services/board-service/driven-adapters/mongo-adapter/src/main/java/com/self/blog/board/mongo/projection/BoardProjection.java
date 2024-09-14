@@ -20,4 +20,16 @@ public record BoardProjection() {
             String category,
             String username
     ) {}
+
+    public record BoardFindForElasticsearchProjection(
+            String id,
+            String boardDomain,
+            String category,
+            String username,
+            String nickname,
+            String title,
+            String content,
+            Instant createdAt,
+            Boolean deleted
+    ) {}
 }

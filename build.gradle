@@ -210,6 +210,13 @@ project(elasticsearchCore) {
     }
 }
 
+project(jacksonCore) {
+    dependencies {
+        implementation commonProject
+        api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+    }
+}
+
 // member-service ------------------------------------------------------------------------------------------------
 
 project(memberService) {
@@ -531,6 +538,7 @@ project(boardElasticsearchAdapter) {
     dependencies {
         implementation commonProject
         api project(elasticsearchCore)
+        api project(jacksonCore)
         api project(boardApplication)
 
         // Map Struct

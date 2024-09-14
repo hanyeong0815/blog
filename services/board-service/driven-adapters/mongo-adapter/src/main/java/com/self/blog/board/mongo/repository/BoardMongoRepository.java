@@ -1,5 +1,6 @@
 package com.self.blog.board.mongo.repository;
 
+import com.self.blog.board.mongo.projection.BoardProjection.BoardFindForElasticsearchProjection;
 import com.self.blog.board.mongo.projection.BoardProjection.BoardFindForUpdateProjection;
 import com.self.blog.board.mongo.projection.BoardProjection.BoardListViewProjection;
 import com.self.blog.board.mongo.entity.BoardEntity;
@@ -12,6 +13,7 @@ import java.util.Optional;
 
 public interface BoardMongoRepository extends MongoRepository<BoardEntity, String> {
     Optional<BoardEntity> findByUsername(String username);
+    List<BoardFindForElasticsearchProjection> findByDeleted(boolean deleted);
     List<BoardEntity> findByIdIn(List<String> id);
     Page<BoardListViewProjection> findByDeleted (Pageable pageable, boolean deleted);
     Page<BoardListViewProjection> findByCategoryAndDeleted(String Category, Pageable pageable, boolean deleted);

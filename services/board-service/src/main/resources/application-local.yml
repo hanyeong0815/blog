@@ -8,6 +8,10 @@ spring:
       - app/time/time.yml # classpath:/app/time/time.yml
       - app/jwt/jwt.yml
 
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+
   data:
     mongodb:
       username: root

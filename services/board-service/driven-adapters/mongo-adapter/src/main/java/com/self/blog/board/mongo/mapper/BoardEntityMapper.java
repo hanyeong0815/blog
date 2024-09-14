@@ -1,7 +1,9 @@
 package com.self.blog.board.mongo.mapper;
 
 import com.self.blog.board.domain.Board;
+import com.self.blog.board.domain.BoardElasticsearch;
 import com.self.blog.board.domain.Comment;
+import com.self.blog.board.mongo.projection.BoardProjection.BoardFindForElasticsearchProjection;
 import com.self.blog.board.mongo.projection.BoardProjection.BoardFindForUpdateProjection;
 import com.self.blog.board.mongo.projection.BoardProjection.BoardListViewProjection;
 import com.self.blog.board.mongo.entity.BoardEntity;
@@ -16,4 +18,5 @@ public interface BoardEntityMapper extends OneToOneEntityMapper<Board, BoardEnti
     Comment replyToDomain(CommentEntity commentEntity);
     BoardListViewReadModel projectionToReadModel(BoardListViewProjection projection);
     BoardFindForUpdateReadModel projectionToReadModel(BoardFindForUpdateProjection projection);
+    BoardElasticsearch projectionToDomain(BoardFindForElasticsearchProjection boardFindForElasticsearchProjection);
 }

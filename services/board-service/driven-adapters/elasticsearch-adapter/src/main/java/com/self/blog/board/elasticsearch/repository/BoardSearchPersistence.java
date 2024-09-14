@@ -4,10 +4,13 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch._types.FieldValue;
 import co.elastic.clients.elasticsearch._types.aggregations.Aggregation;
 import co.elastic.clients.elasticsearch._types.aggregations.StringTermsBucket;
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
+import co.elastic.clients.json.JsonData;
 import com.self.blog.board.application.repository.BoardSearchRepository;
-import com.self.blog.board.domain.Board;
+import com.self.blog.board.application.usecase.data.BoardListViewDto.BoardRecommendListView;
+import com.self.blog.board.domain.BoardElasticsearch;
 import com.self.blog.board.elasticsearch.entity.BoardEntity;
 import com.self.blog.board.elasticsearch.mapper.BoardElasticsearchMapper;
 import com.self.blog.common.utils.time.ServerTime;
@@ -15,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.List;
 
 @Repository
@@ -25,8 +29,10 @@ public class BoardSearchPersistence implements BoardSearchRepository {
 
     private final ElasticsearchClient elasticsearchClient;
 
+    private final ServerTime serverTime;
+
     @Override
-    public void saveAll(List<Board> boardList) {
+    public void saveAll(List<BoardElasticsearch> boardList) {
         List<BoardEntity> boardEntityList = boardList.stream()
                 .map(mapper::toEntity)
                 .toList();
@@ -34,7 +40,21 @@ public class BoardSearchPersistence implements BoardSearchRepository {
     }
 
     @Override
-    public List<String> search() throws IOException {
+    public List<BoardRecommendListView> search() throws IOException {
+        Instant now = serverTime.nowInstant();
+
+        // 24시간 전
+        Instant oneDayAgo = now.minusSeconds(24 * 60 * 60);
+
+        // 날짜 범위 쿼리 설정 (24시간 전부터 현재 시간까지)
+        Query dateRangeQuery = Query.of(q -> q
+                .range(r -> r
+                        .field("@timestamp")  // 로그의 timestamp 필드 기준
+                        .gte(JsonData.of(oneDayAgo.toString()))  // 24시간 전 이상
+                        .lte(JsonData.of(now.toString()))  // 현재 시간 이하
+                )
+        );
+
         // Aggregation 설정
         Aggregation boardIdAgg = Aggregation.of(a -> a
                 .terms(t -> t
@@ -47,6 +67,7 @@ public class BoardSearchPersistence implements BoardSearchRepository {
         SearchRequest searchRequest = SearchRequest.of(sr -> sr
                 .index("board-action-logs-*")  // 로그가 저장된 인덱스 이름
                 .size(0)  // 실제 문서는 반환하지 않음
+                .query(dateRangeQuery)
                 .aggregations("top_boards", boardIdAgg)
         );
 
@@ -54,7 +75,7 @@ public class BoardSearchPersistence implements BoardSearchRepository {
         SearchResponse<Void> searchResponse = elasticsearchClient.search(searchRequest, Void.class);
 
         // Aggregation 결과에서 상위 8개의 boardId 추출
-        return searchResponse.aggregations()
+        List<String> topBoardIds = searchResponse.aggregations()
                 .get("top_boards") // 집계 이름에 맞게 가져옴
                 .sterms()  // String terms 집계 사용
                 .buckets().array().stream()
@@ -62,8 +83,10 @@ public class BoardSearchPersistence implements BoardSearchRepository {
                 .map(FieldValue::stringValue)
                 .toList();
 
-//        return repository.findByIdIn(topBoardIds).stream()
-//                .map(mapper::toDomain)
-//                .toList();
+        System.out.println(topBoardIds);
+
+        return repository.findByIdIn(topBoardIds).stream()
+                .map(mapper::from)
+                .toList();
     }
 }
