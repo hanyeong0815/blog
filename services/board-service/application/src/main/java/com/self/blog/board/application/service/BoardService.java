@@ -39,7 +39,7 @@ public class BoardService implements
 {
     private final BoardRepository boardRepository;
     private final BoardViewRepository boardViewRepository;
-    private final CategoryRepository categoryRepository;
+    private final DomainRepository domainRepository;
     private final BoardDefaultSequenceRepository boardDefaultSequenceRepository;
     private final BoardSearchRepository boardSearchRepository;
 
@@ -69,7 +69,7 @@ public class BoardService implements
         }
 
         Long defaultSequence = boardDefaultSequenceRepository.CountUpAndGetSequence();
-        Long domainSequence = categoryRepository.countUpAndGetSequence(board.getDomain());
+        Long domainSequence = domainRepository.countUpAndGetSequence(board.getDomain());
 
         System.out.println(domainSequence);
 

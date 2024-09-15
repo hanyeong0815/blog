@@ -1,7 +1,7 @@
 package com.self.blog.board.application.service;
 
 import com.self.blog.board.application.exception.CategoryErrorCode;
-import com.self.blog.board.application.repository.CategoryRepository;
+import com.self.blog.board.application.repository.DomainRepository;
 import com.self.blog.board.application.usecase.CategoryFindAllUseCase;
 import com.self.blog.board.application.usecase.CategorySaveUseCase;
 import com.self.blog.board.domain.Domain;
@@ -18,21 +18,21 @@ public class CategoryService implements
         CategorySaveUseCase,
         CategoryFindAllUseCase
 {
-    private final CategoryRepository categoryRepository;
+    private final DomainRepository domainRepository;
 
     @Override
     public Domain saveCategory(Domain domain) {
-        boolean hasCategory = categoryRepository.existsByCategory(domain.getDomain());
+        boolean hasCategory = domainRepository.existsByCategory(domain.getDomain());
         validate(
                 !hasCategory,
                 CategoryErrorCode.CATEGORY_ALREADY_USED
         );
 
-        return categoryRepository.save(domain);
+        return domainRepository.save(domain);
     }
 
     @Override
     public List<Domain> findAll() {
-        return categoryRepository.findAll();
+        return domainRepository.findAll();
     }
 }

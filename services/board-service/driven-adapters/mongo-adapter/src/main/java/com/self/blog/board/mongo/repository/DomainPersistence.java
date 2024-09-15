@@ -1,6 +1,6 @@
 package com.self.blog.board.mongo.repository;
 
-import com.self.blog.board.application.repository.CategoryRepository;
+import com.self.blog.board.application.repository.DomainRepository;
 import com.self.blog.board.domain.Domain;
 import com.self.blog.board.mongo.entity.DomainEntity;
 import com.self.blog.board.mongo.mapper.DomainEntityMapper;
@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class CategoryPersistence implements CategoryRepository {
+public class DomainPersistence implements DomainRepository {
     private final DomainMongoRepository repository;
     private final DomainEntityMapper mapper;
 

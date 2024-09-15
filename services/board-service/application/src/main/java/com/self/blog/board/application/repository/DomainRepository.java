@@ -5,7 +5,7 @@ import com.self.blog.board.domain.Domain;
 import java.util.List;
 import java.util.Optional;
 
-public interface CategoryRepository {
+public interface DomainRepository {
     Domain save(Domain domain);
     Optional<Domain> findById(String id);
     List<Domain> findAll();
