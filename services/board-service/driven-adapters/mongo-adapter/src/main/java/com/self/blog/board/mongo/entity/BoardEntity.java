@@ -22,7 +22,7 @@ public class BoardEntity {
     @Indexed
     private String domain;
     private Long defaultSequence;
-    private Long categorySequence;
+    private Long domainSequence;
     @Indexed
     private String username;
     @Indexed

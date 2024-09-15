@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
-public interface CategoryMongoRepository extends MongoRepository<DomainEntity, String> {
+public interface DomainMongoRepository extends MongoRepository<DomainEntity, String> {
     Optional<DomainEntity> findByDomain(String domain);
     boolean existsByDomain(String category);
 }

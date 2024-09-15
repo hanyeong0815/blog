@@ -3,7 +3,7 @@ package com.self.blog.board.mongo.repository;
 import com.self.blog.board.application.repository.CategoryRepository;
 import com.self.blog.board.domain.Domain;
 import com.self.blog.board.mongo.entity.DomainEntity;
-import com.self.blog.board.mongo.mapper.CategoryEntityMapper;
+import com.self.blog.board.mongo.mapper.DomainEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -13,8 +13,8 @@ import java.util.Optional;
 @Repository
 @RequiredArgsConstructor
 public class CategoryPersistence implements CategoryRepository {
-    private final CategoryMongoRepository repository;
-    private final CategoryEntityMapper mapper;
+    private final DomainMongoRepository repository;
+    private final DomainEntityMapper mapper;
 
     @Override
     public Domain save(Domain domain) {

@@ -71,6 +71,8 @@ public class BoardService implements
         Long defaultSequence = boardDefaultSequenceRepository.CountUpAndGetSequence();
         Long domainSequence = categoryRepository.countUpAndGetSequence(board.getDomain());
 
+        System.out.println(domainSequence);
+
         Board cloneBoard = board.toBuilder()
                 .defaultSequence(defaultSequence)
                 .domainSequence(domainSequence)

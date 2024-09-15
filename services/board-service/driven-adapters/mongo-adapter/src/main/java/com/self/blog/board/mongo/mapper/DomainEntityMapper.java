@@ -6,5 +6,5 @@ import com.self.blog.board.mongo.support.OneToOneEntityMapper;
 import org.mapstruct.Mapper;
 
 @Mapper
-public interface CategoryEntityMapper extends OneToOneEntityMapper<Domain, DomainEntity> {
+public interface DomainEntityMapper extends OneToOneEntityMapper<Domain, DomainEntity> {
 }
