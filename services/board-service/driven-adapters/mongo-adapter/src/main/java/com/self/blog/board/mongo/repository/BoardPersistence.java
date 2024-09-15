@@ -68,8 +68,8 @@ public class BoardPersistence implements BoardRepository {
     }
 
     @Override
-    public Page<BoardListViewReadModel> findByCategory(String category, Pageable pageable) {
-        return repository.findByCategoryAndDeleted(category, pageable, false)
+    public Page<BoardListViewReadModel> findByDomain(String domain, Pageable pageable) {
+        return repository.findByDomainAndDeleted(domain, pageable, false)
                 .map(mapper::projectionToReadModel);
     }
 

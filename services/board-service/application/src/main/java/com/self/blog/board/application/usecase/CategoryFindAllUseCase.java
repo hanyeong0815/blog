@@ -1,9 +1,9 @@
 package com.self.blog.board.application.usecase;
 
-import com.self.blog.board.domain.Category;
+import com.self.blog.board.domain.Domain;
 
 import java.util.List;
 
 public interface CategoryFindAllUseCase {
-    List<Category> findAll();
+    List<Domain> findAll();
 }

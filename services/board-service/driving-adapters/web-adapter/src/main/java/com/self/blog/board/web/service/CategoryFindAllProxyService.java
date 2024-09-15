@@ -1,7 +1,7 @@
 package com.self.blog.board.web.service;
 
 import com.self.blog.board.application.usecase.CategoryFindAllUseCase;
-import com.self.blog.board.domain.Category;
+import com.self.blog.board.domain.Domain;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import java.util.List;
 public class CategoryFindAllProxyService {
     private final CategoryFindAllUseCase categoryFindAllUseCase;
 
-    public List<Category> findAll() {
+    public List<Domain> findAll() {
         return categoryFindAllUseCase.findAll();
     }
 }

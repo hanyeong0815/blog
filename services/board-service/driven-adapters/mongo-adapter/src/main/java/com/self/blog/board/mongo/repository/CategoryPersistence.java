@@ -1,9 +1,8 @@
 package com.self.blog.board.mongo.repository;
 
-import com.self.blog.board.application.exception.CategoryErrorCode;
 import com.self.blog.board.application.repository.CategoryRepository;
-import com.self.blog.board.domain.Category;
-import com.self.blog.board.mongo.entity.CategoryEntity;
+import com.self.blog.board.domain.Domain;
+import com.self.blog.board.mongo.entity.DomainEntity;
 import com.self.blog.board.mongo.mapper.CategoryEntityMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -18,20 +17,20 @@ public class CategoryPersistence implements CategoryRepository {
     private final CategoryEntityMapper mapper;
 
     @Override
-    public Category save(Category category) {
-        CategoryEntity categoryEntity = mapper.toEntity(category);
+    public Domain save(Domain domain) {
+        DomainEntity domainEntity = mapper.toEntity(domain);
         return mapper.toDomain(
-                repository.save(categoryEntity)
+                repository.save(domainEntity)
         );
     }
 
     @Override
-    public Optional<Category> findById(String id) {
+    public Optional<Domain> findById(String id) {
         return repository.findById(id).map(mapper::toDomain);
     }
 
     @Override
-    public List<Category> findAll() {
+    public List<Domain> findAll() {
         return repository.findAll().stream()
                 .map(mapper::toDomain)
                 .toList();
@@ -39,17 +38,20 @@ public class CategoryPersistence implements CategoryRepository {
 
     @Override
     public boolean existsByCategory(String category) {
-        return repository.existsByCategory(category);
+        return repository.existsByDomain(category);
     }
 
     @Override
-    public Long countUpAndGetSequence(String category) {
-        CategoryEntity findCategoryEntity = repository.findByCategory(category).orElseThrow(
-                CategoryErrorCode.CATEGORY_NOT_FOUND::defaultException
+    public Long countUpAndGetSequence(String domain) {
+        DomainEntity findDomainEntity = repository.findByDomain(domain).orElse(
+                DomainEntity.builder()
+                        .domain(domain)
+                        .sequence(0L)
+                        .build()
         );
 
-        findCategoryEntity.setSequence(findCategoryEntity.getSequence() + 1);
+        findDomainEntity.setSequence(findDomainEntity.getSequence() + 1);
 
-        return repository.save(findCategoryEntity).getSequence();
+        return repository.save(findDomainEntity).getSequence();
     }
 }

@@ -7,7 +7,7 @@ public record BoardReadModels() {
             String id,
             Long defaultSequence,
             Long categorySequence,
-            String category,
+            String domain,
             String title,
             String username,
             String nickname,
@@ -17,7 +17,7 @@ public record BoardReadModels() {
     public record BoardFindForUpdateReadModel(
             String title,
             String content,
-            String category,
+            String domain,
             String username
     ) {}
 }

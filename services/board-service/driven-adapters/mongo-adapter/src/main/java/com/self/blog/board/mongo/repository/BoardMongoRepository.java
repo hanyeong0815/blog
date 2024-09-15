@@ -16,7 +16,7 @@ public interface BoardMongoRepository extends MongoRepository<BoardEntity, Strin
     List<BoardFindForElasticsearchProjection> findByDeleted(boolean deleted);
     List<BoardEntity> findByIdIn(List<String> id);
     Page<BoardListViewProjection> findByDeleted (Pageable pageable, boolean deleted);
-    Page<BoardListViewProjection> findByCategoryAndDeleted(String Category, Pageable pageable, boolean deleted);
+    Page<BoardListViewProjection> findByDomainAndDeleted(String Category, Pageable pageable, boolean deleted);
     Optional<BoardFindForUpdateProjection> findProjectionsById(String id);
     boolean existsByIdAndUsername(String id, String username);
 }

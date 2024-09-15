@@ -7,6 +7,6 @@ public record BoardUpdateDto() {
     public record BoardFindForUpdateResponse(
             String title,
             String content,
-            String category
+            String domain
     ) {}
 }

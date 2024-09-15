@@ -8,11 +8,11 @@ public record BoardSaveDto() {
     public record BoardSaveRequestDto(
             String id,
             @NotBlank
+            String domain,
+            @NotBlank
             String username,
             @NotBlank
             String nickname,
-            @NotBlank
-            String category,
             @NotBlank
             String title,
             @NotBlank

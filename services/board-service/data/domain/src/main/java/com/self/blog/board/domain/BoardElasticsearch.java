@@ -16,7 +16,7 @@ public class BoardElasticsearch {
 
     private String boardDomain;
 
-    private String category;
+    private String domain;
 
     private String username;
 

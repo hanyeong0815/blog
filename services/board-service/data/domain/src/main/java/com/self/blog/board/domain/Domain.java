@@ -8,9 +8,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Category {
+public class Domain {
     private String id;
-    private String category;
+    private String domain;
     private Long sequence;
     private Integer level;
 }

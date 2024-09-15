@@ -6,8 +6,8 @@ public record BoardProjection() {
     public record BoardListViewProjection(
             String id,
             Long defaultSequence,
-            Long categorySequence,
-            String category,
+            Long domainSequence,
+            String domain,
             String title,
             String username,
             String nickname,
@@ -17,14 +17,14 @@ public record BoardProjection() {
     public record BoardFindForUpdateProjection(
             String title,
             String content,
-            String category,
+            String domain,
             String username
     ) {}
 
     public record BoardFindForElasticsearchProjection(
             String id,
             String boardDomain,
-            String category,
+            String domain,
             String username,
             String nickname,
             String title,

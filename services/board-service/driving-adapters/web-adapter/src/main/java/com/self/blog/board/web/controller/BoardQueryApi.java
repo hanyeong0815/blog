@@ -29,12 +29,12 @@ public class BoardQueryApi {
     public BoardListResponse boardListView(
             @PageableDefault(sort = "createdAt", direction = Direction.DESC)
             Pageable pageable,
-            String category
+            String domain
     ) {
 
         pageable = pageable.previousOrFirst();
 
-        return boardListViewProxyService.boardListView(category, pageable);
+        return boardListViewProxyService.boardListView(domain, pageable);
     }
 
     @GetMapping("{boardId}/{username}")

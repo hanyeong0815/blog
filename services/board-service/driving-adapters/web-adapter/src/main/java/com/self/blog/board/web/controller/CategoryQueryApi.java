@@ -1,6 +1,6 @@
 package com.self.blog.board.web.controller;
 
-import com.self.blog.board.domain.Category;
+import com.self.blog.board.domain.Domain;
 import com.self.blog.board.web.service.CategoryFindAllProxyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,7 @@ public class CategoryQueryApi {
     private final CategoryFindAllProxyService categoryFindAllProxyService;
 
     @GetMapping("")
-    public List<Category> findAll() {
+    public List<Domain> findAll() {
         return categoryFindAllProxyService.findAll();
     }
 }

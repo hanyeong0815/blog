@@ -18,7 +18,7 @@ public interface BoardRepository {
     List<Board> findByIdIn(List<String> id);
     Optional<Board> findByUsername(String username);
     Page<BoardListViewReadModel> findAllBy(Pageable pageable);
-    Page<BoardListViewReadModel> findByCategory(String category, Pageable pageable);
+    Page<BoardListViewReadModel> findByDomain(String domain, Pageable pageable);
     Optional<BoardFindForUpdateReadModel> findByIdForUpdate(String boardId);
     boolean existsByIdAndUsername(String boardId, String username);
 }

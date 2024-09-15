@@ -17,7 +17,7 @@ public record BoardListViewDto() {
     public record BoardListView (
             String boardId,
             Long sequence,
-            String category,
+            String domain,
             String title,
             String username,
             String nickname,
@@ -29,7 +29,7 @@ public record BoardListViewDto() {
     @Builder
     public record BoardRecommendListView(
             String boardId,
-            String category,
+            String domain,
             String title,
             String content,
             String username,

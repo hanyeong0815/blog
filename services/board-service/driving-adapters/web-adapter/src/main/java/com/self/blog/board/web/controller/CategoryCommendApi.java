@@ -1,6 +1,6 @@
 package com.self.blog.board.web.controller;
 
-import com.self.blog.board.domain.Category;
+import com.self.blog.board.domain.Domain;
 import com.self.blog.board.web.dto.CategoryDto.CategorySaveRequestDto;
 import com.self.blog.board.web.service.CategorySaveProxyService;
 import jakarta.validation.Valid;
@@ -19,7 +19,7 @@ public class CategoryCommendApi {
 
     @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping("")
-    public Category saveCategory(@RequestBody @Valid CategorySaveRequestDto dto) {
+    public Domain saveCategory(@RequestBody @Valid CategorySaveRequestDto dto) {
         return categorySaveProxyService.saveCategory(dto);
     }
 }

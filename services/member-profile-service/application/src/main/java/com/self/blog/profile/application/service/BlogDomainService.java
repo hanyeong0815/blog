@@ -7,10 +7,13 @@ import com.self.blog.profile.application.repository.BlogDomainRepository;
 import com.self.blog.profile.application.repository.MemberProfileRepository;
 import com.self.blog.profile.application.usecase.BlogDomainFindByProfileIdUseCase;
 import com.self.blog.profile.application.usecase.CreateBlogDomainUseCase;
+import com.self.blog.profile.application.usecase.ValidateDomainUseCase;
 import com.self.blog.profile.domain.BlogDomain;
 import com.self.blog.profile.domain.type.BlogDomainStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 import static com.self.blog.common.utils.exception.Preconditions.validate;
 
@@ -18,7 +21,8 @@ import static com.self.blog.common.utils.exception.Preconditions.validate;
 @RequiredArgsConstructor
 public class BlogDomainService implements
         CreateBlogDomainUseCase,
-        BlogDomainFindByProfileIdUseCase
+        BlogDomainFindByProfileIdUseCase,
+        ValidateDomainUseCase
 {
     private final BlogDomainRepository blogDomainRepository;
     private final MemberProfileRepository memberProfileRepository;
@@ -56,5 +60,20 @@ public class BlogDomainService implements
 
         return blogDomainRepository.findByProfileId(profileId)
                 .orElse(null);
+    }
+
+    @Override
+    public boolean validateDomain(String username, String domain) {
+        Long profileId = memberProfileRepository.findIdByUsername(username)
+                .orElseThrow(
+                        MemberProfileErrorCode.NO_SUCH_USER::defaultException
+                ).id();
+
+        BlogDomain blogDomain = blogDomainRepository.findByProfileId(profileId)
+                .orElseThrow(
+                        DomainErrorCode.DOMAIN_NOT_FOUND::defaultException
+                );
+
+        return Objects.equals(blogDomain.getDomain(), domain);
     }
 }

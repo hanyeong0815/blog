@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
 import java.util.List;
@@ -44,18 +45,35 @@ public class BoardService implements
 
     private final BoardMapper boardMapper;
 
+    private final WebClient webClient = WebClient.builder()
+            .baseUrl("http://localhost:8090")
+            .build();
+
     @Override
     public BoardAndViewCountResponse boardSave(Board board) {
+        boolean validateDomain = webClient.get()
+                .uri(STR."domain/validate/\{board.getDomain()}/\{board.getUsername()}")
+                .retrieve()
+                .bodyToMono(Boolean.class)
+                .blockOptional().orElseThrow(
+                        BoardErrorCode.DEFAULT::defaultException
+                );
+
+        validate(
+                validateDomain,
+                BoardErrorCode.DEFAULT
+        );
+
         if(board.getId() != null) {
             return boardUpdate(board);
         }
 
         Long defaultSequence = boardDefaultSequenceRepository.CountUpAndGetSequence();
-        Long categorySequence = categoryRepository.countUpAndGetSequence(board.getCategory());
+        Long domainSequence = categoryRepository.countUpAndGetSequence(board.getDomain());
 
         Board cloneBoard = board.toBuilder()
                 .defaultSequence(defaultSequence)
-                .categorySequence(categorySequence)
+                .domainSequence(domainSequence)
                 .build();
 
         Board savedBoard = boardRepository.save(cloneBoard);
@@ -86,13 +104,13 @@ public class BoardService implements
     }
 
     @Override
-    public BoardListResponse boardListView(String category, Pageable pageable) {
+    public BoardListResponse boardListView(String domain, Pageable pageable) {
         Page<BoardListViewReadModel> boardListViewReadModelsList;
 
-        if(category == null) {
+        if(domain == null) {
             boardListViewReadModelsList = boardRepository.findAllBy(pageable);
         } else {
-            boardListViewReadModelsList = boardRepository.findByCategory(category, pageable);
+            boardListViewReadModelsList = boardRepository.findByDomain(domain, pageable);
         }
 
         if (boardListViewReadModelsList.isEmpty()) {
@@ -115,8 +133,8 @@ public class BoardService implements
 
                                     return BoardListView.builder()
                                             .boardId(board.id())
-                                            .sequence(category == null ? board.defaultSequence() : board.categorySequence())
-                                            .category(board.category())
+                                            .sequence(domain == null ? board.defaultSequence() : board.categorySequence())
+                                            .domain(board.domain())
                                             .title(board.title())
                                             .username(board.username())
                                             .nickname(board.nickname())
@@ -155,7 +173,6 @@ public class BoardService implements
 
         Board updateBoard = boardRepository.save(
                 findBoard.toBuilder()
-                        .category(board.getCategory())
                         .title(board.getTitle())
                         .content(board.getContent())
                         .createdAt(board.getCreatedAt())

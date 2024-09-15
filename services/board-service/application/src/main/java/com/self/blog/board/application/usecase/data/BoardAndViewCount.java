@@ -11,7 +11,7 @@ public record BoardAndViewCount() {
     public record BoardAndViewCountResponse(
             String username,
             String nickname,
-            String category,
+            String domain,
             String boardId,
             String title,
             String content,

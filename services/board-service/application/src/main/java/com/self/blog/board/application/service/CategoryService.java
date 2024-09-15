@@ -4,7 +4,7 @@ import com.self.blog.board.application.exception.CategoryErrorCode;
 import com.self.blog.board.application.repository.CategoryRepository;
 import com.self.blog.board.application.usecase.CategoryFindAllUseCase;
 import com.self.blog.board.application.usecase.CategorySaveUseCase;
-import com.self.blog.board.domain.Category;
+import com.self.blog.board.domain.Domain;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,18 +21,18 @@ public class CategoryService implements
     private final CategoryRepository categoryRepository;
 
     @Override
-    public Category saveCategory(Category category) {
-        boolean hasCategory = categoryRepository.existsByCategory(category.getCategory());
+    public Domain saveCategory(Domain domain) {
+        boolean hasCategory = categoryRepository.existsByCategory(domain.getDomain());
         validate(
                 !hasCategory,
                 CategoryErrorCode.CATEGORY_ALREADY_USED
         );
 
-        return categoryRepository.save(category);
+        return categoryRepository.save(domain);
     }
 
     @Override
-    public List<Category> findAll() {
+    public List<Domain> findAll() {
         return categoryRepository.findAll();
     }
 }

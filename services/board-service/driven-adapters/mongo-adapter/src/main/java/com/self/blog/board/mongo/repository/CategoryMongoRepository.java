@@ -1,11 +1,11 @@
 package com.self.blog.board.mongo.repository;
 
-import com.self.blog.board.mongo.entity.CategoryEntity;
+import com.self.blog.board.mongo.entity.DomainEntity;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;
 
-public interface CategoryMongoRepository extends MongoRepository<CategoryEntity, String> {
-    Optional<CategoryEntity> findByCategory(String category);
-    boolean existsByCategory(String category);
+public interface CategoryMongoRepository extends MongoRepository<DomainEntity, String> {
+    Optional<DomainEntity> findByDomain(String domain);
+    boolean existsByDomain(String category);
 }
