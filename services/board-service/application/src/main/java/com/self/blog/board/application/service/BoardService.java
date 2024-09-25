@@ -135,9 +135,10 @@ public class BoardService implements
 
                                     return BoardListView.builder()
                                             .boardId(board.id())
-                                            .sequence(domain == null ? board.defaultSequence() : board.categorySequence())
+                                            .sequence(domain == null ? board.defaultSequence() : board.domainSequence())
                                             .domain(board.domain())
                                             .title(board.title())
+                                            .content(board.content())
                                             .username(board.username())
                                             .nickname(board.nickname())
                                             .viewCount(boardView.getViewCount())

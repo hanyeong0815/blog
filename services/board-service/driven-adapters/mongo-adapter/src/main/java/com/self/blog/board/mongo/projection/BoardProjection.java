@@ -9,6 +9,7 @@ public record BoardProjection() {
             Long domainSequence,
             String domain,
             String title,
+            String content,
             String username,
             String nickname,
             Instant createdAt

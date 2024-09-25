@@ -19,6 +19,7 @@ public record BoardListViewDto() {
             Long sequence,
             String domain,
             String title,
+            String content,
             String username,
             String nickname,
             Integer viewCount,

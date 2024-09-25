@@ -25,11 +25,11 @@ public class BoardQueryApi {
     private final FavoriteBoardIsPresentProxyService favoriteBoardIsPresentProxyService;
     private final RecommendBoardProxyService recommendBoardProxyService;
 
-    @GetMapping("")
+    @GetMapping("{domain}")
     public BoardListResponse boardListView(
             @PageableDefault(sort = "createdAt", direction = Direction.DESC)
             Pageable pageable,
-            String domain
+            @PathVariable String domain
     ) {
 
         pageable = pageable.previousOrFirst();

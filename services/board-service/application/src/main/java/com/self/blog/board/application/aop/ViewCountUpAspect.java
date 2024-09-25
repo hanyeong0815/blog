@@ -34,7 +34,9 @@ public class ViewCountUpAspect {
                 .existsByIdAndUsername(boardId, username);
         boolean isWriter = boardRepository.existsByIdAndUsername(boardId, username);
 
-        if (hasViewCountValidation || isWriter) return;
+        if (hasViewCountValidation || isWriter) {
+            return;
+        }
 
         boardViewRepository.viewCountUp(boardId);
 
