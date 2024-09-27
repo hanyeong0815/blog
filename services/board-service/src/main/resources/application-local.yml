@@ -4,7 +4,7 @@ server:
 spring:
   config:
     import:
-      - app/cors/cors.yml
+      - app/cors/cors-local.yml
       - app/time/time.yml # classpath:/app/time/time.yml
       - app/jwt/jwt.yml
 
