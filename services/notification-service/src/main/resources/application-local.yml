@@ -5,7 +5,7 @@ spring:
   config:
     import:
       - optional:file:.env[.properties]
-      - app/cors/cors.yml
+      - app/cors/cors-local.yml
       - app/time/time.yml # classpath:/app/time/time.yml
 
   mail:

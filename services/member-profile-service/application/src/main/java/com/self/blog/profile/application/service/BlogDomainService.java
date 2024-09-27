@@ -7,6 +7,7 @@ import com.self.blog.profile.application.repository.BlogDomainRepository;
 import com.self.blog.profile.application.repository.MemberProfileRepository;
 import com.self.blog.profile.application.usecase.BlogDomainFindByProfileIdUseCase;
 import com.self.blog.profile.application.usecase.CreateBlogDomainUseCase;
+import com.self.blog.profile.application.usecase.IsPresentDomainUseCase;
 import com.self.blog.profile.application.usecase.ValidateDomainUseCase;
 import com.self.blog.profile.domain.BlogDomain;
 import com.self.blog.profile.domain.type.BlogDomainStatus;
@@ -22,7 +23,8 @@ import static com.self.blog.common.utils.exception.Preconditions.validate;
 public class BlogDomainService implements
         CreateBlogDomainUseCase,
         BlogDomainFindByProfileIdUseCase,
-        ValidateDomainUseCase
+        ValidateDomainUseCase,
+        IsPresentDomainUseCase
 {
     private final BlogDomainRepository blogDomainRepository;
     private final MemberProfileRepository memberProfileRepository;
@@ -75,5 +77,10 @@ public class BlogDomainService implements
                 );
 
         return Objects.equals(blogDomain.getDomain(), domain);
+    }
+
+    @Override
+    public boolean presentDomain(String domain) {
+        return !blogDomainRepository.existsByDomain(domain);
     }
 }
