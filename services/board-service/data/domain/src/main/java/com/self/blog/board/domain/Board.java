@@ -17,6 +17,8 @@ public class Board {
     private String domain;
     private Long defaultSequence;
     private Long domainSequence;
+    private String ogFileName;
+    private String ogThumbnailFileName;
     private String username;
     private String nickname;
     private String title;

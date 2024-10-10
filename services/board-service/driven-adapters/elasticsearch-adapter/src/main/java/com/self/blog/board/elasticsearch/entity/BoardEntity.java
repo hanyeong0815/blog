@@ -23,6 +23,9 @@ public class BoardEntity {
     private String boardDomain;
 
     @Field(type = FieldType.Keyword)
+    private String ogThumbnailFileName;
+
+    @Field(type = FieldType.Keyword)
     private String username;
 
     @Field(type = FieldType.Keyword)

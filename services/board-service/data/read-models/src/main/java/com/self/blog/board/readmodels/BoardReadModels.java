@@ -12,7 +12,8 @@ public record BoardReadModels() {
             String content,
             String username,
             String nickname,
-            Instant createdAt
+            Instant createdAt,
+            String ogThumbnailFileName
     ) {}
 
     public record BoardFindForUpdateReadModel(

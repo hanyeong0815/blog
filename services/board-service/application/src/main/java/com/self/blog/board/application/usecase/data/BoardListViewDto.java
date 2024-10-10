@@ -24,7 +24,8 @@ public record BoardListViewDto() {
             String nickname,
             Integer viewCount,
             Integer commentCount,
-            Instant createdAt
+            Instant createdAt,
+            String ogThumbnailFileName
     ) {}
 
     @Builder

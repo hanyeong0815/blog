@@ -14,8 +14,6 @@ import com.self.blog.profile.domain.type.BlogDomainStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
-
 import static com.self.blog.common.utils.exception.Preconditions.validate;
 
 @Service
@@ -65,18 +63,16 @@ public class BlogDomainService implements
     }
 
     @Override
-    public boolean validateDomain(String username, String domain) {
+    public String validateDomain(String username) {
         Long profileId = memberProfileRepository.findIdByUsername(username)
                 .orElseThrow(
                         MemberProfileErrorCode.NO_SUCH_USER::defaultException
                 ).id();
 
         BlogDomain blogDomain = blogDomainRepository.findByProfileId(profileId)
-                .orElseThrow(
-                        DomainErrorCode.DOMAIN_NOT_FOUND::defaultException
-                );
+                .orElse(BlogDomain.builder().domain("").build());
 
-        return Objects.equals(blogDomain.getDomain(), domain);
+        return blogDomain.getDomain();
     }
 
     @Override

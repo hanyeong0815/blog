@@ -18,6 +18,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("board")
@@ -33,8 +34,12 @@ public class BoardCommendApi {
 
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @PostMapping("")
-    public BoardAndViewCountResponse boardSave(@RequestBody BoardSaveRequestDto req) {
-        return boardSaveProxyService.boardSave(req);
+    public BoardAndViewCountResponse boardSave(
+            @RequestPart @Valid BoardSaveRequestDto dto,
+            @RequestPart(required = false) MultipartFile og
+            ) {
+        System.out.println(dto.toString() + og);
+        return boardSaveProxyService.boardSave(dto, og);
     }
 
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")

@@ -4,9 +4,11 @@ server:
 spring:
   config:
     import:
-      - app/cors/cors.yml
+      - optional:file:.env[.properties]
+      - app/cors/cors-local.yml
       - app/time/time.yml # classpath:/app/time/time.yml
       - app/jwt/jwt.yml
+      - app/aws/aws-local.yml
 
   jackson:
     serialization:
@@ -26,3 +28,16 @@ spring:
 
   elasticsearch:
     uris: http://localhost:9200
+
+#cloud:
+#  aws:
+#    s3:
+#      bucket: ${bucket}
+#    credentials:
+#      access-key: ${accessKey}
+#      secret-key: ${secretKey}
+#    region:
+#      static: ${region}
+#      auto: false
+#    stack:
+#      auto: false

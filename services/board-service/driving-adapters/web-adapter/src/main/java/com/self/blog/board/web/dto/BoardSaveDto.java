@@ -1,6 +1,7 @@
 package com.self.blog.board.web.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 public record BoardSaveDto() {
@@ -8,14 +9,14 @@ public record BoardSaveDto() {
     public record BoardSaveRequestDto(
             String id,
             @NotBlank
-            String domain,
-            @NotBlank
             String username,
             @NotBlank
             String nickname,
             @NotBlank
             String title,
             @NotBlank
-            String content
+            String content,
+            @NotNull
+            Integer ogNumber
     ) {}
 }

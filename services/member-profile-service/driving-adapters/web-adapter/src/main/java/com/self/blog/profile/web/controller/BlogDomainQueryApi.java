@@ -26,9 +26,9 @@ public class BlogDomainQueryApi {
         return findDomainProxyService.findDomain(username);
     }
 
-    @GetMapping("validate/{domain}/{username}")
-    public boolean validateDomain(@PathVariable String domain, @PathVariable String username) {
-        return validateDomainProxyService.validateDomain(username, domain);
+    @GetMapping("validate/{username}")
+    public String validateDomain(@PathVariable String username) {
+        return validateDomainProxyService.validateDomain(username);
     }
 
     @GetMapping("present/{domain}")

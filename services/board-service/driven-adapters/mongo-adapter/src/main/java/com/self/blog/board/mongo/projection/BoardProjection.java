@@ -12,7 +12,8 @@ public record BoardProjection() {
             String content,
             String username,
             String nickname,
-            Instant createdAt
+            Instant createdAt,
+            String ogThumbnailFileName
     ) {}
 
     public record BoardFindForUpdateProjection(

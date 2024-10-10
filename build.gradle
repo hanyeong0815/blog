@@ -92,6 +92,13 @@ project(commonModule){
 
 // core ------------------------------------------------------------------------------------------------
 
+project(awsCore) {
+    dependencies {
+        implementation commonProject
+        api 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    }
+}
+
 project(jpaCore) {
     dependencies {
         implementation commonProject
@@ -504,6 +511,7 @@ project(boardApplication) {
     dependencies {
         implementation commonProject
         implementation project(gsonCore)
+        api project(awsCore)
         api project(securityCore)
         api project(webClientCore)
         api project(boardDomain)
@@ -513,6 +521,9 @@ project(boardApplication) {
 
         // AOP
         implementation 'org.springframework.boot:spring-boot-starter-aop'
+
+        // Thumbnail
+        implementation 'net.coobird:thumbnailator:0.4.14'
 
         // Map Struct
         implementation 'org.mapstruct:mapstruct:1.5.3.Final'

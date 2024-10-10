@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class ValidateDomainProxyService {
     private final ValidateDomainUseCase validateDomainUseCase;
 
-    public boolean validateDomain(String username, String domain) {
-        return validateDomainUseCase.validateDomain(username, domain);
+    public String validateDomain(String username) {
+        return validateDomainUseCase.validateDomain(username);
     }
 }

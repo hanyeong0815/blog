@@ -23,6 +23,8 @@ public class BoardEntity {
     private String domain;
     private Long defaultSequence;
     private Long domainSequence;
+    private String ogFileName;
+    private String ogThumbnailFileName;
     @Indexed
     private String username;
     @Indexed

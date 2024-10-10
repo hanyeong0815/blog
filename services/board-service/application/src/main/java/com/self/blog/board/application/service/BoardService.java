@@ -10,6 +10,7 @@ import com.self.blog.board.application.usecase.data.BoardListViewDto.BoardListRe
 import com.self.blog.board.application.usecase.data.BoardListViewDto.BoardListView;
 import com.self.blog.board.application.usecase.data.BoardListViewDto.BoardRecommendListView;
 import com.self.blog.board.application.usecase.data.BoardUpdateDto.BoardFindForUpdateResponse;
+import com.self.blog.board.application.utils.OgFactory;
 import com.self.blog.board.domain.Board;
 import com.self.blog.board.domain.BoardElasticsearch;
 import com.self.blog.board.domain.BoardView;
@@ -20,10 +21,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import static com.self.blog.common.utils.exception.Preconditions.validate;
 
@@ -45,37 +49,67 @@ public class BoardService implements
 
     private final BoardMapper boardMapper;
 
+    private final S3ImageSaveUseCase s3ImageSaveUseCase;
+
+    OgFactory ogFactory = OgFactory.getInstance();
+
     private final WebClient webClient = WebClient.builder()
             .baseUrl("http://localhost:8090")
             .build();
 
     @Override
-    public BoardAndViewCountResponse boardSave(Board board) {
-        boolean validateDomain = webClient.get()
-                .uri(STR."domain/validate/\{board.getDomain()}/\{board.getUsername()}")
+    public BoardAndViewCountResponse boardSave(Board board, int ogNumber, MultipartFile ogFile) {
+        // 유저 도메인 검증을 위한 서버 통신
+        String validateDomain = webClient.get()
+                .uri(STR."domain/validate/\{board.getUsername()}")
                 .retrieve()
-                .bodyToMono(Boolean.class)
+                .bodyToMono(String.class)
                 .blockOptional().orElseThrow(
                         BoardErrorCode.DEFAULT::defaultException
                 );
 
+        // 유저 도메인 검증
         validate(
-                validateDomain,
+                !Objects.equals(validateDomain, ""),
                 BoardErrorCode.DEFAULT
         );
 
+        // id가 있을 시 수정으로 이동
         if(board.getId() != null) {
             return boardUpdate(board);
         }
 
+        // 글의 대한 순서 추출
         Long defaultSequence = boardDefaultSequenceRepository.CountUpAndGetSequence();
         Long domainSequence = domainRepository.countUpAndGetSequence(board.getDomain());
 
-        System.out.println(domainSequence);
+        String ogFileName;
+        String ogThumbnailFileName;
+
+        if (ogNumber == 5) { // 커스텀 이미지 사용
+            // 파일 유효성 검사
+            validate(
+                    ogFile != null && !ogFile.isEmpty(),
+                    BoardErrorCode.DEFAULT
+            );
+
+            // 파일 업로드
+            Map<String, String> result = s3ImageSaveUseCase.imageSave(ogFile);
+
+            ogFileName = result.get("original");
+            ogThumbnailFileName = result.get("thumbnail");
+        } else { // 샘플 이미지 사용
+            // 이미 저장되어있는 파일 이름 호출
+            ogFileName = ogFactory.getOgFileName(ogNumber);
+            ogThumbnailFileName = ogFactory.getOgFileName(ogNumber);
+        }
 
         Board cloneBoard = board.toBuilder()
+                .domain(validateDomain)
                 .defaultSequence(defaultSequence)
                 .domainSequence(domainSequence)
+                .ogFileName(ogFileName)
+                .ogThumbnailFileName(ogThumbnailFileName)
                 .build();
 
         Board savedBoard = boardRepository.save(cloneBoard);
@@ -144,6 +178,7 @@ public class BoardService implements
                                             .viewCount(boardView.getViewCount())
                                             .commentCount(boardView.getCommentAndReplyCount())
                                             .createdAt(board.createdAt())
+                                            .ogThumbnailFileName(board.ogThumbnailFileName())
                                             .build();
                                 })
                                 .toList()

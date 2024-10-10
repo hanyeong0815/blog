@@ -8,6 +8,7 @@ import com.self.blog.common.utils.time.ServerTime;
 import com.self.blog.board.domain.Board;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 
@@ -20,9 +21,9 @@ public class BoardSaveProxyService {
 
     private final ServerTime serverTime;
 
-    public BoardAndViewCountResponse boardSave(BoardSaveRequestDto req) {
+    public BoardAndViewCountResponse boardSave(BoardSaveRequestDto req, MultipartFile ogFile) {
         Board board = boardDtoMapper.toDomain(req, new ArrayList<>(), serverTime.nowInstant(), false);
 
-        return boardSaveUseCase.boardSave(board);
+        return boardSaveUseCase.boardSave(board, req.ogNumber(), ogFile);
     }
 }
