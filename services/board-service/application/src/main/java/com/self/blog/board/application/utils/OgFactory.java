@@ -3,10 +3,10 @@ package com.self.blog.board.application.utils;
 import com.self.blog.board.application.exception.BoardErrorCode;
 
 public class OgFactory {
-    private static final String NUMBER_1 = "1.png";
-    private static final String NUMBER_2 = "2.png";
-    private static final String NUMBER_3 = "3.png";
-    private static final String NUMBER_4 = "4.png";
+    private static final String NUMBER_1 = "og/1.png";
+    private static final String NUMBER_2 = "og/2.png";
+    private static final String NUMBER_3 = "og/3.png";
+    private static final String NUMBER_4 = "og/4.png";
 
     private OgFactory() {}
 

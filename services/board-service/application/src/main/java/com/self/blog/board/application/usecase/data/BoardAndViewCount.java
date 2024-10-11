@@ -18,6 +18,7 @@ public record BoardAndViewCount() {
             List<Comment> comments,
             Integer viewCount,
             Integer commentCount,
-            Instant createdAt
+            Instant createdAt,
+            String ogThumbnailFileName
     ) {}
 }
