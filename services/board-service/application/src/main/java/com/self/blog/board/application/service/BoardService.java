@@ -254,5 +254,6 @@ public class BoardService implements
     public void indexBoard() {
         List<BoardElasticsearch> boardList = boardRepository.findAllByDeleted();
         boardSearchRepository.saveAll(boardList);
+        System.out.println("done");
     }
 }

@@ -26,6 +26,7 @@ public record BoardProjection() {
     public record BoardFindForElasticsearchProjection(
             String id,
             String boardDomain,
+            String ogThumbnailFileName,
             String domain,
             String username,
             String nickname,

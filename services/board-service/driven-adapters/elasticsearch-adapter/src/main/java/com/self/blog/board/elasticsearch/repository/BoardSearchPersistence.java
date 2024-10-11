@@ -82,8 +82,6 @@ public class BoardSearchPersistence implements BoardSearchRepository {
                 .map(FieldValue::stringValue)
                 .toList();
 
-        System.out.println(topBoardIds);
-
         return repository.findByIdIn(topBoardIds).stream()
                 .map(mapper::from)
                 .toList();

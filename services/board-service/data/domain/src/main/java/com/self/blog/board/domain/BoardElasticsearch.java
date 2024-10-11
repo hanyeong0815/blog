@@ -16,6 +16,8 @@ public class BoardElasticsearch {
 
     private String boardDomain;
 
+    private String ogThumbnailFileName;
+
     private String domain;
 
     private String username;
